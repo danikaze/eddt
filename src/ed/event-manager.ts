@@ -12,7 +12,7 @@ export interface EventManagerOptions {
   verbose: boolean;
   /**
    * number of milliseconds to start ignoring past events
-   * (1 min by default, 0 to disable)
+   * (0 -by default- to disable)
    */
   ignorePast: number;
 }
@@ -34,7 +34,7 @@ export interface EdEventManager {
 class EventManager extends EventEmitter<EventType> {
   protected static readonly defaultOptions: Partial<EventManagerOptions> = {
     verbose: true,
-    ignorePast: 60000,
+    ignorePast: 0,
   };
 
   protected static fileEvents: EventType[] = ['NavRoute'];
