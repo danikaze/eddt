@@ -5,23 +5,29 @@ import { eventManager } from '@src/ed/event-manager';
 import { EdNavRouteEvent, EdFSDJumpEvent } from '@src/ed/interfaces';
 
 export interface NavRouteOptions {
+  verbose?: boolean;
   output: string;
   clearOnStart?: boolean;
 }
 
 export class NavRoute {
   public static readonly defaultOptions: Partial<NavRouteOptions> = {
+    verbose: false,
     clearOnStart: true,
   };
 
+  protected verbose: boolean;
   protected output: string;
   protected route?: string[];
   protected currentSystem!: string;
   protected currentRouteIndex!: number;
 
   constructor(options: NavRouteOptions) {
-    const opt = { ...NavRoute.defaultOptions, ...options };
+    const opt = { ...NavRoute.defaultOptions, ...options } as Required<
+      NavRouteOptions
+    >;
 
+    this.verbose = opt.verbose;
     this.output = options.output;
     eventManager.on('NavRoute', this.onNewRoute.bind(this));
     eventManager.on('FSDJump', this.onJump.bind(this));
@@ -79,7 +85,9 @@ export class NavRoute {
     txt = ` ${txt} `;
     try {
       writeFileSync(this.output, txt);
-      console.log(txt);
+      if (this.verbose) {
+        console.log(txt);
+      }
     } catch (e) {
       console.error(`Error writting NavRoute to ${this.output}`);
     }
