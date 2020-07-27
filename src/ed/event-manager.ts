@@ -8,8 +8,10 @@ import { getJournalPath } from '@src/utils/get-journal';
 import { EdNavRouteEvent, EdFSDJumpEvent, EdEvent } from './interfaces';
 import { ReadLineWatcher } from '@src/utils/read-line-watcher';
 
+type LogLevel = 'usedEvents' | 'pastEvents' | 'unusedEvents';
+
 export interface EventManagerOptions {
-  verbose: boolean;
+  verbose: LogLevel[];
   /**
    * number of milliseconds to start ignoring past events
    * (0 -by default- to disable)
@@ -33,13 +35,13 @@ export interface EdEventManager {
 
 class EventManager extends EventEmitter<EventType> {
   protected static readonly defaultOptions: Partial<EventManagerOptions> = {
-    verbose: true,
+    verbose: [],
     ignorePast: 0,
   };
 
   protected static fileEvents: EventType[] = ['NavRoute'];
 
-  protected readonly verbose: boolean;
+  protected readonly verbose: LogLevel[];
   protected readonly ignorePast: number;
   protected readonly logingEvents: EventType[] = [];
   protected readonly dateFormat: Intl.DateTimeFormat;
@@ -107,24 +109,7 @@ class EventManager extends EventEmitter<EventType> {
   }
 
   public emit<E extends EventType>(event: E, data: EventData[E]): boolean {
-    if (this.verbose) {
-      const [
-        { value: month },
-        ,
-        { value: day },
-        ,
-        { value: year },
-      ] = this.dateFormat.formatToParts(data.timestamp);
-      const date = `${year}-${month}-${day}`;
-      const time = this.timeFormat.format(data.timestamp);
-      const timestamp = `${date} ${time}`;
-      const txt =
-        event === 'old'
-          ? `[${timestamp}] *${data.event}`
-          : `[${timestamp}] ${event}`;
-      console.log(txt);
-    }
-
+    this.log(event, data);
     return super.emit(event, data);
   }
 
@@ -154,10 +139,42 @@ class EventManager extends EventEmitter<EventType> {
       this.emit(event, data);
     }
   }
+
+  protected formatDate(timestamp: Date): string {
+    const [
+      { value: month },
+      ,
+      { value: day },
+      ,
+      { value: year },
+    ] = this.dateFormat.formatToParts(timestamp);
+    const date = `${year}-${month}-${day}`;
+    const time = this.timeFormat.format(timestamp);
+
+    return `${date} ${time}`;
+  }
+
+  protected log<E extends EventType>(event: E, data: EventData[E]): void {
+    const { verbose } = this;
+
+    if (verbose.length === 0) return;
+    if (event === 'old' && !verbose.includes('pastEvents')) return;
+    const listeners = this.listeners(data.event as EventType);
+    if (listeners.length === 0 && !verbose.includes('unusedEvents')) return;
+    if (listeners.length > 0 && !verbose.includes('usedEvents')) return;
+
+    const timestamp = this.formatDate(data.timestamp);
+    const txt =
+      event === 'old'
+        ? `[${timestamp}] *${data.event}`
+        : `[${timestamp}] ${data.event}`;
+
+    console.log(txt);
+  }
 }
 
 const instance = new EventManager({
-  verbose: true,
+  verbose: ['usedEvents', 'pastEvents'],
 });
 
 export const eventManager = (instance as unknown) as EdEventManager;
