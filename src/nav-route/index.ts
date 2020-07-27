@@ -6,18 +6,29 @@ import { EdNavRouteEvent, EdFSDJumpEvent } from '@src/ed/interfaces';
 
 export interface NavRouteOptions {
   output: string;
+  clearOnStart?: boolean;
 }
 
 export class NavRoute {
+  public static readonly defaultOptions: Partial<NavRouteOptions> = {
+    clearOnStart: true,
+  };
+
   protected output: string;
   protected route?: string[];
   protected currentSystem!: string;
   protected currentRouteIndex!: number;
 
   constructor(options: NavRouteOptions) {
+    const opt = { ...NavRoute.defaultOptions, ...options };
+
     this.output = options.output;
     eventManager.on('NavRoute', this.onNewRoute.bind(this));
     eventManager.on('FSDJump', this.onJump.bind(this));
+
+    if (opt.clearOnStart) {
+      writeFileSync(this.output, '');
+    }
   }
 
   protected onNewRoute(event: EdNavRouteEvent): void {
