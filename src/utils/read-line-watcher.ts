@@ -1,13 +1,15 @@
 // tslint:disable:no-console
 
 import EventEmitter from 'eventemitter3';
-import { open, watch, FSWatcher, createReadStream, read } from 'fs';
+import { open, watch, FSWatcher, createReadStream } from 'fs';
 import { O_RDONLY } from 'constants';
 
 export interface ReadLineWatcherOptions {
   readOnlyNewChanges: boolean;
   crlf: string;
   bufferSize: number;
+  method: 'watch' | 'poll';
+  pollInterval: number;
 }
 
 /**
@@ -20,9 +22,12 @@ export class ReadLineWatcher extends EventEmitter<'line'> {
     readOnlyNewChanges: false,
     crlf: '\n',
     bufferSize: 0,
+    method: 'poll',
+    pollInterval: 1000,
   };
 
-  protected readonly watcher: FSWatcher;
+  protected readonly watcher?: FSWatcher;
+  protected pollInterval?: number;
   protected readBytes = 0;
   protected isReading = false;
 
@@ -39,15 +44,24 @@ export class ReadLineWatcher extends EventEmitter<'line'> {
     this.readOnlyNewChanges = opt.readOnlyNewChanges;
     this.crlf = opt.crlf;
 
-    this.watcher = watch(path);
-    this.watcher.addListener('change', this.read);
+    if (opt.method === 'watch') {
+      this.watcher = watch(path);
+      this.watcher.addListener('change', this.read);
+    } else if (opt.method === 'poll') {
+      this.pollInterval = (setInterval(
+        this.read,
+        opt.pollInterval
+      ) as unknown) as number;
+    }
+
     if (!this.readOnlyNewChanges) {
       this.read();
     }
   }
 
   public stop(): void {
-    this.watcher.close();
+    this.watcher?.close();
+    this.pollInterval && clearInterval(this.pollInterval);
   }
 
   protected read(): void {
