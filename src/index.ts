@@ -1,3 +1,4 @@
+import { join } from 'path';
 import { addEdEventListener } from './event-processors';
 import {
   NavRoute,
@@ -7,8 +8,14 @@ import {
   ApproachBody,
   LeaveBody,
 } from './event-processors/nav';
-import { addOutputGenerator } from './info';
-import { NavInfo } from './info/nav';
+import { NavInfoGenerator } from './info-generators/nav';
+import { WriteFileOutputter } from './outputters/write-file';
+import { OUTPUT_FOLDER } from './constants';
+
+const spacer = {
+  prefix: ' ',
+  postfix: ' ',
+};
 
 /*
  * Nav
@@ -20,4 +27,6 @@ addEdEventListener(Undocked);
 addEdEventListener(ApproachBody);
 addEdEventListener(LeaveBody);
 
-addOutputGenerator(NavInfo);
+new NavInfoGenerator().pipe(
+  new WriteFileOutputter(join(OUTPUT_FOLDER, 'nav.txt'), spacer)
+);

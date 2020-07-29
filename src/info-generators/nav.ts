@@ -1,35 +1,33 @@
 import { join } from 'path';
-import { OUTPUT_FOLDER } from '@src/constants';
 import { EdData } from '@src/ed/data-manager';
-import { OutputGeneratorWriteFile } from '.';
+import { InfoGenerator } from '.';
 
-type Data = Pick<
-  EdData,
+type DataKeys =
   | 'currentBody'
   | 'currentStation'
   | 'currentSystem'
   | 'routeTargetSystem'
-  | 'routeJumpsLeft'
->;
+  | 'routeJumpsLeft';
+type Data = Pick<EdData, DataKeys>;
 
-export const NavInfo: OutputGeneratorWriteFile = {
-  type: 'writeFile',
-  data: [
-    'currentBody',
-    'currentStation',
-    'currentSystem',
-    'routeTargetSystem',
-    'routeJumpsLeft',
-  ],
-  output: join(OUTPUT_FOLDER, 'nav.txt'),
-  clearOnStart: true,
-  generator: ({
+export class NavInfoGenerator extends InfoGenerator<DataKeys> {
+  constructor() {
+    super([
+      'currentBody',
+      'currentStation',
+      'currentSystem',
+      'routeTargetSystem',
+      'routeJumpsLeft',
+    ]);
+  }
+
+  protected generate({
     currentBody,
     currentStation,
     currentSystem,
     routeTargetSystem,
     routeJumpsLeft,
-  }: Data): string => {
+  }: Data): string {
     let txt: string;
 
     const currentLocationTxt = currentStation
@@ -47,6 +45,6 @@ export const NavInfo: OutputGeneratorWriteFile = {
       txt = currentLocationTxt;
     }
 
-    return ` ${txt} `;
-  },
-};
+    return txt;
+  }
+}
