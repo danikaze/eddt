@@ -1,4 +1,5 @@
 import EventEmitter from 'eventemitter3';
+import { CombatRank } from './definitions';
 
 /**
  * List of used and accessible data
@@ -11,12 +12,26 @@ export type EdData = Partial<{
   routeTargetSystem: string;
   routeFull: string[];
   routeJumpsLeft: number;
+  lastBountyReward: number;
+  lastBountyShip: string;
+  targetBounty: number;
+  targetPilotName: string;
+  targetPilotRank: CombatRank;
+  targetShipShield: number;
+  targetShipHull: number;
+  sessionTotalBounty: number;
+  sessionTotalPiratesKilled: number;
+  sessionTotalScanned: number;
+  sessionTotalHeatWarnings: number;
 }>;
 
 export type EdDataKey = keyof EdData;
+type PickKeys<T, C> = { [P in keyof T]: T[P] extends C ? P : never }[keyof T];
+export type EdDataNumericKey = PickKeys<Required<EdData>, number>;
 
 export interface EdDataManager {
   set<K extends EdDataKey>(key: K, data: EdData[K]): void;
+  increase<K extends EdDataNumericKey>(key: K, qty?: number): void;
   delete<K extends EdDataKey>(key: K): void;
   get<K extends EdDataKey>(key: K): EdData[K];
   update(): void;
@@ -43,6 +58,10 @@ class DataManager extends EventEmitter<EdDataKey> implements EdDataManager {
     if (this.events.indexOf(key) === -1) {
       this.events.push(key);
     }
+  }
+
+  public increase<K extends EdDataNumericKey>(key: K, qty: number = 1): void {
+    this.data[key] = ((this.data[key] as number) || 0) + qty;
   }
 
   public delete<K extends EdDataKey>(key: K): void {

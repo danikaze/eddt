@@ -11,8 +11,11 @@ import {
   EdEvent,
   EdDockedEvent,
   EdUnDockedEvent,
-  EdApproachBody,
-  EdLeaveBody,
+  EdApproachBodyEvent,
+  EdLeaveBodyEvent,
+  EdBountyEvent,
+  EdShipTargetedEvent,
+  EdScannedEvent,
 } from './interfaces';
 import { ReadLineWatcher } from '@src/utils/read-line-watcher';
 
@@ -33,8 +36,12 @@ export interface EventData {
   FSDJump: EdFSDJumpEvent;
   Docked: EdDockedEvent;
   Undocked: EdUnDockedEvent;
-  ApproachBody: EdApproachBody;
-  LeaveBody: EdLeaveBody;
+  ApproachBody: EdApproachBodyEvent;
+  LeaveBody: EdLeaveBodyEvent;
+  Bounty: EdBountyEvent;
+  ShipTargeted: EdShipTargetedEvent;
+  Scanned: EdScannedEvent;
+  HeatWarning: EdEvent<'HeatWarning'>;
   Shutdown: EdEvent<'Shutdown'>;
 }
 
