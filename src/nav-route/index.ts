@@ -2,7 +2,13 @@
 
 import { writeFileSync } from 'fs';
 import { eventManager } from '@src/ed/event-manager';
-import { EdNavRouteEvent, EdFSDJumpEvent } from '@src/ed/interfaces';
+import {
+  EdNavRouteEvent,
+  EdFSDJumpEvent,
+  EdDockedEvent,
+  EdUnDockedEvent,
+  EdApproachBody,
+} from '@src/ed/interfaces';
 
 export interface NavRouteOptions {
   verbose?: boolean;
@@ -19,6 +25,8 @@ export class NavRoute {
   protected verbose: boolean;
   protected output: string;
   protected route?: string[];
+  protected currentBody?: string;
+  protected currentStation?: string;
   protected currentSystem!: string;
   protected currentRouteIndex!: number;
 
@@ -31,6 +39,10 @@ export class NavRoute {
     this.output = options.output;
     eventManager.on('NavRoute', this.onNewRoute.bind(this));
     eventManager.on('FSDJump', this.onJump.bind(this));
+    eventManager.on('Docked', this.onDocked.bind(this));
+    eventManager.on('Undocked', this.onUndocked.bind(this));
+    eventManager.on('ApproachBody', this.onApproachBody.bind(this));
+    eventManager.on('LeaveBody', this.onLeaveBody.bind(this));
 
     if (opt.clearOnStart) {
       writeFileSync(this.output, '');
@@ -62,8 +74,36 @@ export class NavRoute {
     this.updateInfo();
   }
 
+  protected onDocked(event: EdDockedEvent): void {
+    this.currentSystem = event.StarSystem;
+    this.currentStation = event.StationName;
+    this.updateInfo();
+  }
+
+  protected onUndocked(): void {
+    this.currentStation = undefined;
+    this.updateInfo();
+  }
+
+  protected onApproachBody(event: EdApproachBody): void {
+    this.currentSystem = event.StarSystem;
+    this.currentBody = event.Body;
+    this.updateInfo();
+  }
+
+  protected onLeaveBody(): void {
+    this.currentBody = undefined;
+    this.updateInfo();
+  }
+
   protected updateInfo(): void {
     let txt: string;
+
+    const currentLocationTxt = this.currentStation
+      ? `${this.currentStation} (${this.currentSystem})`
+      : this.currentBody
+      ? this.currentBody
+      : this.currentSystem;
 
     if (this.route) {
       const jumps =
@@ -74,15 +114,16 @@ export class NavRoute {
 
       txt =
         jumps === 1
-          ? `${this.currentSystem} > ${end}`
+          ? `${currentLocationTxt} > ${end}`
           : jumps > 1
-          ? `${this.currentSystem} > ${jumps} jumps > ${end}`
-          : `${this.currentSystem} > ??? > ${end}`;
+          ? `${currentLocationTxt} > ${jumps} jumps > ${end}`
+          : `${currentLocationTxt} > ??? > ${end}`;
     } else {
-      txt = this.currentSystem;
+      txt = currentLocationTxt;
     }
 
     txt = ` ${txt} `;
+    console.log(txt);
     try {
       writeFileSync(this.output, txt);
       if (this.verbose) {

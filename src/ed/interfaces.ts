@@ -5,23 +5,26 @@
 import {
   StarPos,
   StarType,
-  Allegiance,
-  Economy,
-  Government,
+  AllegianceType,
+  EconomyType,
+  GovernmentType,
   SystemSecurity,
   BodyType,
   PowerType,
   PowerplayState,
   Faction,
   SystemFaction,
+  StationType,
+  StationService,
+  StationEconomy,
 } from './definitions';
 
-export interface EdEvent {
+export interface EdEvent<E extends string = string> {
   timestamp: Date; // transformed to date when parsed
-  event: string;
+  event: E;
 }
 
-export interface EdNavRouteEvent extends EdEvent {
+export interface EdNavRouteEvent extends EdEvent<'NavRoute'> {
   Route: Array<{
     StarSystem: string;
     SystemAddress: number;
@@ -30,16 +33,16 @@ export interface EdNavRouteEvent extends EdEvent {
   }>;
 }
 
-export interface EdFSDJumpEvent extends EdEvent {
+export interface EdFSDJumpEvent extends EdEvent<'FSDJump'> {
   StarSystem: string;
   SystemAddress: number;
   StarPos: StarPos;
-  SystemAllegiance: Allegiance;
-  SystemEconomy: Economy;
+  SystemAllegiance: AllegianceType;
+  SystemEconomy: EconomyType;
   SystemEconomy_Localised: string;
-  SystemSecondEconomy: Economy;
+  SystemSecondEconomy: EconomyType;
   SystemSecondEconomy_Localised: string;
-  SystemGovernment: Government;
+  SystemGovernment: GovernmentType;
   SystemGovernment_Localised: string;
   SystemSecurity: SystemSecurity;
   SystemSecurity_Localised: string;
@@ -54,4 +57,41 @@ export interface EdFSDJumpEvent extends EdEvent {
   FuelLevel: number;
   Factions: Faction[];
   SystemFaction: SystemFaction;
+}
+
+export interface EdDockedEvent extends EdEvent<'Docked'> {
+  StationName: string;
+  StationType: StationType;
+  StarSystem: string;
+  SystemAddress: number;
+  MarketID: number;
+  StationFaction: Partial<Faction>;
+  StationGovernment: GovernmentType;
+  StationGovernment_Localised: string;
+  StationAllegiance: AllegianceType;
+  StationServices: StationService[];
+  StationEconomy: EconomyType;
+  StationEconomy_Localised: string;
+  StationEconomies: StationEconomy[];
+  DistFromStarLS: number;
+}
+
+export interface EdUnDockedEvent extends EdEvent<'Undocked'> {
+  StationName: string;
+  StationType: StationType;
+  MarketID: number;
+}
+
+export interface EdApproachBody extends EdEvent<'ApproachBody'> {
+  StarSystem: string;
+  SystemAddress: number;
+  Body: string;
+  BodyID: number;
+}
+
+export interface EdLeaveBody extends EdEvent<'LeaveBody'> {
+  StarSystem: string;
+  SystemAddress: number;
+  Body: string;
+  BodyID: number;
 }
