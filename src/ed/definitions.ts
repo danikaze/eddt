@@ -3,8 +3,12 @@
  */
 
 export type StarPos = [number, number, number];
-export type Allegiance = 'Independent' | 'Alliance' | 'Federation' | 'Empire';
-export type Government =
+export type AllegianceType =
+  | 'Independent'
+  | 'Alliance'
+  | 'Federation'
+  | 'Empire';
+export type GovernmentType =
   | '$government_None;'
   | '$government_Patronage;'
   | '$government_Democracy;'
@@ -17,7 +21,7 @@ export type SystemSecurity =
   | '$SYSTEM_SECURITY_high;';
 export type PowerType = 'Edmund Mahon';
 export type PowerplayState = 'Exploited' | 'Controlled';
-export type Economy =
+export type EconomyType =
   | '$economy_None;'
   | '$economy_Agriculture;'
   | '$economy_Extraction;'
@@ -206,9 +210,9 @@ export type Happiness = '$Faction_HappinessBand1;' | '$Faction_HappinessBand2;';
 export interface Faction {
   Name: string;
   FactionState: FactionState;
-  Government: Government;
+  Government: GovernmentType;
   Influence: number;
-  Allegiance: Allegiance;
+  Allegiance: AllegianceType;
   Happiness: Happiness;
   Happiness_Localised: string;
   MyReputation: number;
@@ -217,4 +221,38 @@ export interface Faction {
 export interface SystemFaction {
   Name: string;
   FactionState: FactionState;
+}
+
+export type StationType =
+  | 'Coriolis'
+  | 'CraterOutpost'
+  | 'FleetCarrier'
+  | 'Outpost'
+  | 'Orbis';
+
+export type StationService =
+  | 'dock'
+  | 'autodock'
+  | 'commodities'
+  | 'contacts'
+  | 'exploration'
+  | 'missions'
+  | 'outfitting'
+  | 'crewlounge'
+  | 'refuel'
+  | 'repair'
+  | 'tuning'
+  | 'engineer'
+  | 'missionsgenerated'
+  | 'facilitator'
+  | 'flightcontroller'
+  | 'stationoperations'
+  | 'powerplay'
+  | 'searchrescue'
+  | 'stationMenu';
+
+export interface StationEconomy {
+  Name: EconomyType;
+  Name_Localised: string;
+  Proportion: number;
 }

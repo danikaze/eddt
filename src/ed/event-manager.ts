@@ -5,7 +5,15 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 import { ED_FOLDER } from '@src/constants';
 import { getJournalPath } from '@src/utils/get-journal';
-import { EdNavRouteEvent, EdFSDJumpEvent, EdEvent } from './interfaces';
+import {
+  EdNavRouteEvent,
+  EdFSDJumpEvent,
+  EdEvent,
+  EdDockedEvent,
+  EdUnDockedEvent,
+  EdApproachBody,
+  EdLeaveBody,
+} from './interfaces';
 import { ReadLineWatcher } from '@src/utils/read-line-watcher';
 
 type LogLevel = 'usedEvents' | 'pastEvents' | 'unusedEvents';
@@ -20,10 +28,14 @@ export interface EventManagerOptions {
 }
 
 export interface EventData {
-  old: EdEvent;
+  old: EdEvent<EventType>;
   NavRoute: EdNavRouteEvent;
   FSDJump: EdFSDJumpEvent;
-  Shutdown: EdEvent;
+  Docked: EdDockedEvent;
+  Undocked: EdUnDockedEvent;
+  ApproachBody: EdApproachBody;
+  LeaveBody: EdLeaveBody;
+  Shutdown: EdEvent<'Shutdown'>;
 }
 
 export type EventType = keyof EventData;
@@ -82,21 +94,21 @@ class EventManager extends EventEmitter<EventType> {
     });
   }
 
-  protected static parseEdEvent<T extends EdEvent = EdEvent>(
+  protected static parseEdEvent<T extends string = string>(
     json: string
-  ): T | undefined {
+  ): EdEvent<T> | undefined {
     try {
       return JSON.parse(json, (name, data) =>
         name === 'timestamp' ? new Date(data) : data
-      ) as T;
+      ) as EdEvent<T>;
     } catch (e) {
       console.error(`Error parsing event: ${json}`);
     }
   }
 
-  protected static parseEdEventFile<T extends EdEvent = EdEvent>(
+  protected static parseEdEventFile<T extends string = string>(
     path: string
-  ): T | undefined {
+  ): EdEvent<T> | undefined {
     let json: string;
     try {
       json = readFileSync(path).toString();
@@ -115,7 +127,7 @@ class EventManager extends EventEmitter<EventType> {
 
   protected journalListener(line: string) {
     const ignoreBefore = new Date().getTime() - this.ignorePast;
-    const data = EventManager.parseEdEvent(line);
+    const data = EventManager.parseEdEvent<EventType>(line);
     if (!data) return;
 
     if (this.ignorePast > 0 && data.timestamp.getTime() < ignoreBefore) {
@@ -134,7 +146,7 @@ class EventManager extends EventEmitter<EventType> {
 
   protected fileEvent(event: EventType): void {
     const path = join(ED_FOLDER, `${event}.json`);
-    const data = EventManager.parseEdEventFile(path);
+    const data = EventManager.parseEdEventFile<EventType>(path);
     if (data) {
       this.emit(event, data);
     }
