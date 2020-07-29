@@ -1,7 +1,23 @@
-import { NavRoute } from './nav-route';
-import { join } from 'path';
-import { OUTPUT_FOLDER } from './constants';
+import { addEdEventListener } from './event-processors';
+import {
+  NavRoute,
+  FSDJump,
+  Docked,
+  Undocked,
+  ApproachBody,
+  LeaveBody,
+} from './event-processors/nav';
+import { addOutputGenerator } from './info';
+import { NavInfo } from './info/nav';
 
-new NavRoute({
-  output: join(OUTPUT_FOLDER, 'nav.txt'),
-});
+/*
+ * Nav
+ */
+addEdEventListener(NavRoute);
+addEdEventListener(FSDJump);
+addEdEventListener(Docked);
+addEdEventListener(Undocked);
+addEdEventListener(ApproachBody);
+addEdEventListener(LeaveBody);
+
+addOutputGenerator(NavInfo);
