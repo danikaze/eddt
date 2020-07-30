@@ -256,3 +256,54 @@ export interface StationEconomy {
   Name_Localised: string;
   Proportion: number;
 }
+
+export interface BountyReward {
+  Faction: string;
+  Reward: number;
+}
+
+export type ShipType =
+  | 'adder'
+  | 'asp_scout'
+  | 'cobramkiii'
+  | 'cobramkiv'
+  | 'diamondback'
+  | 'empire_courier'
+  | 'empire_eagleferdelance'
+  | 'empire_trader'
+  | 'federation_gunship'
+  | 'python'
+  | 'viper_mkiv'
+  | 'viper'
+  | 'anaconda'
+  | 'asp_scout'
+  | 'asp'
+  | 'cobramkiii'
+  | 'cobramkiv'
+  | 'diamondback'
+  | 'diamondbackxl'
+  | 'dolphin'
+  | 'eagle'
+  | 'empire_courier'
+  | 'empire_eagle'
+  | 'empire_trader'
+  | 'federation_dropship_mkii'
+  | 'federation_dropship'
+  | 'federation_fighter'
+  | 'federation_gunship'
+  | 'ferdelance'
+  | 'hauler'
+  | 'independant_trader'
+  | 'krait_light'
+  | 'orca'
+  | 'python'
+  | 'sidewinder'
+  | 'type6'
+  | 'type7'
+  | 'type9'
+  | 'viper_mkiv'
+  | 'viper';
+
+export type LegalStateType = 'Clear' | 'Wanted';
+
+export type ScanType = 'AutoScan' | 'Basic' | 'Cargo' | 'Detailed';

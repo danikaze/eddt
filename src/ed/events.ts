@@ -17,6 +17,11 @@ import {
   StationType,
   StationService,
   StationEconomy,
+  BountyReward,
+  ShipType,
+  CombatRank,
+  LegalStateType as LegalStatusType,
+  ScanType,
 } from './definitions';
 
 export interface EdEvent<E extends string = string> {
@@ -82,16 +87,42 @@ export interface EdUnDockedEvent extends EdEvent<'Undocked'> {
   MarketID: number;
 }
 
-export interface EdApproachBody extends EdEvent<'ApproachBody'> {
+export interface EdApproachBodyEvent extends EdEvent<'ApproachBody'> {
   StarSystem: string;
   SystemAddress: number;
   Body: string;
   BodyID: number;
 }
 
-export interface EdLeaveBody extends EdEvent<'LeaveBody'> {
+export interface EdLeaveBodyEvent extends EdEvent<'LeaveBody'> {
   StarSystem: string;
   SystemAddress: number;
   Body: string;
   BodyID: number;
+}
+
+export interface EdBountyEvent extends EdEvent<'Bounty'> {
+  Rewards: BountyReward[];
+  Target: ShipType;
+  Target_Localised: string;
+  TotalReward: number;
+  VictimFaction: string;
+}
+
+export interface EdShipTargetedEvent extends EdEvent<'ShipTargeted'> {
+  TargetLocked: boolean;
+  Ship: ShipType;
+  ScanStage: 0 | 1 | 2 | 3; // tslint:disable-line:no-magic-numbers
+  PilotName: string;
+  PilotName_Localised: string;
+  PilotRank: CombatRank;
+  ShieldHealth: number;
+  HullHealth: number;
+  Faction: string;
+  LegalStatus: LegalStatusType;
+  Bounty: number;
+}
+
+export interface EdScannedEvent extends EdEvent<'Scanned'> {
+  ScanType: ScanType;
 }
