@@ -17,6 +17,7 @@ import { OutputRotator } from './outputters/rotator';
 import { HeatWarningsInfoGenerator } from './info-generators/heat-warning';
 import { ScannedInfoGenerator } from './info-generators/scanned';
 import { initEventManager } from './ed/event-manager';
+import { TextSpacer } from './outputters/text-spacer';
 
 const OUTPUT_NAV = join(OUTPUT_FOLDER, 'nav.txt');
 const OUTPUT_EVENTS = join(OUTPUT_FOLDER, 'events.txt');
@@ -40,7 +41,9 @@ const spacer = { prefix: ' ', postfix: ' ' };
   addEdEventListener(ApproachBody);
   addEdEventListener(LeaveBody);
 
-  new NavInfoGenerator().pipe(new WriteFileOutputter(OUTPUT_NAV, spacer));
+  new NavInfoGenerator().pipe(
+    new TextSpacer(spacer).pipe(new WriteFileOutputter(OUTPUT_NAV))
+  );
 
   /*
    * Events
@@ -51,6 +54,6 @@ const spacer = { prefix: ' ', postfix: ' ' };
   addEdEventListener(ShipTargeted);
 
   new OutputRotator({ repeatTimes: 1 })
-    .pipe(new WriteFileOutputter(OUTPUT_EVENTS, spacer))
+    .pipe(new TextSpacer(spacer).pipe(new WriteFileOutputter(OUTPUT_EVENTS)))
     .source([new HeatWarningsInfoGenerator(), new ScannedInfoGenerator()]);
 })();
