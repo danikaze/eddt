@@ -38,7 +38,7 @@ export class WriteFileOutputter extends Outputter {
     }
   }
 
-  public async put(info: string): Promise<void> {
+  protected async process(info: string): Promise<void> {
     const { prefix, postfix } = this.options;
     const output = `${prefix}${info}${postfix}`;
 

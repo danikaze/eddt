@@ -16,14 +16,15 @@ export abstract class InfoGenerator<E extends EdDataKey> {
     });
   }
 
-  public pipe(next: Outputter): void {
+  public pipe(next: Outputter): this {
     this.pipeList.push(next);
+    return this;
   }
 
   protected abstract generate(data: Pick<EdData, E>): string;
 
-  protected eventListener(timestamp: number): this {
-    if (timestamp <= this.lastCall) return this;
+  protected eventListener(timestamp: number): void {
+    if (timestamp <= this.lastCall) return;
     this.lastCall = timestamp;
 
     const data = this.dataKeys.reduce((acc, key) => {
@@ -36,8 +37,6 @@ export abstract class InfoGenerator<E extends EdDataKey> {
 
     const info = this.generate(data);
     this.executePipe(info);
-
-    return this;
   }
 
   protected async executePipe(info: string): Promise<void> {

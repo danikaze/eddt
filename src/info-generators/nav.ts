@@ -1,4 +1,3 @@
-import { join } from 'path';
 import { EdData } from '@src/ed/data-manager';
 import { InfoGenerator } from '.';
 
