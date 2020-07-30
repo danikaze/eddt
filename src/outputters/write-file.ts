@@ -1,4 +1,3 @@
-// tslint:disable:no-console
 import { writeFileSync } from 'fs';
 import { basename } from 'path';
 import { Outputter } from '.';

@@ -1,5 +1,3 @@
-// tslint:disable:no-console
-
 import EventEmitter from 'eventemitter3';
 import { open, watch, FSWatcher, createReadStream } from 'fs';
 import { O_RDONLY } from 'constants';

@@ -1,5 +1,3 @@
-// tslint:disable:no-console
-
 import { EventEmitter } from 'eventemitter3';
 import { readFileSync } from 'fs';
 import { join, basename } from 'path';

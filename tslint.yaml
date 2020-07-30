@@ -123,7 +123,7 @@ rules:
 
   # https://palantir.github.io/tslint/rules/no-console/
   no-console:
-    - true
+    - false
 
   # https://palantir.github.io/tslint/rules/curly/
   # Make exception for one liners, airbnb and google do the same. very usefull for 'if (something) return;'
