@@ -21,7 +21,12 @@ export abstract class InfoGenerator<E extends EdDataKey> {
     return this;
   }
 
-  protected abstract generate(data: Pick<EdData, E>): string;
+  /**
+   * Function to call when some of the listened data changes
+   * It returns the text to pass to the piped `Outputter`s if any,
+   * or `undefined` to ignore the change
+   */
+  protected abstract generate(data: Pick<EdData, E>): string | undefined;
 
   protected eventListener(timestamp: number): void {
     if (timestamp <= this.lastCall) return;
@@ -36,6 +41,7 @@ export abstract class InfoGenerator<E extends EdDataKey> {
     }, {} as EdData);
 
     const info = this.generate(data);
+    if (info === undefined) return;
     this.executePipe(info);
   }
 
