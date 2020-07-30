@@ -16,7 +16,7 @@ import {
   EdBountyEvent,
   EdShipTargetedEvent,
   EdScannedEvent,
-} from './interfaces';
+} from './events';
 import { ReadLineWatcher } from '@src/utils/read-line-watcher';
 
 type LogLevel = 'usedEvents' | 'pastEvents' | 'unusedEvents';
