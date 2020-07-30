@@ -2,7 +2,7 @@
 
 import { EventEmitter } from 'eventemitter3';
 import { readFileSync } from 'fs';
-import { join } from 'path';
+import { join, basename } from 'path';
 import { ED_FOLDER } from '@src/constants';
 import { getJournalPath } from '@src/utils/get-journal';
 import {
@@ -54,7 +54,7 @@ export interface EdEventManager {
 
 class EventManager extends EventEmitter<EventType> {
   protected static readonly defaultOptions: Partial<EventManagerOptions> = {
-    verbose: [],
+    verbose: ['usedEvents', 'pastEvents'],
     ignorePast: 0,
   };
 
@@ -196,9 +196,10 @@ let instance: EventManager;
 export async function initEventManager(
   options?: Partial<EventManagerOptions>
 ): Promise<void> {
-  const journalPath = await getJournalPath();
+  const TIMEOUT = 0;
+  const journalPath = await getJournalPath(TIMEOUT);
 
-  console.log('journal', journalPath);
+  console.log('Using journal file', basename(journalPath));
 
   if (!instance) {
     instance = new EventManager(journalPath, options);

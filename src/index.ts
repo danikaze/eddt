@@ -23,7 +23,12 @@ const OUTPUT_EVENTS = join(OUTPUT_FOLDER, 'events.txt');
 const spacer = { prefix: ' ', postfix: ' ' };
 
 (async () => {
-  await initEventManager();
+  try {
+    await initEventManager();
+  } catch (e) {
+    console.error(e, '=> Exiting');
+    return;
+  }
 
   /*
    * Nav
