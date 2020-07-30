@@ -1,4 +1,4 @@
-import { EventType, EventData, eventManager } from '@src/ed/event-manager';
+import { EventType, EventData, getEventManager } from '@src/ed/event-manager';
 import { EdDataManager, dataManager } from '@src/ed/data-manager';
 
 /**
@@ -15,7 +15,7 @@ export interface EdEventProcessor<E extends EventType> {
 export function addEdEventListener<E extends EventType>(
   definition: EdEventProcessor<E>
 ): void {
-  eventManager.on(definition.event, (event) => {
+  getEventManager().on(definition.event, (event) => {
     definition.processor(dataManager, event);
     dataManager.update();
   });

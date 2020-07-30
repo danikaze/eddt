@@ -66,7 +66,7 @@ class EventManager extends EventEmitter<EventType> {
   protected readonly dateFormat: Intl.DateTimeFormat;
   protected readonly timeFormat: Intl.DateTimeFormat;
 
-  constructor(options?: Partial<EventManagerOptions>) {
+  constructor(journalPath: string, options?: Partial<EventManagerOptions>) {
     super();
 
     this.journalListener = this.journalListener.bind(this);
@@ -89,7 +89,6 @@ class EventManager extends EventEmitter<EventType> {
       second: '2-digit',
     });
 
-    const journalPath = getJournalPath();
     const watcher = new ReadLineWatcher(journalPath);
     watcher.addListener('line', this.journalListener);
 
@@ -192,8 +191,22 @@ class EventManager extends EventEmitter<EventType> {
   }
 }
 
-const instance = new EventManager({
-  verbose: ['usedEvents', 'pastEvents'],
-});
+let instance: EventManager;
 
-export const eventManager = (instance as unknown) as EdEventManager;
+export async function initEventManager(
+  options?: Partial<EventManagerOptions>
+): Promise<void> {
+  const journalPath = await getJournalPath();
+
+  console.log('journal', journalPath);
+
+  if (!instance) {
+    instance = new EventManager(journalPath, options);
+  }
+}
+
+export function getEventManager(): EventManager {
+  if (!instance) throw new Error('Need to call initEventManager() first');
+
+  return instance;
+}

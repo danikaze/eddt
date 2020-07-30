@@ -16,31 +16,36 @@ import { Bounty, ShipTargeted } from './event-processors/pirates';
 import { OutputRotator } from './outputters/rotator';
 import { HeatWarningsInfoGenerator } from './info-generators/heat-warning';
 import { ScannedInfoGenerator } from './info-generators/scanned';
+import { initEventManager } from './ed/event-manager';
 
 const OUTPUT_NAV = join(OUTPUT_FOLDER, 'nav.txt');
 const OUTPUT_EVENTS = join(OUTPUT_FOLDER, 'events.txt');
 const spacer = { prefix: ' ', postfix: ' ' };
 
-/*
- * Nav
- */
-addEdEventListener(NavRoute);
-addEdEventListener(FSDJump);
-addEdEventListener(Docked);
-addEdEventListener(Undocked);
-addEdEventListener(ApproachBody);
-addEdEventListener(LeaveBody);
+(async () => {
+  await initEventManager();
 
-new NavInfoGenerator().pipe(new WriteFileOutputter(OUTPUT_NAV, spacer));
+  /*
+   * Nav
+   */
+  addEdEventListener(NavRoute);
+  addEdEventListener(FSDJump);
+  addEdEventListener(Docked);
+  addEdEventListener(Undocked);
+  addEdEventListener(ApproachBody);
+  addEdEventListener(LeaveBody);
 
-/*
- * Events
- */
-addEdEventListener(Scanned);
-addEdEventListener(HeatWarning);
-addEdEventListener(Bounty);
-addEdEventListener(ShipTargeted);
+  new NavInfoGenerator().pipe(new WriteFileOutputter(OUTPUT_NAV, spacer));
 
-new OutputRotator({ repeatTimes: 1 })
-  .pipe(new WriteFileOutputter(OUTPUT_EVENTS, spacer))
-  .source([new HeatWarningsInfoGenerator(), new ScannedInfoGenerator()]);
+  /*
+   * Events
+   */
+  addEdEventListener(Scanned);
+  addEdEventListener(HeatWarning);
+  addEdEventListener(Bounty);
+  addEdEventListener(ShipTargeted);
+
+  new OutputRotator({ repeatTimes: 1 })
+    .pipe(new WriteFileOutputter(OUTPUT_EVENTS, spacer))
+    .source([new HeatWarningsInfoGenerator(), new ScannedInfoGenerator()]);
+})();
