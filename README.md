@@ -45,10 +45,24 @@ If you are curiours, you can check the content of the `Journal` files in the dir
 
 ## Change log
 
+### 0.3.0
+
+- Perform proper cleanup on exit
+- Added Outputter middleware `TextSpacer`
+- Fixed minor bugs introduced in 0.2.0
+- OutputRotator tunning
+- Added `isOld` and `middleware` options in `EventManager`
+- Define which events are old so they are not processed in case the app is opened in the middle of the game (avoid over queuing old events)
+
 ### 0.2.0
 
 - Refactor the process flow to work like `Game Events` > `Data management` > `Info generation` > `Output`
 - Added new events (`Scanned`, `HeatWarning`, `Bounty`, `ShipTargeted`) rotating into `events.txt`
+
+#### 0.2.1
+
+- Don't use already shutdown Journal files
+- Properly detect the Journal file even when the app is executed before the game is opened
 
 ### 0.1.0
 
