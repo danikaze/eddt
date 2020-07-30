@@ -7,6 +7,7 @@ export const NavRoute: EdEventProcessor<'NavRoute'> = {
     dataManager.set('routeFull', route);
     dataManager.set('currentSystem', route[0]);
     dataManager.set('routeTargetSystem', route[route.length - 1]);
+    dataManager.set('routeJumpsLeft', route.length - 1);
   },
 };
 
@@ -24,6 +25,9 @@ export const FSDJump: EdEventProcessor<'FSDJump'> = {
 
     if (index === -1 || currentSystem === targetSystem) {
       dataManager.delete('routeFull');
+      dataManager.delete('routeJumpsLeft');
+    } else {
+      dataManager.set('routeJumpsLeft', route.length - index - 1);
     }
   },
 };
@@ -38,7 +42,7 @@ export const Docked: EdEventProcessor<'Docked'> = {
 
 export const Undocked: EdEventProcessor<'Undocked'> = {
   event: 'Undocked',
-  processor: (dataManager, event): void => {
+  processor: (dataManager): void => {
     dataManager.delete('currentStation');
   },
 };
