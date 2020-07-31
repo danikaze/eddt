@@ -19,13 +19,14 @@ import { ReadLineWatcher } from '@src/utils/read-line-watcher';
 
 type LogLevel = 'usedEvents' | 'pastEvents' | 'unusedEvents';
 
+export type EventManagerMiddleware = <E extends EventType>(
+  event: EdEvent<E>
+) => undefined | EdEvent<E>;
+
 export interface EventManagerOptions {
   verbose: LogLevel[];
-  /**
-   * number of milliseconds to start ignoring past events
-   * (0 -by default- to disable)
-   */
-  ignorePast: number;
+  middleware: EventManagerMiddleware[];
+  isOld: (event: EdEvent<EventType>) => boolean;
 }
 
 export interface EventData {
@@ -51,15 +52,17 @@ export interface EdEventManager {
 }
 
 class EventManager extends EventEmitter<EventType> {
-  protected static readonly defaultOptions: Partial<EventManagerOptions> = {
+  protected static readonly defaultOptions: EventManagerOptions = {
     verbose: ['usedEvents', 'pastEvents'],
-    ignorePast: 0,
+    middleware: [],
+    isOld: () => false,
   };
 
   protected static fileEvents: EventType[] = ['NavRoute'];
 
   protected readonly verbose: LogLevel[];
-  protected readonly ignorePast: number;
+  protected readonly middleware: EventManagerMiddleware[];
+  protected readonly isOld: (event: EdEvent<EventType>) => boolean;
   protected readonly logingEvents: EventType[] = [];
   protected readonly dateFormat: Intl.DateTimeFormat;
   protected readonly timeFormat: Intl.DateTimeFormat;
@@ -74,7 +77,8 @@ class EventManager extends EventEmitter<EventType> {
       ...options,
     } as EventManagerOptions;
     this.verbose = opt.verbose;
-    this.ignorePast = opt.ignorePast;
+    this.middleware = opt.middleware;
+    this.isOld = opt.isOld;
     this.dateFormat = new Intl.DateTimeFormat('ja', {
       month: '2-digit',
       day: '2-digit',
@@ -130,11 +134,17 @@ class EventManager extends EventEmitter<EventType> {
   }
 
   protected journalListener(line: string) {
-    const ignoreBefore = new Date().getTime() - this.ignorePast;
-    const data = EventManager.parseEdEvent<EventType>(line);
+    let data = EventManager.parseEdEvent<EventType>(line);
     if (!data) return;
 
-    if (this.ignorePast > 0 && data.timestamp.getTime() < ignoreBefore) {
+    data = this.middleware.reduce(
+      (event, middleware) => (event ? middleware(event) : event),
+      data as EdEvent<EventType> | undefined
+    );
+
+    if (!data) return;
+
+    if (this.isOld(data)) {
       this.emit('old', data);
       return;
     }
