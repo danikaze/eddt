@@ -24,8 +24,16 @@ export class BountyInfoGenerator extends InfoGenerator<DataKeys> {
     lastBountyShip,
     sessionTotalBounty,
     sessionTotalPiratesKilled,
-  }: Data): string {
+  }: Data): string | string[] {
     const cr = formatCredits(lastBountyReward!);
-    return `BOOM! Pirata eliminado en su ${lastBountyShip} (${cr})`;
+    const current = `BOOM! Pirata eliminado en su ${lastBountyShip} (${cr})`;
+
+    if (sessionTotalPiratesKilled === 1) return current;
+
+    const totalCr = formatCredits(sessionTotalBounty!);
+    return [
+      current,
+      `Eso hacen ${sessionTotalPiratesKilled} piratas por un total de ${totalCr} hoy`,
+    ];
   }
 }

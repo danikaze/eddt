@@ -26,7 +26,9 @@ export abstract class InfoGenerator<E extends EdDataKey> {
    * It returns the text to pass to the piped `Outputter`s if any,
    * or `undefined` to ignore the change
    */
-  protected abstract generate(data: Pick<EdData, E>): string | undefined;
+  protected abstract generate(
+    data: Pick<EdData, E>
+  ): string | string[] | undefined;
 
   protected eventListener(timestamp: number): void {
     if (timestamp <= this.lastCall) return;
@@ -42,7 +44,11 @@ export abstract class InfoGenerator<E extends EdDataKey> {
 
     const info = this.generate(data);
     if (info === undefined) return;
-    this.executePipe(info);
+    if (typeof info === 'string') {
+      this.executePipe(info);
+    } else {
+      info.forEach((i) => this.executePipe(i));
+    }
   }
 
   protected async executePipe(info: string): Promise<void> {
