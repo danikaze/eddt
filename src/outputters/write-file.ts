@@ -5,12 +5,14 @@ import { Outputter } from '.';
 export interface WriteFileOutputterOptions {
   verbose: boolean;
   clearOnStart: boolean;
+  clearOnEnd: boolean;
 }
 
 export class WriteFileOutputter extends Outputter {
   public static readonly defaultOptions: WriteFileOutputterOptions = {
     verbose: true,
     clearOnStart: true,
+    clearOnEnd: true,
   };
 
   protected readonly path: string;
@@ -41,6 +43,15 @@ export class WriteFileOutputter extends Outputter {
       }
     } catch (e) {
       console.error(`Error writting to ${this.path}`);
+    }
+  }
+
+  protected async destroy(): Promise<void> {
+    if (!this.options.clearOnEnd) return;
+    try {
+      writeFileSync(this.path, '');
+    } catch (e) {
+      console.error(`Error clearing ${this.path}`);
     }
   }
 }

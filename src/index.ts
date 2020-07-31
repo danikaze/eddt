@@ -1,3 +1,4 @@
+import { default as nodeCleanup } from 'node-cleanup';
 import { join } from 'path';
 import { addEdEventListener } from './event-processors';
 import {
@@ -19,10 +20,18 @@ import { ScannedInfoGenerator } from './info-generators/scanned';
 import { initEventManager, EventType } from './ed/event-manager';
 import { TextSpacer } from './outputters/text-spacer';
 import { EdEvent } from './ed/events';
+import { Outputter } from './outputters';
 
 const OUTPUT_NAV = join(OUTPUT_FOLDER, 'nav.txt');
 const OUTPUT_EVENTS = join(OUTPUT_FOLDER, 'events.txt');
 const spacer = { prefix: ' ', postfix: ' ' };
+
+nodeCleanup((exitCode, signal) => {
+  nodeCleanup.uninstall();
+  console.log(`\nExiting... (${signal})`);
+  Outputter.destroyAll().then(() => process.kill(process.pid, signal!));
+  return false;
+});
 
 const OLD_TIME = 30000; // 30 s
 const OLD_EVENTS: EventType[] = [
