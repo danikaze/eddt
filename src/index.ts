@@ -18,6 +18,7 @@ import { registerAllEvents } from './event-processors/register-all-events';
 
 import { OUTPUT_FOLDER } from './constants';
 import { JumpDistanceInfoGenerator } from './info-generators/jump-distance';
+import { OnlyInMilestones } from './info-generators/middleware/milestone';
 
 const OUTPUT_NAV = join(OUTPUT_FOLDER, 'nav.txt');
 const OUTPUT_EVENTS = join(OUTPUT_FOLDER, 'events.txt');
@@ -64,6 +65,14 @@ const isOld = (data: EdEvent<EventType>): boolean => {
       new HeatWarningsInfoGenerator(),
       new ScannedInfoGenerator(),
       new BountyInfoGenerator(),
-      new JumpDistanceInfoGenerator(),
+      new JumpDistanceInfoGenerator().use(
+        new OnlyInMilestones('sessionTotalJumpDistance', [
+          500,
+          1000,
+          2500,
+          5000,
+          10000,
+        ])
+      ),
     ]);
 })();

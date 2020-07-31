@@ -1,7 +1,11 @@
 import { EdDataKey, EdData, dataManager } from '@src/ed/data-manager';
 import { Outputter } from '@src/outputters';
+import { InfoGeneratorMiddleware } from './middleware';
 
 export abstract class InfoGenerator<E extends EdDataKey> {
+  protected readonly middleware: InfoGeneratorMiddleware<
+    Pick<EdData, E>
+  >[] = [];
   protected lastCall: number = 0;
   protected dataKeys: E[];
   protected pipeList: Outputter[] = [];
@@ -21,6 +25,11 @@ export abstract class InfoGenerator<E extends EdDataKey> {
     return this;
   }
 
+  public use(middleware: InfoGeneratorMiddleware<Pick<EdData, E>>): this {
+    this.middleware.push(middleware);
+    return this;
+  }
+
   /**
    * Function to call when some of the listened data changes
    * It returns the text to pass to the piped `Outputter`s if any,
@@ -34,13 +43,19 @@ export abstract class InfoGenerator<E extends EdDataKey> {
     if (timestamp <= this.lastCall) return;
     this.lastCall = timestamp;
 
-    const data = this.dataKeys.reduce((acc, key) => {
+    let data: Pick<EdData, E> | undefined = this.dataKeys.reduce((acc, key) => {
       const val = dataManager.get(key);
       if (val !== undefined) {
         acc[key] = val;
       }
       return acc;
-    }, {} as EdData);
+    }, {} as Pick<EdData, E>);
+
+    data = this.middleware.reduce((acc, middleware) => {
+      return acc ? (middleware.apply(acc) as Pick<EdData, E>) : acc;
+    }, data as Pick<EdData, E> | undefined);
+
+    if (!data) return;
 
     const info = this.generate(data);
     if (info === undefined) return;
