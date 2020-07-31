@@ -16,16 +16,31 @@ import { Bounty, ShipTargeted } from './event-processors/pirates';
 import { OutputRotator } from './outputters/rotator';
 import { HeatWarningsInfoGenerator } from './info-generators/heat-warning';
 import { ScannedInfoGenerator } from './info-generators/scanned';
-import { initEventManager } from './ed/event-manager';
+import { initEventManager, EventType } from './ed/event-manager';
 import { TextSpacer } from './outputters/text-spacer';
+import { EdEvent } from './ed/events';
 
 const OUTPUT_NAV = join(OUTPUT_FOLDER, 'nav.txt');
 const OUTPUT_EVENTS = join(OUTPUT_FOLDER, 'events.txt');
 const spacer = { prefix: ' ', postfix: ' ' };
 
+const OLD_TIME = 30000; // 30 s
+const OLD_EVENTS: EventType[] = [
+  'Scanned',
+  'HeatWarning',
+  'Bounty',
+  'ShipTargeted',
+];
+const isOld = (data: EdEvent<EventType>): boolean => {
+  return (
+    OLD_EVENTS.includes(data.event) &&
+    Date.now() > data.timestamp.getTime() + OLD_TIME
+  );
+};
+
 (async () => {
   try {
-    await initEventManager();
+    await initEventManager({ isOld });
   } catch (e) {
     console.error(e, '=> Exiting');
     return;
