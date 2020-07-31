@@ -12,6 +12,8 @@ export type EdData = Partial<{
   routeTargetSystem: string;
   routeFull: string[];
   routeJumpsLeft: number;
+  lastJumpDistance: number;
+  sessionTotalJumpDistance: number;
   lastBountyReward: number;
   lastBountyShip: string;
   targetBounty: number;

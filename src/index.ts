@@ -17,6 +17,7 @@ import { BountyInfoGenerator } from './info-generators/bounty';
 import { registerAllEvents } from './event-processors/register-all-events';
 
 import { OUTPUT_FOLDER } from './constants';
+import { JumpDistanceInfoGenerator } from './info-generators/jump-distance';
 
 const OUTPUT_NAV = join(OUTPUT_FOLDER, 'nav.txt');
 const OUTPUT_EVENTS = join(OUTPUT_FOLDER, 'events.txt');
@@ -63,5 +64,6 @@ const isOld = (data: EdEvent<EventType>): boolean => {
       new HeatWarningsInfoGenerator(),
       new ScannedInfoGenerator(),
       new BountyInfoGenerator(),
+      new JumpDistanceInfoGenerator(),
     ]);
 })();

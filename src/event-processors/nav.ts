@@ -16,6 +16,8 @@ export const FSDJump: EdEventProcessor<'FSDJump'> = {
   processor: (dataManager, event): void => {
     const currentSystem = event.StarSystem;
     dataManager.set('currentSystem', currentSystem);
+    dataManager.set('lastJumpDistance', event.JumpDist);
+    dataManager.increase('sessionTotalJumpDistance', event.JumpDist);
 
     const route = dataManager.get('routeFull');
     if (!route) return;

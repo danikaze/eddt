@@ -1,6 +1,6 @@
 import { EdData } from '@src/ed/data-manager';
 import { InfoGenerator } from '.';
-import { formatCredits } from '@src/utils/format-credits';
+import { formatCredits } from '@src/utils/format';
 
 type DataKeys =
   | 'lastBountyReward'
