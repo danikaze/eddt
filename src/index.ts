@@ -5,8 +5,8 @@ import { initEventManager, EventType } from './ed/event-manager';
 import { EdEvent } from './ed/events';
 
 import { WriteFileOutputter } from './outputters/write-file';
-import { OutputRotator } from './outputters/rotator';
-import { TextSpacer } from './outputters/text-spacer';
+import { OutputRotator } from './outputters/middleware/rotator';
+import { TextSpacer } from './outputters/middleware/text-spacer';
 import { Outputter } from './outputters';
 
 import { NavInfoGenerator } from './info-generators/nav';

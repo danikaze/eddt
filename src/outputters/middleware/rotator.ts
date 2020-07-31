@@ -1,6 +1,6 @@
 import { InfoGenerator } from '@src/info-generators';
 import { EdDataKey } from '@src/ed/data-manager';
-import { Outputter } from '.';
+import { Outputter } from '..';
 
 export interface OutputRotatorOptions {
   /**
