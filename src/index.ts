@@ -1,3 +1,4 @@
+import { default as nodeCleanup } from 'node-cleanup';
 import { join } from 'path';
 import { addEdEventListener } from './event-processors';
 import {
@@ -16,15 +17,39 @@ import { Bounty, ShipTargeted } from './event-processors/pirates';
 import { OutputRotator } from './outputters/rotator';
 import { HeatWarningsInfoGenerator } from './info-generators/heat-warning';
 import { ScannedInfoGenerator } from './info-generators/scanned';
-import { initEventManager } from './ed/event-manager';
+import { initEventManager, EventType } from './ed/event-manager';
+import { TextSpacer } from './outputters/text-spacer';
+import { EdEvent } from './ed/events';
+import { Outputter } from './outputters';
 
 const OUTPUT_NAV = join(OUTPUT_FOLDER, 'nav.txt');
 const OUTPUT_EVENTS = join(OUTPUT_FOLDER, 'events.txt');
 const spacer = { prefix: ' ', postfix: ' ' };
 
+nodeCleanup((exitCode, signal) => {
+  nodeCleanup.uninstall();
+  console.log(`\nExiting... (${signal})`);
+  Outputter.destroyAll().then(() => process.kill(process.pid, signal!));
+  return false;
+});
+
+const OLD_TIME = 30000; // 30 s
+const OLD_EVENTS: EventType[] = [
+  'Scanned',
+  'HeatWarning',
+  'Bounty',
+  'ShipTargeted',
+];
+const isOld = (data: EdEvent<EventType>): boolean => {
+  return (
+    OLD_EVENTS.includes(data.event) &&
+    Date.now() > data.timestamp.getTime() + OLD_TIME
+  );
+};
+
 (async () => {
   try {
-    await initEventManager();
+    await initEventManager({ isOld });
   } catch (e) {
     console.error(e, '=> Exiting');
     return;
@@ -40,7 +65,9 @@ const spacer = { prefix: ' ', postfix: ' ' };
   addEdEventListener(ApproachBody);
   addEdEventListener(LeaveBody);
 
-  new NavInfoGenerator().pipe(new WriteFileOutputter(OUTPUT_NAV, spacer));
+  new NavInfoGenerator().pipe(
+    new TextSpacer(spacer).pipe(new WriteFileOutputter(OUTPUT_NAV))
+  );
 
   /*
    * Events
@@ -51,6 +78,6 @@ const spacer = { prefix: ' ', postfix: ' ' };
   addEdEventListener(ShipTargeted);
 
   new OutputRotator({ repeatTimes: 1 })
-    .pipe(new WriteFileOutputter(OUTPUT_EVENTS, spacer))
+    .pipe(new TextSpacer(spacer).pipe(new WriteFileOutputter(OUTPUT_EVENTS)))
     .source([new HeatWarningsInfoGenerator(), new ScannedInfoGenerator()]);
 })();

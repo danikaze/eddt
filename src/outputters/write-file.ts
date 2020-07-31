@@ -5,16 +5,14 @@ import { Outputter } from '.';
 export interface WriteFileOutputterOptions {
   verbose: boolean;
   clearOnStart: boolean;
-  prefix: string;
-  postfix: string;
+  clearOnEnd: boolean;
 }
 
 export class WriteFileOutputter extends Outputter {
   public static readonly defaultOptions: WriteFileOutputterOptions = {
     verbose: true,
     clearOnStart: true,
-    prefix: '',
-    postfix: '',
+    clearOnEnd: true,
   };
 
   protected readonly path: string;
@@ -38,16 +36,22 @@ export class WriteFileOutputter extends Outputter {
   }
 
   protected async process(info: string): Promise<void> {
-    const { prefix, postfix } = this.options;
-    const output = `${prefix}${info}${postfix}`;
-
     try {
-      writeFileSync(this.path, output);
+      writeFileSync(this.path, info);
       if (this.options.verbose) {
-        console.log(`${basename(this.path)} => ${output}`);
+        console.log(`${basename(this.path)} => ${info}`);
       }
     } catch (e) {
       console.error(`Error writting to ${this.path}`);
+    }
+  }
+
+  protected async destroy(): Promise<void> {
+    if (!this.options.clearOnEnd) return;
+    try {
+      writeFileSync(this.path, '');
+    } catch (e) {
+      console.error(`Error clearing ${this.path}`);
     }
   }
 }

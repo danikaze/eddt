@@ -10,7 +10,7 @@ export interface OutputRotatorOptions {
   rotationTime: number;
   /**
    * Waiting time between text. 0 to disable
-   * Default: 1 sec
+   * Default: 2 sec
    */
   waitingTime: number;
   /**
@@ -28,13 +28,13 @@ interface QueuedInfoItem {
 export class OutputRotator extends Outputter {
   public static readonly defaultOptions: OutputRotatorOptions = {
     rotationTime: 5000,
-    waitingTime: 1000,
+    waitingTime: 2000,
     repeatTimes: Infinity,
   };
 
   protected readonly options: OutputRotatorOptions;
   protected readonly queuedInfo: QueuedInfoItem[] = [];
-  protected currentIndex: number = 0;
+  protected currentIndex: number = -1;
   protected active: boolean = false;
 
   constructor(options?: Partial<OutputRotatorOptions>) {
@@ -68,13 +68,15 @@ export class OutputRotator extends Outputter {
   }
 
   protected showNext(): void {
-    this.currentIndex = (this.currentIndex + 1) % this.queuedInfo.length;
-    const elem = this.queuedInfo[this.currentIndex];
-    if (!elem) {
+    if (this.queuedInfo.length === 0) {
       this.active = false;
-      this.clean();
       return;
     }
+    this.currentIndex++;
+    if (this.currentIndex >= this.queuedInfo.length) {
+      this.currentIndex = 0;
+    }
+    const elem = this.queuedInfo[this.currentIndex];
 
     this.active = true;
     elem.remainingTimes--;
@@ -82,24 +84,27 @@ export class OutputRotator extends Outputter {
       this.queuedInfo.splice(this.currentIndex, 1);
       this.currentIndex--;
     }
-    this.next?.put(elem.info);
+    this.output(elem.info);
 
-    setTimeout(
-      this.options.waitingTime > 0 ? this.waitBeforeNext : this.showNext,
-      this.options.rotationTime
-    );
+    setTimeout(() => {
+      this.clean();
+      if (this.options.waitingTime > 0) {
+        this.waitBeforeNext();
+      } else {
+        this.showNext();
+      }
+    }, this.options.rotationTime);
   }
 
   protected clean(): void {
-    this.next?.put('');
-
-    if (this.active) {
-      this.showNext();
-    }
+    this.output('');
   }
 
   protected waitBeforeNext(): void {
-    this.clean();
     setTimeout(this.showNext, this.options.waitingTime);
+  }
+
+  protected output(info: string): void {
+    this.next?.put(info);
   }
 }

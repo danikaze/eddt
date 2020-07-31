@@ -1,6 +1,6 @@
 {
   "name": "ed-tools",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Parse the Elite Dangerous journal file to extract useful data",
   "main": "app/index.js",
   "scripts": {
@@ -29,6 +29,7 @@
   "homepage": "https://github.com/danikaze/ed-tools#readme",
   "devDependencies": {
     "@types/node": "^14.0.26",
+    "@types/node-cleanup": "^2.1.1",
     "@types/webpack": "^4.41.21",
     "copy-webpack-plugin": "^6.0.3",
     "husky": "^4.2.5",
@@ -49,6 +50,7 @@
     "webpack-cli": "^3.3.12"
   },
   "dependencies": {
-    "eventemitter3": "^4.0.4"
+    "eventemitter3": "^4.0.4",
+    "node-cleanup": "^2.1.2"
   }
 }

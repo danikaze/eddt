@@ -61,7 +61,11 @@ class DataManager extends EventEmitter<EdDataKey> implements EdDataManager {
   }
 
   public increase<K extends EdDataNumericKey>(key: K, qty: number = 1): void {
-    this.data[key] = ((this.data[key] as number) || 0) + qty;
+    this.set(key, ((this.data[key] as number) || 0) + qty);
+  }
+
+  public decrease<K extends EdDataNumericKey>(key: K, qty: number = 1): void {
+    this.set(key, ((this.data[key] as number) || 0) - qty);
   }
 
   public delete<K extends EdDataKey>(key: K): void {
@@ -80,6 +84,8 @@ class DataManager extends EventEmitter<EdDataKey> implements EdDataManager {
       this.emit(event, timestamp);
     }
   }
+
+  protected modify<K extends EdDataKey>(key: K, data: EdData[K]): void {}
 }
 
 export const dataManager = new DataManager() as EdDataManager;
