@@ -133,6 +133,11 @@ class EventManager extends EventEmitter<EventType> {
     return super.emit(event, data);
   }
 
+  public use(middleware: EventManagerMiddleware): this {
+    this.middleware.push(middleware);
+    return this;
+  }
+
   protected journalListener(line: string) {
     let data = EventManager.parseEdEvent<EventType>(line);
     if (!data) return;
