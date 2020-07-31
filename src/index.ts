@@ -1,26 +1,25 @@
 import { default as nodeCleanup } from 'node-cleanup';
 import { join } from 'path';
-import { addEdEventListener } from './event-processors';
-import {
-  NavRoute,
-  FSDJump,
-  Docked,
-  Undocked,
-  ApproachBody,
-  LeaveBody,
-} from './event-processors/nav';
-import { NavInfoGenerator } from './info-generators/nav';
+
+import { initEventManager, EventType } from './ed/event-manager';
+import { EdEvent } from './ed/events';
+
 import { WriteFileOutputter } from './outputters/write-file';
-import { OUTPUT_FOLDER } from './constants';
-import { Scanned, HeatWarning } from './event-processors/misc';
-import { Bounty, ShipTargeted } from './event-processors/pirates';
 import { OutputRotator } from './outputters/rotator';
+import { TextSpacer } from './outputters/text-spacer';
+import { Outputter } from './outputters';
+
+import { NavInfoGenerator } from './info-generators/nav';
 import { HeatWarningsInfoGenerator } from './info-generators/heat-warning';
 import { ScannedInfoGenerator } from './info-generators/scanned';
 import { initEventManager, EventType } from './ed/event-manager';
 import { TextSpacer } from './outputters/text-spacer';
 import { EdEvent } from './ed/events';
 import { Outputter } from './outputters';
+
+import { registerAllEvents } from './event-processors/register-all-events';
+
+import { OUTPUT_FOLDER } from './constants';
 
 const OUTPUT_NAV = join(OUTPUT_FOLDER, 'nav.txt');
 const OUTPUT_EVENTS = join(OUTPUT_FOLDER, 'events.txt');
@@ -55,29 +54,17 @@ const isOld = (data: EdEvent<EventType>): boolean => {
     return;
   }
 
-  /*
-   * Nav
-   */
-  addEdEventListener(NavRoute);
-  addEdEventListener(FSDJump);
-  addEdEventListener(Docked);
-  addEdEventListener(Undocked);
-  addEdEventListener(ApproachBody);
-  addEdEventListener(LeaveBody);
+  registerAllEvents();
 
   new NavInfoGenerator().pipe(
     new TextSpacer(spacer).pipe(new WriteFileOutputter(OUTPUT_NAV))
   );
 
-  /*
-   * Events
-   */
-  addEdEventListener(Scanned);
-  addEdEventListener(HeatWarning);
-  addEdEventListener(Bounty);
-  addEdEventListener(ShipTargeted);
-
   new OutputRotator({ repeatTimes: 1 })
     .pipe(new TextSpacer(spacer).pipe(new WriteFileOutputter(OUTPUT_EVENTS)))
+    .source([
+      new HeatWarningsInfoGenerator(),
+      new ScannedInfoGenerator(),
     .source([new HeatWarningsInfoGenerator(), new ScannedInfoGenerator()]);
+    ]);
 })();
