@@ -32,8 +32,10 @@ type PickKeys<T, C> = { [P in keyof T]: T[P] extends C ? P : never }[keyof T];
 export type EdDataNumericKey = PickKeys<Required<EdData>, number>;
 
 export interface EdDataManager {
+  eventsEnabled: boolean;
   set<K extends EdDataKey>(key: K, data: EdData[K]): void;
   increase<K extends EdDataNumericKey>(key: K, qty?: number): void;
+  decrease<K extends EdDataNumericKey>(key: K, qty?: number): void;
   delete<K extends EdDataKey>(key: K): void;
   get<K extends EdDataKey>(key: K): EdData[K];
   update(): void;
@@ -45,6 +47,8 @@ export interface EdDataManager {
  * so it's shared across the modules
  */
 class DataManager extends EventEmitter<EdDataKey> implements EdDataManager {
+  public eventsEnabled: boolean = false;
+
   protected readonly data: EdData = {};
   protected readonly events: EdDataKey[] = [];
 
@@ -57,7 +61,7 @@ class DataManager extends EventEmitter<EdDataKey> implements EdDataManager {
 
     this.data[key] = data;
 
-    if (this.events.indexOf(key) === -1) {
+    if (this.eventsEnabled && this.events.indexOf(key) === -1) {
       this.events.push(key);
     }
   }

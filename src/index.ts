@@ -31,23 +31,9 @@ nodeCleanup((exitCode, signal) => {
   return false;
 });
 
-const OLD_TIME = 30000; // 30 s
-const OLD_EVENTS: EventType[] = [
-  'Scanned',
-  'HeatWarning',
-  'Bounty',
-  'ShipTargeted',
-];
-const isOld = (data: EdEvent<EventType>): boolean => {
-  return (
-    OLD_EVENTS.includes(data.event) &&
-    Date.now() > data.timestamp.getTime() + OLD_TIME
-  );
-};
-
 (async () => {
   try {
-    await initEventManager({ isOld });
+    await initEventManager();
   } catch (e) {
     console.error(e, '=> Exiting');
     return;
