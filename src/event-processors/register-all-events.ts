@@ -1,7 +1,8 @@
 import { EventType } from '@src/ed/event-manager';
 import { addEdEventListener, EdEventProcessor } from '.';
-import * as nav from './nav';
+import * as mining from './mining';
 import * as misc from './misc';
+import * as nav from './nav';
 import * as pirates from './pirates';
 
 type EventProcessorModule = {
@@ -9,8 +10,9 @@ type EventProcessorModule = {
 };
 
 export function registerAllEvents(): void {
-  registerModuleEvents(nav as EventProcessorModule);
+  registerModuleEvents(mining as EventProcessorModule);
   registerModuleEvents(misc as EventProcessorModule);
+  registerModuleEvents(nav as EventProcessorModule);
   registerModuleEvents(pirates as EventProcessorModule);
 }
 

@@ -307,3 +307,20 @@ export type ShipType =
 export type LegalStateType = 'Clear' | 'Wanted';
 
 export type ScanType = 'AutoScan' | 'Basic' | 'Cargo' | 'Detailed';
+
+export type AsteroidMaterialContent =
+  | '$AsteroidMaterialContent_Low;'
+  | '$AsteroidMaterialContent_Medium;'
+  | '$AsteroidMaterialContent_High;';
+
+export type MaterialCategory = 'Raw';
+
+export type MaterialName = 'nickel' | 'sulphur' | 'carbon' | 'vanadium';
+
+export type MineralType =
+  | '$bertrandite_name;'
+  | '$gold_name;'
+  | '$painite_name;'
+  | '$silver_name;';
+
+export type DroneType = 'Prospector' | 'Collection';

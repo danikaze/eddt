@@ -25,6 +25,12 @@ export type EdData = Partial<{
   sessionTotalPiratesKilled: number;
   sessionTotalScanned: number;
   sessionTotalHeatWarnings: number;
+  sessionTotalDronesLaunched: number;
+  sessionTotalProspectorDronesLaunched: number;
+  sessionTotalCollectionDronesLaunched: number;
+  sessionTotalAsteroidsProspected: number;
+  sessionTotalMaterialsCollected: number;
+  sessionTotalMaterialsRefined: number;
 }>;
 
 export type EdDataKey = keyof EdData;

@@ -19,6 +19,10 @@ import { registerAllEvents } from './event-processors/register-all-events';
 import { OUTPUT_FOLDER } from './constants';
 import { JumpDistanceInfoGenerator } from './info-generators/jump-distance';
 import { OnlyInMilestones } from './info-generators/middleware/milestone';
+import { MaterialsCollectedInfoGenerator } from './info-generators/material-collected';
+import { MiningRefinedInfoGenerator } from './info-generators/mining-refined';
+import { ProspectedAsteroidsInfoGenerator } from './info-generators/prospected-asteroids';
+import { LaunchedDronesInfoGenerator } from './info-generators/launched-drones';
 
 const OUTPUT_NAV = join(OUTPUT_FOLDER, 'nav.txt');
 const OUTPUT_EVENTS = join(OUTPUT_FOLDER, 'events.txt');
@@ -52,13 +56,23 @@ nodeCleanup((exitCode, signal) => {
       new ScannedInfoGenerator(),
       new BountyInfoGenerator(),
       new JumpDistanceInfoGenerator().use(
-        new OnlyInMilestones('sessionTotalJumpDistance', [
-          500,
-          1000,
-          2500,
-          5000,
-          10000,
-        ])
+        new OnlyInMilestones(
+          'sessionTotalJumpDistance',
+          [500, 1000, 2500, 5000, 10000],
+          { cap: true }
+        )
+      ),
+      new MaterialsCollectedInfoGenerator().use(
+        new OnlyInMilestones('sessionTotalMaterialsCollected', [25, 50, 100])
+      ),
+      new MiningRefinedInfoGenerator().use(
+        new OnlyInMilestones('sessionTotalMaterialsRefined', [25, 50, 100])
+      ),
+      new ProspectedAsteroidsInfoGenerator().use(
+        new OnlyInMilestones('sessionTotalAsteroidsProspected', [25, 50, 100])
+      ),
+      new LaunchedDronesInfoGenerator().use(
+        new OnlyInMilestones('sessionTotalDronesLaunched', [25, 50, 100])
       ),
     ]);
 })();

@@ -22,6 +22,11 @@ import {
   CombatRank,
   LegalStateType as LegalStatusType,
   ScanType,
+  AsteroidMaterialContent,
+  MaterialCategory,
+  DroneType,
+  MineralType,
+  MaterialName,
 } from './definitions';
 
 export interface EdEvent<E extends string = string> {
@@ -125,4 +130,30 @@ export interface EdShipTargetedEvent extends EdEvent<'ShipTargeted'> {
 
 export interface EdScannedEvent extends EdEvent<'Scanned'> {
   ScanType: ScanType;
+}
+
+export interface EdLaunchDroneEvent extends EdEvent<'LaunchDrone'> {
+  Type: DroneType;
+}
+
+export interface EdProspectedAsteroidEvent
+  extends EdEvent<'ProspectedAsteroid'> {
+  Materials: {
+    Name: string;
+    Proportion: number;
+  }[];
+  Content: AsteroidMaterialContent;
+  Content_Localised: string;
+  Remaining: number;
+}
+
+export interface EdMaterialCollectedEvent extends EdEvent<'MaterialCollected'> {
+  Category: MaterialCategory;
+  Name: MaterialName;
+  Count: number;
+}
+
+export interface EdMiningRefinedEvent extends EdEvent<'MiningRefined'> {
+  Type: MineralType;
+  Type_Localised: string;
 }

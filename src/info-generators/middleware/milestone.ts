@@ -11,7 +11,7 @@ type Data = Pick<EdData, EdDataNumericKey>;
 export class OnlyInMilestones extends InfoGeneratorMiddleware<Data> {
   public static readonly defaultOptions: OnlyInMilestonesOptions = {
     extend: true,
-    cap: true,
+    cap: false,
   };
 
   protected readonly milestones: number[];
@@ -22,7 +22,7 @@ export class OnlyInMilestones extends InfoGeneratorMiddleware<Data> {
   constructor(
     key: EdDataNumericKey,
     milestones: number[],
-    options?: OnlyInMilestonesOptions
+    options?: Partial<OnlyInMilestonesOptions>
   ) {
     super();
 
