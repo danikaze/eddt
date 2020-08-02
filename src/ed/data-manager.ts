@@ -23,6 +23,10 @@ export type EdData = Partial<{
   targetShipHull: number;
   sessionTotalBounty: number;
   sessionTotalPiratesKilled: number;
+  sessionTotalInterdictionsReceived: number;
+  sessionTotalInterdictionsReceivedEscaped: number;
+  sessionTotalInterdictionsReceivedSubmitted: number;
+  sessionTotalInterdictionsReceivedLost: number;
   sessionTotalScanned: number;
   sessionTotalHeatWarnings: number;
   sessionTotalDronesLaunched: number;

@@ -23,6 +23,9 @@ import { MaterialsCollectedInfoGenerator } from './info-generators/material-coll
 import { MiningRefinedInfoGenerator } from './info-generators/mining-refined';
 import { ProspectedAsteroidsInfoGenerator } from './info-generators/prospected-asteroids';
 import { LaunchedDronesInfoGenerator } from './info-generators/launched-drones';
+import { InterdictionsEscapedInfoGenerator } from './info-generators/interdiction-escaped';
+import { InterdictionsLostInfoGenerator } from './info-generators/interdiction-lost';
+import { InterdictionsSubmittedInfoGenerator } from './info-generators/interdiction-submitted';
 
 const OUTPUT_NAV = join(OUTPUT_FOLDER, 'nav.txt');
 const OUTPUT_EVENTS = join(OUTPUT_FOLDER, 'events.txt');
@@ -74,5 +77,8 @@ nodeCleanup((exitCode, signal) => {
       new LaunchedDronesInfoGenerator().use(
         new OnlyInMilestones('sessionTotalDronesLaunched', [25, 50, 100])
       ),
+      new InterdictionsEscapedInfoGenerator(),
+      new InterdictionsLostInfoGenerator(),
+      new InterdictionsSubmittedInfoGenerator(),
     ]);
 })();

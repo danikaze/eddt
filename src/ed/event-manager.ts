@@ -18,6 +18,8 @@ import {
   EdMaterialCollectedEvent,
   EdLaunchDroneEvent,
   EdMiningRefinedEvent,
+  EdEscapeInterdictionEvent,
+  EdInterdictedEvent,
 } from './events';
 import { ReadLineWatcher } from '@src/utils/read-line-watcher';
 import { dataManager } from './data-manager';
@@ -45,6 +47,8 @@ export interface EventData {
   LeaveBody: EdLeaveBodyEvent;
   Bounty: EdBountyEvent;
   ShipTargeted: EdShipTargetedEvent;
+  EscapeInterdiction: EdEscapeInterdictionEvent;
+  Interdicted: EdInterdictedEvent;
   Scanned: EdScannedEvent;
   HeatWarning: EdEvent<'HeatWarning'>;
   LaunchDrone: EdLaunchDroneEvent;

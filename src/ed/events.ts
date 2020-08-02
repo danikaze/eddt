@@ -157,3 +157,17 @@ export interface EdMiningRefinedEvent extends EdEvent<'MiningRefined'> {
   Type: MineralType;
   Type_Localised: string;
 }
+
+export interface EdEscapeInterdictionEvent
+  extends EdEvent<'EscapeInterdiction'> {
+  Interdictor: string;
+  IsPlayer: boolean;
+}
+
+export interface EdInterdictedEvent extends EdEvent<'Interdicted'> {
+  Submitted: boolean;
+  Interdictor: string;
+  IsPlayer: boolean;
+  Faction: string;
+}
+
