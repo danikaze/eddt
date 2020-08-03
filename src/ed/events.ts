@@ -27,6 +27,11 @@ import {
   DroneType,
   MineralType,
   MaterialName,
+  MissionFactionEffect,
+  MissionType,
+  CommodityType,
+  InfluenceReward,
+  ReputationReward,
 } from './definitions';
 
 export interface EdEvent<E extends string = string> {
@@ -171,3 +176,40 @@ export interface EdInterdictedEvent extends EdEvent<'Interdicted'> {
   Faction: string;
 }
 
+export interface EdMissionAcceptedEvent extends EdEvent<'MissionAccepted'> {
+  Faction: string;
+  Name: MissionType;
+  LocalisedName: string;
+  Commodity: CommodityType;
+  Commodity_Localised: string;
+  Count: number;
+  TargetFaction: string;
+  DestinationSystem: string;
+  DestinationStation: string;
+  Expiry: string; // date
+  Wing: boolean;
+  Influence: InfluenceReward;
+  Reputation: ReputationReward;
+  Reward: number;
+  MissionID: number;
+}
+
+export interface EdMissionCompletedEvent extends EdEvent<'MissionCompleted'> {
+  Faction: string;
+  Name: MissionType;
+  MissionID: number;
+  DestinationSystem: string;
+  DestinationStation: string;
+  Reward: number;
+  FactionEffects: MissionFactionEffect[];
+}
+
+export interface EdMissionFailedEvent extends EdEvent<'MissionFailed'> {
+  Name: MissionType;
+  MissionID: number;
+}
+
+export interface EdMissionAbandonedEvent extends EdEvent<'MissionAbandoned'> {
+  Name: MissionType;
+  MissionID: number;
+}

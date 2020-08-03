@@ -35,6 +35,10 @@ export type EdData = Partial<{
   sessionTotalAsteroidsProspected: number;
   sessionTotalMaterialsCollected: number;
   sessionTotalMaterialsRefined: number;
+  sessionTotalMissionsAccepted: number;
+  sessionTotalMissionsCompleted: number;
+  sessionTotalMissionsFailed: number;
+  sessionTotalMissionsAbandoned: number;
 }>;
 
 export type EdDataKey = keyof EdData;

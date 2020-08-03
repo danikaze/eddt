@@ -323,4 +323,33 @@ export type MineralType =
   | '$painite_name;'
   | '$silver_name;';
 
+export type CommodityType = '$ConsumerTechnology_Name;';
+
 export type DroneType = 'Prospector' | 'Collection';
+
+export type MissionType =
+  | 'Mission_Collect_name'
+  | 'Mission_Delivery_Investment'
+  | 'Mission_Assassinate_Legal_Corporate_name';
+export type MissionFactionEffectType =
+  | '$MISSIONUTIL_Interaction_Summary_EP_up;'
+  | '$MISSIONUTIL_Interaction_Summary_Outbreak_up;';
+export type ReputationTrend = 'UpGood';
+export type ReputationReward = '+' | '++' | '+++' | '++++' | '+++++';
+export type InfluenceReward = '+' | '++' | '+++' | '++++' | '+++++';
+
+export interface MissionFactionEffect {
+  Faction: string;
+  Effects: {
+    Effect: MissionFactionEffectType;
+    Effect_Localised: string;
+    Trend: ReputationTrend;
+  }[];
+  Influence: {
+    SystemAddress: number;
+    Trend: ReputationTrend;
+    Influence: InfluenceReward;
+  }[];
+  ReputationTrend: ReputationTrend;
+  Reputation: ReputationReward;
+}

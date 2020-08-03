@@ -20,6 +20,10 @@ import {
   EdMiningRefinedEvent,
   EdEscapeInterdictionEvent,
   EdInterdictedEvent,
+  EdMissionAcceptedEvent,
+  EdMissionCompletedEvent,
+  EdMissionFailedEvent,
+  EdMissionAbandonedEvent,
 } from './events';
 import { ReadLineWatcher } from '@src/utils/read-line-watcher';
 import { dataManager } from './data-manager';
@@ -35,8 +39,6 @@ export interface EventManagerOptions {
   middleware: EventManagerMiddleware[];
   ignoreBefore: number;
 }
-
-export interface EdShutdown extends EdEvent<'Shutdown'> {}
 
 export interface EventData {
   NavRoute: EdNavRouteEvent;
@@ -55,7 +57,11 @@ export interface EventData {
   ProspectedAsteroid: EdProspectedAsteroidEvent;
   MaterialCollected: EdMaterialCollectedEvent;
   MiningRefined: EdMiningRefinedEvent;
-  Shutdown: EdShutdown;
+  MissionAccepted: EdMissionAcceptedEvent;
+  MissionCompleted: EdMissionCompletedEvent;
+  MissionFailed: EdMissionFailedEvent;
+  MissionAbandoned: EdMissionAbandonedEvent;
+  Shutdown: EdEvent<'Shutdown'>;
 }
 
 export type EventType = keyof EventData;

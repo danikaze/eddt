@@ -1,8 +1,9 @@
+// tslint:disable: no-magic-numbers
+
 import { default as nodeCleanup } from 'node-cleanup';
 import { join } from 'path';
 
-import { initEventManager, EventType } from './ed/event-manager';
-import { EdEvent } from './ed/events';
+import { initEventManager } from './ed/event-manager';
 
 import { WriteFileOutputter } from './outputters/write-file';
 import { OutputRotator } from './outputters/middleware/rotator';
@@ -26,6 +27,7 @@ import { LaunchedDronesInfoGenerator } from './info-generators/launched-drones';
 import { InterdictionsEscapedInfoGenerator } from './info-generators/interdiction-escaped';
 import { InterdictionsLostInfoGenerator } from './info-generators/interdiction-lost';
 import { InterdictionsSubmittedInfoGenerator } from './info-generators/interdiction-submitted';
+import { MissionsCompletedInfoGenerator } from './info-generators/missions-completed';
 
 const OUTPUT_NAV = join(OUTPUT_FOLDER, 'nav.txt');
 const OUTPUT_EVENTS = join(OUTPUT_FOLDER, 'events.txt');
@@ -76,6 +78,9 @@ nodeCleanup((exitCode, signal) => {
       ),
       new LaunchedDronesInfoGenerator().use(
         new OnlyInMilestones('sessionTotalDronesLaunched', [5, 10, 25, 50])
+      ),
+      new MissionsCompletedInfoGenerator().use(
+        new OnlyInMilestones('sessionTotalMissionsAccepted', [1, 5, 10])
       ),
       new InterdictionsEscapedInfoGenerator(),
       new InterdictionsLostInfoGenerator(),
