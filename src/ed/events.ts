@@ -32,6 +32,7 @@ import {
   CommodityType,
   InfluenceReward,
   ReputationReward,
+  DockingDeniedReason,
 } from './definitions';
 
 export interface EdEvent<E extends string = string> {
@@ -212,4 +213,22 @@ export interface EdMissionFailedEvent extends EdEvent<'MissionFailed'> {
 export interface EdMissionAbandonedEvent extends EdEvent<'MissionAbandoned'> {
   Name: MissionType;
   MissionID: number;
+}
+
+export interface EdDockingDeniedEvent extends EdEvent<'DockingDenied'> {
+  Reason: DockingDeniedReason;
+  MarketID: number;
+  StationName: number;
+  StationType: StationType;
+}
+export interface EdDockingGrantedEvent extends EdEvent<'DockingGranted'> {
+  LandingPad: number;
+  MarketID: number;
+  StationName: string;
+  StationType: StationType;
+}
+export interface EdDockingRequestedEvent extends EdEvent<'DockingRequested'> {
+  MarketID: number;
+  StationName: string;
+  StationType: StationType;
 }

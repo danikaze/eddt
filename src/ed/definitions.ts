@@ -353,3 +353,9 @@ export interface MissionFactionEffect {
   ReputationTrend: ReputationTrend;
   Reputation: ReputationReward;
 }
+
+export type DockingDeniedReason =
+  | 'Distance'
+  | 'NoSpace'
+  | 'Offences'
+  | 'RestrictedAccess';

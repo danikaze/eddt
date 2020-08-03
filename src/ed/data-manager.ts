@@ -6,21 +6,25 @@ import { CombatRank } from './definitions';
  * Everything optional since could not be available depending on the situation
  */
 export type EdData = Partial<{
+  // still persisting values
   currentBody: string;
   currentStation: string;
   currentSystem: string;
   routeTargetSystem: string;
   routeFull: string[];
   routeJumpsLeft: number;
-  lastJumpDistance: number;
-  sessionTotalJumpDistance: number;
-  lastBountyReward: number;
-  lastBountyShip: string;
   targetBounty: number;
   targetPilotName: string;
   targetPilotRank: CombatRank;
   targetShipShield: number;
   targetShipHull: number;
+  // values from last event
+  lastJumpDistance: number;
+  lastBountyReward: number;
+  lastBountyShip: string;
+  lastDockingDeniedReason: string;
+  // session cumulative values
+  sessionTotalJumpDistance: number;
   sessionTotalBounty: number;
   sessionTotalPiratesKilled: number;
   sessionTotalInterdictionsReceived: number;
@@ -39,6 +43,10 @@ export type EdData = Partial<{
   sessionTotalMissionsCompleted: number;
   sessionTotalMissionsFailed: number;
   sessionTotalMissionsAbandoned: number;
+  sessionTotalDockingsRequested: number;
+  sessionTotalDockingsGranted: number;
+  sessionTotalDockingsDenied: number;
+  // lifetime (from available logs) cumulative values
 }>;
 
 export type EdDataKey = keyof EdData;

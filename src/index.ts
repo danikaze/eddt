@@ -17,7 +17,6 @@ import { BountyInfoGenerator } from './info-generators/bounty';
 
 import { registerAllEvents } from './event-processors/register-all-events';
 
-import { OUTPUT_FOLDER } from './constants';
 import { JumpDistanceInfoGenerator } from './info-generators/jump-distance';
 import { OnlyInMilestones } from './info-generators/middleware/milestone';
 import { MaterialsCollectedInfoGenerator } from './info-generators/material-collected';
@@ -28,6 +27,11 @@ import { InterdictionsEscapedInfoGenerator } from './info-generators/interdictio
 import { InterdictionsLostInfoGenerator } from './info-generators/interdiction-lost';
 import { InterdictionsSubmittedInfoGenerator } from './info-generators/interdiction-submitted';
 import { MissionsCompletedInfoGenerator } from './info-generators/missions-completed';
+import { DockingsRequestedInfoGenerator } from './info-generators/dockings-requested';
+import { DockingsGrantedInfoGenerator } from './info-generators/dockings-granted';
+import { DockingsDeniedInfoGenerator } from './info-generators/dockings-denied';
+
+import { OUTPUT_FOLDER } from './constants';
 
 const OUTPUT_NAV = join(OUTPUT_FOLDER, 'nav.txt');
 const OUTPUT_EVENTS = join(OUTPUT_FOLDER, 'events.txt');
@@ -85,5 +89,12 @@ nodeCleanup((exitCode, signal) => {
       new InterdictionsEscapedInfoGenerator(),
       new InterdictionsLostInfoGenerator(),
       new InterdictionsSubmittedInfoGenerator(),
+      new DockingsRequestedInfoGenerator().use(
+        new OnlyInMilestones('sessionTotalDockingsRequested', [1, 5, 10, 20])
+      ),
+      new DockingsGrantedInfoGenerator().use(
+        new OnlyInMilestones('sessionTotalDockingsGranted', [1, 5, 10, 20])
+      ),
+      new DockingsDeniedInfoGenerator(),
     ]);
 })();

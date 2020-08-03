@@ -24,6 +24,9 @@ import {
   EdMissionCompletedEvent,
   EdMissionFailedEvent,
   EdMissionAbandonedEvent,
+  EdDockingDeniedEvent,
+  EdDockingGrantedEvent,
+  EdDockingRequestedEvent,
 } from './events';
 import { ReadLineWatcher } from '@src/utils/read-line-watcher';
 import { dataManager } from './data-manager';
@@ -61,6 +64,9 @@ export interface EventData {
   MissionCompleted: EdMissionCompletedEvent;
   MissionFailed: EdMissionFailedEvent;
   MissionAbandoned: EdMissionAbandonedEvent;
+  DockingDenied: EdDockingDeniedEvent;
+  DockingGranted: EdDockingGrantedEvent;
+  DockingRequested: EdDockingRequestedEvent;
   Shutdown: EdEvent<'Shutdown'>;
 }
 
