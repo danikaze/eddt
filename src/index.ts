@@ -61,21 +61,21 @@ nodeCleanup((exitCode, signal) => {
       new JumpDistanceInfoGenerator().use(
         new OnlyInMilestones(
           'sessionTotalJumpDistance',
-          [500, 1000, 2500, 5000, 10000],
+          [100, 250, 500, 1000, 2500, 5000],
           { cap: true }
         )
       ),
       new MaterialsCollectedInfoGenerator().use(
-        new OnlyInMilestones('sessionTotalMaterialsCollected', [25, 50, 100])
+        new OnlyInMilestones('sessionTotalMaterialsCollected', [5, 10, 25, 50])
       ),
       new MiningRefinedInfoGenerator().use(
-        new OnlyInMilestones('sessionTotalMaterialsRefined', [25, 50, 100])
+        new OnlyInMilestones('sessionTotalMaterialsRefined', [5, 10, 25, 50])
       ),
       new ProspectedAsteroidsInfoGenerator().use(
-        new OnlyInMilestones('sessionTotalAsteroidsProspected', [25, 50, 100])
+        new OnlyInMilestones('sessionTotalAsteroidsProspected', [5, 10, 25, 50])
       ),
       new LaunchedDronesInfoGenerator().use(
-        new OnlyInMilestones('sessionTotalDronesLaunched', [25, 50, 100])
+        new OnlyInMilestones('sessionTotalDronesLaunched', [5, 10, 25, 50])
       ),
       new InterdictionsEscapedInfoGenerator(),
       new InterdictionsLostInfoGenerator(),
