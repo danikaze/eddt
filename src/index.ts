@@ -32,6 +32,7 @@ import { DockingsGrantedInfoGenerator } from './info-generators/dockings-granted
 import { DockingsDeniedInfoGenerator } from './info-generators/dockings-denied';
 
 import { OUTPUT_FOLDER } from './constants';
+import { BodiesApproachedInfoGenerator } from './info-generators/bodies-approached';
 
 const OUTPUT_NAV = join(OUTPUT_FOLDER, 'nav.txt');
 const OUTPUT_EVENTS = join(OUTPUT_FOLDER, 'events.txt');
@@ -96,5 +97,8 @@ nodeCleanup((exitCode, signal) => {
         new OnlyInMilestones('sessionTotalDockingsGranted', [1, 5, 10, 20])
       ),
       new DockingsDeniedInfoGenerator(),
+      new BodiesApproachedInfoGenerator().use(
+        new OnlyInMilestones('sessionTotalBodiesApproached', [1, 5, 10, 20])
+      ),
     ]);
 })();

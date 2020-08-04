@@ -46,6 +46,8 @@ export type EdData = Partial<{
   sessionTotalDockingsRequested: number;
   sessionTotalDockingsGranted: number;
   sessionTotalDockingsDenied: number;
+  sessionTotalBodiesApproached: number;
+  sessionTotalBodiesLeft: number;
   // lifetime (from available logs) cumulative values
 }>;
 

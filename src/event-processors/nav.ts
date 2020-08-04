@@ -55,12 +55,14 @@ export const ApproachBody: EdEventProcessor<'ApproachBody'> = {
   processor: (dataManager, event): void => {
     dataManager.set('currentSystem', event.StarSystem);
     dataManager.set('currentBody', event.Body);
+    dataManager.increase('sessionTotalBodiesApproached');
   },
 };
 
 export const LeaveBody: EdEventProcessor<'LeaveBody'> = {
   event: 'LeaveBody',
-  processor: (dataManager, event): void => {
+  processor: (dataManager): void => {
     dataManager.delete('currentBody');
+    dataManager.increase('sessionTotalBodiesLeft');
   },
 };
