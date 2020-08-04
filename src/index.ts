@@ -3,7 +3,7 @@
 import { default as nodeCleanup } from 'node-cleanup';
 import { join } from 'path';
 
-import { initEventManager } from './ed/event-manager';
+import { initEventManager, getEventManager } from './ed/event-manager';
 
 import { WriteFileOutputter } from './outputters/write-file';
 import { OutputRotator } from './outputters/middleware/rotator';
@@ -33,6 +33,7 @@ import { DockingsDeniedInfoGenerator } from './info-generators/dockings-denied';
 
 import { OUTPUT_FOLDER } from './constants';
 import { BodiesApproachedInfoGenerator } from './info-generators/bodies-approached';
+import { dataManager } from './ed/data-manager';
 
 const OUTPUT_NAV = join(OUTPUT_FOLDER, 'nav.txt');
 const OUTPUT_EVENTS = join(OUTPUT_FOLDER, 'events.txt');
@@ -40,14 +41,17 @@ const spacer = { prefix: ' ', postfix: ' ' };
 
 nodeCleanup((exitCode, signal) => {
   nodeCleanup.uninstall();
-  console.log(`\nExiting... (${signal})`);
-  Outputter.destroyAll().then(() => process.kill(process.pid, signal!));
+  console.log(`\nExiting... (${exitCode}, ${signal})`);
+  Outputter.destroyAll().then(() => process.exit(0));
   return false;
 });
 
 (async () => {
   try {
     await initEventManager();
+    getEventManager().on('Shutdown', () => {
+      console.table(dataManager.getAll());
+    });
   } catch (e) {
     console.error(e, '=> Exiting');
     return;

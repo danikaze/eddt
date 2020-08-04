@@ -62,6 +62,7 @@ export interface EdDataManager {
   decrease<K extends EdDataNumericKey>(key: K, qty?: number): void;
   delete<K extends EdDataKey>(key: K): void;
   get<K extends EdDataKey>(key: K): EdData[K];
+  getAll(): Partial<EdData>;
   update(): void;
   on(event: EdDataKey, listener: (value: number) => void): void;
 }
@@ -104,6 +105,10 @@ class DataManager extends EventEmitter<EdDataKey> implements EdDataManager {
 
   public get<K extends EdDataKey>(key: K): EdData[K] {
     return this.data[key];
+  }
+
+  public getAll(): Partial<EdData> {
+    return this.data;
   }
 
   public update(): void {
