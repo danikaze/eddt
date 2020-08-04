@@ -1,19 +1,22 @@
 const { resolve } = require('path');
-const { NamedModulesPlugin } = require('webpack');
+const { existsSync } = require('fs');
+const { DefinePlugin, NamedModulesPlugin } = require('webpack');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
-const { existsSync } = require('fs');
+const GitRevisionPlugin = require('git-revision-webpack-plugin');
+const packageJson = require('./package.json');
+const gitRevisionPlugin = new GitRevisionPlugin();
 
 function absPath(pathFromProjectRoot) {
   return resolve(__dirname, pathFromProjectRoot);
 }
 
 module.exports = (env) => {
-  const isProduction = env !== 'dev';
+  const IS_PRODUCTION = env !== 'dev';
   const baseConfig = {
     target: 'node',
-    mode: isProduction ? 'production' : 'development',
-    watch: !isProduction,
+    mode: IS_PRODUCTION ? 'production' : 'development',
+    watch: !IS_PRODUCTION,
 
     entry: absPath('src/index.ts'),
 
@@ -60,7 +63,18 @@ module.exports = (env) => {
       ],
     },
 
-    plugins: [],
+    plugins: [
+      gitRevisionPlugin,
+      new DefinePlugin({
+        IS_PRODUCTION,
+        PACKAGE_NAME: JSON.stringify(packageJson.name),
+        PACKAGE_VERSION: JSON.stringify(packageJson.version),
+        COMMIT_HASH: JSON.stringify(gitRevisionPlugin.commithash()),
+        COMMIT_HASH_SHORT: JSON.stringify(
+          gitRevisionPlugin.commithash().substr(0, 7)
+        ),
+      }),
+    ],
   };
 
   if (existsSync('static')) {
@@ -71,7 +85,7 @@ module.exports = (env) => {
     );
   }
 
-  if (!isProduction) {
+  if (!IS_PRODUCTION) {
     baseConfig.plugins.push(new NamedModulesPlugin());
   }
 

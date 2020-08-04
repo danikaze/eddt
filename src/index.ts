@@ -47,6 +47,10 @@ nodeCleanup((exitCode, signal) => {
 });
 
 (async () => {
+  console.log(
+    `============ [${PACKAGE_NAME}-${PACKAGE_VERSION}] ============\n`
+  );
+
   try {
     await initEventManager();
     getEventManager().on('Shutdown', () => {

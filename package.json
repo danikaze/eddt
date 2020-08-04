@@ -32,6 +32,7 @@
     "@types/node-cleanup": "^2.1.1",
     "@types/webpack": "^4.41.21",
     "copy-webpack-plugin": "^6.0.3",
+    "git-revision-webpack-plugin": "^3.0.6",
     "husky": "^4.2.5",
     "prettier": "^2.0.5",
     "ts-loader": "^8.0.1",
