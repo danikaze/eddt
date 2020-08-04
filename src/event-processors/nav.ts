@@ -16,6 +16,9 @@ export const FSDJump: EdEventProcessor<'FSDJump'> = {
   processor: (dataManager, event): void => {
     const currentSystem = event.StarSystem;
     dataManager.set('currentSystem', currentSystem);
+    dataManager.set('lastJumpDistance', event.JumpDist);
+    dataManager.increase('sessionTotalJumpDistance', event.JumpDist);
+    dataManager.delete('currentBody');
 
     const route = dataManager.get('routeFull');
     if (!route) return;
@@ -52,12 +55,14 @@ export const ApproachBody: EdEventProcessor<'ApproachBody'> = {
   processor: (dataManager, event): void => {
     dataManager.set('currentSystem', event.StarSystem);
     dataManager.set('currentBody', event.Body);
+    dataManager.increase('sessionTotalBodiesApproached');
   },
 };
 
 export const LeaveBody: EdEventProcessor<'LeaveBody'> = {
   event: 'LeaveBody',
-  processor: (dataManager, event): void => {
+  processor: (dataManager): void => {
     dataManager.delete('currentBody');
+    dataManager.increase('sessionTotalBodiesLeft');
   },
 };

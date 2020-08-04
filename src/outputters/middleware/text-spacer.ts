@@ -1,4 +1,4 @@
-import { Outputter } from '.';
+import { Outputter } from '..';
 
 export interface TextSpacerOptions {
   ignoreEmptyString: boolean;

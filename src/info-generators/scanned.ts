@@ -10,7 +10,7 @@ export class ScannedInfoGenerator extends InfoGenerator<DataKeys> {
   }
 
   protected generate({ sessionTotalScanned }: Data): string {
-    if (sessionTotalScanned === 1) return 'Primer scan del día!';
+    if (sessionTotalScanned === 1) return 'Primera vez que nos escanean hoy!';
     return `Hoy nos han escaneado ${sessionTotalScanned} veces`;
   }
 }

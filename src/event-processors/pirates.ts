@@ -27,3 +27,24 @@ export const ShipTargeted: EdEventProcessor<'ShipTargeted'> = {
     dataManager.set('targetPilotRank', event.PilotRank);
   },
 };
+
+export const EscapeInterdiction: EdEventProcessor<'EscapeInterdiction'> = {
+  event: 'EscapeInterdiction',
+  processor: (dataManager, event): void => {
+    if (!event.IsPlayer) return;
+    dataManager.increase('sessionTotalInterdictionsReceived');
+    dataManager.increase('sessionTotalInterdictionsReceivedEscaped');
+  },
+};
+
+export const Interdicted: EdEventProcessor<'Interdicted'> = {
+  event: 'Interdicted',
+  processor: (dataManager, event): void => {
+    if (!event.IsPlayer) return;
+    const key = event.Submitted
+      ? 'sessionTotalInterdictionsReceivedSubmitted'
+      : 'sessionTotalInterdictionsReceivedLost';
+    dataManager.increase('sessionTotalInterdictionsReceived');
+    dataManager.increase(key);
+  },
+};

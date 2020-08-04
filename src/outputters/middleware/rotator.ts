@@ -1,11 +1,11 @@
 import { InfoGenerator } from '@src/info-generators';
 import { EdDataKey } from '@src/ed/data-manager';
-import { Outputter } from '.';
+import { Outputter } from '..';
 
 export interface OutputRotatorOptions {
   /**
    * Milliseconds to show a text before going to the next one
-   * Default: 5 secs
+   * Default: 7.5 secs
    */
   rotationTime: number;
   /**
@@ -27,7 +27,7 @@ interface QueuedInfoItem {
 
 export class OutputRotator extends Outputter {
   public static readonly defaultOptions: OutputRotatorOptions = {
-    rotationTime: 5000,
+    rotationTime: 7500,
     waitingTime: 2000,
     repeatTimes: Infinity,
   };

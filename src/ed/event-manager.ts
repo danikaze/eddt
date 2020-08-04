@@ -14,23 +14,36 @@ import {
   EdBountyEvent,
   EdShipTargetedEvent,
   EdScannedEvent,
+  EdProspectedAsteroidEvent,
+  EdMaterialCollectedEvent,
+  EdLaunchDroneEvent,
+  EdMiningRefinedEvent,
+  EdEscapeInterdictionEvent,
+  EdInterdictedEvent,
+  EdMissionAcceptedEvent,
+  EdMissionCompletedEvent,
+  EdMissionFailedEvent,
+  EdMissionAbandonedEvent,
+  EdDockingDeniedEvent,
+  EdDockingGrantedEvent,
+  EdDockingRequestedEvent,
 } from './events';
 import { ReadLineWatcher } from '@src/utils/read-line-watcher';
+import { dataManager } from './data-manager';
 
-type LogLevel = 'usedEvents' | 'pastEvents' | 'unusedEvents';
+export type LogLevel = 'usedEvents' | 'unusedEvents';
 
 export type EventManagerMiddleware = <E extends EventType>(
-  event: EdEvent<E>
-) => undefined | EdEvent<E>;
+  event: EventData[E]
+) => EventData[E] | undefined;
 
 export interface EventManagerOptions {
   verbose: LogLevel[];
   middleware: EventManagerMiddleware[];
-  isOld: (event: EdEvent<EventType>) => boolean;
+  ignoreBefore: number;
 }
 
 export interface EventData {
-  old: EdEvent<EventType>;
   NavRoute: EdNavRouteEvent;
   FSDJump: EdFSDJumpEvent;
   Docked: EdDockedEvent;
@@ -39,13 +52,36 @@ export interface EventData {
   LeaveBody: EdLeaveBodyEvent;
   Bounty: EdBountyEvent;
   ShipTargeted: EdShipTargetedEvent;
+  EscapeInterdiction: EdEscapeInterdictionEvent;
+  Interdicted: EdInterdictedEvent;
   Scanned: EdScannedEvent;
   HeatWarning: EdEvent<'HeatWarning'>;
+  LaunchDrone: EdLaunchDroneEvent;
+  ProspectedAsteroid: EdProspectedAsteroidEvent;
+  MaterialCollected: EdMaterialCollectedEvent;
+  MiningRefined: EdMiningRefinedEvent;
+  MissionAccepted: EdMissionAcceptedEvent;
+  MissionCompleted: EdMissionCompletedEvent;
+  MissionFailed: EdMissionFailedEvent;
+  MissionAbandoned: EdMissionAbandonedEvent;
+  DockingDenied: EdDockingDeniedEvent;
+  DockingGranted: EdDockingGrantedEvent;
+  DockingRequested: EdDockingRequestedEvent;
   Shutdown: EdEvent<'Shutdown'>;
 }
 
 export type EventType = keyof EventData;
 export type EventListener<T extends EventType> = (data: EventData[T]) => void;
+
+type FileEventType =
+  // | 'Cargo'
+  // | 'Market'
+  // | 'ModulesInfo'
+  'NavRoute';
+// | 'Outfitting'
+// | 'Shipyard'
+// | 'Status'
+export type NoFileEventType = Exclude<EventType, FileEventType>;
 
 export interface EdEventManager {
   on<E extends EventType>(event: E, listener: EventListener<E>): void;
@@ -53,16 +89,24 @@ export interface EdEventManager {
 
 class EventManager extends EventEmitter<EventType> {
   protected static readonly defaultOptions: EventManagerOptions = {
-    verbose: ['usedEvents', 'pastEvents'],
+    verbose: ['usedEvents'],
     middleware: [],
-    isOld: () => false,
+    ignoreBefore: 30000,
   };
 
-  protected static fileEvents: EventType[] = ['NavRoute'];
+  protected static fileEvents: EventType[] = [
+    // 'Cargo',
+    // 'Market',
+    // 'ModulesInfo',
+    'NavRoute',
+    // 'Outfitting
+    // 'Shipyard',
+    // 'Status',
+  ];
 
   protected readonly verbose: LogLevel[];
   protected readonly middleware: EventManagerMiddleware[];
-  protected readonly isOld: (event: EdEvent<EventType>) => boolean;
+  protected readonly ignoreBefore: number;
   protected readonly logingEvents: EventType[] = [];
   protected readonly dateFormat: Intl.DateTimeFormat;
   protected readonly timeFormat: Intl.DateTimeFormat;
@@ -78,7 +122,7 @@ class EventManager extends EventEmitter<EventType> {
     } as EventManagerOptions;
     this.verbose = opt.verbose;
     this.middleware = opt.middleware;
-    this.isOld = opt.isOld;
+    this.ignoreBefore = opt.ignoreBefore;
     this.dateFormat = new Intl.DateTimeFormat('ja', {
       month: '2-digit',
       day: '2-digit',
@@ -95,28 +139,23 @@ class EventManager extends EventEmitter<EventType> {
     watcher.addListener('line', this.journalListener);
 
     this.on('Shutdown', () => watcher.stop());
-    this.on('old', (event: EdEvent) => {
-      if (event.event === 'Shutdown') {
-        watcher.stop();
-      }
-    });
   }
 
-  protected static parseEdEvent<T extends string = string>(
+  protected static parseEdEvent<E extends EventType>(
     json: string
-  ): EdEvent<T> | undefined {
+  ): EventData[E] | undefined {
     try {
       return JSON.parse(json, (name, data) =>
         name === 'timestamp' ? new Date(data) : data
-      ) as EdEvent<T>;
+      ) as EventData[E];
     } catch (e) {
       console.error(`Error parsing event: ${json}`);
     }
   }
 
-  protected static parseEdEventFile<T extends string = string>(
+  protected static parseEdEventFile<E extends EventType>(
     path: string
-  ): EdEvent<T> | undefined {
+  ): EventData[E] | undefined {
     let json: string;
     try {
       json = readFileSync(path).toString();
@@ -128,39 +167,44 @@ class EventManager extends EventEmitter<EventType> {
     return EventManager.parseEdEvent(json);
   }
 
+  protected static isFileEvent(
+    data: EdEvent<EventType>
+  ): data is EdEvent<FileEventType> {
+    return EventManager.fileEvents.includes(data.event);
+  }
+
   public emit<E extends EventType>(event: E, data: EventData[E]): boolean {
-    this.log(event, data);
+    this.log(data);
+    dataManager.eventsEnabled =
+      Date.now() < data.timestamp.getTime() + this.ignoreBefore;
     return super.emit(event, data);
+  }
+
+  public use(middleware: EventManagerMiddleware): this {
+    this.middleware.push(middleware);
+    return this;
   }
 
   protected journalListener(line: string) {
     let data = EventManager.parseEdEvent<EventType>(line);
-    if (!data) return;
 
     data = this.middleware.reduce(
       (event, middleware) => (event ? middleware(event) : event),
-      data as EdEvent<EventType> | undefined
+      data
     );
 
     if (!data) return;
 
-    if (this.isOld(data)) {
-      this.emit('old', data);
-      return;
-    }
-
-    const eventType = data.event as EventType;
-
-    if (EventManager.fileEvents.includes(eventType)) {
-      this.fileEvent(eventType);
+    if (EventManager.isFileEvent(data)) {
+      this.fileEvent(data.event);
     } else {
-      this.emit(eventType, data);
+      this.emit(data.event, data);
     }
   }
 
-  protected fileEvent(event: EventType): void {
+  protected fileEvent<E extends FileEventType>(event: E): void {
     const path = join(ED_FOLDER, `${event}.json`);
-    const data = EventManager.parseEdEventFile<EventType>(path);
+    const data = EventManager.parseEdEventFile<E>(path);
     if (data) {
       this.emit(event, data);
     }
@@ -180,22 +224,16 @@ class EventManager extends EventEmitter<EventType> {
     return `${date} ${time}`;
   }
 
-  protected log<E extends EventType>(event: E, data: EventData[E]): void {
+  protected log(data: EdEvent<EventType>): void {
     const { verbose } = this;
 
     if (verbose.length === 0) return;
-    if (event === 'old' && !verbose.includes('pastEvents')) return;
     const listeners = this.listeners(data.event as EventType);
     if (listeners.length === 0 && !verbose.includes('unusedEvents')) return;
     if (listeners.length > 0 && !verbose.includes('usedEvents')) return;
 
     const timestamp = this.formatDate(data.timestamp);
-    const txt =
-      event === 'old'
-        ? `[${timestamp}] *${data.event}`
-        : `[${timestamp}] ${data.event}`;
-
-    console.log(txt);
+    console.log(`[${timestamp}] ${data.event}`);
   }
 }
 

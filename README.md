@@ -35,6 +35,8 @@ There's a singleton [EventManager](src/ed/event-manager.ts) and a singleton [Dat
 
 Some `Outputters` could act as a _middle-ware_ for `Outputters` as well. (i.e. the [Rotator](src/outputters/rotator.ts) accepts several `InfoGenerators` and manages the info outputting it into only one file via another piped `Outputter`)
 
+There are [middlewares](src/info-generators/middleware) for the `InfoGenerators` as well. They take the incoming data and can cancel the generation (by returning `undefined` or returning a modified version of the data itself)
+
 ## Is it safe?
 
 Completely!
@@ -44,6 +46,13 @@ It only provides game of the game universe, nothing personal.
 If you are curiours, you can check the content of the `Journal` files in the directory: `C:\Users\%userprofile%\Saved Games\Frontier Developments\Elite Dangerous`
 
 ## Change log
+
+### 0.4.0
+
+- Add info generators for `BodiesApproached`, `BodiesLeft`, `MissionsAccepted`, `MissionsCompleted`, `MissionsFailed`, `MissionsAbandoned`, `DockingRequested`, `DockingGranted`, `DockingDenied`, `InterdictionsEscaped`, `InterdictionsLost`, `InterdictionsSubmitted`, `Bounty`, `JumpDistance`, `MaterialsCollected`, `MiningRefined`, `ProspectedAsteroids` and `LaunchedDrones`
+- Refactor middleware usage for `EventManager`, `InfoGenerator` and `Outputter`
+- Refactor `EventManager` to provide events even if they are old (to be able to keep track of changes), and use the new `DataManager.eventsEnabled` instead
+- `DataManager` final content is shown when exiting the app
 
 ### 0.3.0
 

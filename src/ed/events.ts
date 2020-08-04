@@ -22,6 +22,17 @@ import {
   CombatRank,
   LegalStateType as LegalStatusType,
   ScanType,
+  AsteroidMaterialContent,
+  MaterialCategory,
+  DroneType,
+  MineralType,
+  MaterialName,
+  MissionFactionEffect,
+  MissionType,
+  CommodityType,
+  InfluenceReward,
+  ReputationReward,
+  DockingDeniedReason,
 } from './definitions';
 
 export interface EdEvent<E extends string = string> {
@@ -125,4 +136,99 @@ export interface EdShipTargetedEvent extends EdEvent<'ShipTargeted'> {
 
 export interface EdScannedEvent extends EdEvent<'Scanned'> {
   ScanType: ScanType;
+}
+
+export interface EdLaunchDroneEvent extends EdEvent<'LaunchDrone'> {
+  Type: DroneType;
+}
+
+export interface EdProspectedAsteroidEvent
+  extends EdEvent<'ProspectedAsteroid'> {
+  Materials: {
+    Name: string;
+    Proportion: number;
+  }[];
+  Content: AsteroidMaterialContent;
+  Content_Localised: string;
+  Remaining: number;
+}
+
+export interface EdMaterialCollectedEvent extends EdEvent<'MaterialCollected'> {
+  Category: MaterialCategory;
+  Name: MaterialName;
+  Count: number;
+}
+
+export interface EdMiningRefinedEvent extends EdEvent<'MiningRefined'> {
+  Type: MineralType;
+  Type_Localised: string;
+}
+
+export interface EdEscapeInterdictionEvent
+  extends EdEvent<'EscapeInterdiction'> {
+  Interdictor: string;
+  IsPlayer: boolean;
+}
+
+export interface EdInterdictedEvent extends EdEvent<'Interdicted'> {
+  Submitted: boolean;
+  Interdictor: string;
+  IsPlayer: boolean;
+  Faction: string;
+}
+
+export interface EdMissionAcceptedEvent extends EdEvent<'MissionAccepted'> {
+  Faction: string;
+  Name: MissionType;
+  LocalisedName: string;
+  Commodity: CommodityType;
+  Commodity_Localised: string;
+  Count: number;
+  TargetFaction: string;
+  DestinationSystem: string;
+  DestinationStation: string;
+  Expiry: string; // date
+  Wing: boolean;
+  Influence: InfluenceReward;
+  Reputation: ReputationReward;
+  Reward: number;
+  MissionID: number;
+}
+
+export interface EdMissionCompletedEvent extends EdEvent<'MissionCompleted'> {
+  Faction: string;
+  Name: MissionType;
+  MissionID: number;
+  DestinationSystem: string;
+  DestinationStation: string;
+  Reward: number;
+  FactionEffects: MissionFactionEffect[];
+}
+
+export interface EdMissionFailedEvent extends EdEvent<'MissionFailed'> {
+  Name: MissionType;
+  MissionID: number;
+}
+
+export interface EdMissionAbandonedEvent extends EdEvent<'MissionAbandoned'> {
+  Name: MissionType;
+  MissionID: number;
+}
+
+export interface EdDockingDeniedEvent extends EdEvent<'DockingDenied'> {
+  Reason: DockingDeniedReason;
+  MarketID: number;
+  StationName: number;
+  StationType: StationType;
+}
+export interface EdDockingGrantedEvent extends EdEvent<'DockingGranted'> {
+  LandingPad: number;
+  MarketID: number;
+  StationName: string;
+  StationType: StationType;
+}
+export interface EdDockingRequestedEvent extends EdEvent<'DockingRequested'> {
+  MarketID: number;
+  StationName: string;
+  StationType: StationType;
 }
