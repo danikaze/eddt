@@ -1,5 +1,5 @@
 import EventEmitter from 'eventemitter3';
-import { CombatRank } from './definitions';
+import { CombatRank, DockingDeniedReason } from './definitions';
 
 /**
  * List of used and accessible data
@@ -22,7 +22,7 @@ export type EdData = Partial<{
   lastJumpDistance: number;
   lastBountyReward: number;
   lastBountyShip: string;
-  lastDockingDeniedReason: string;
+  lastDockingDeniedReason: DockingDeniedReason;
   // session cumulative values
   sessionTotalJumpDistance: number;
   sessionTotalBounty: number;
@@ -38,7 +38,7 @@ export type EdData = Partial<{
   sessionTotalCollectionDronesLaunched: number;
   sessionTotalAsteroidsProspected: number;
   sessionTotalMaterialsCollected: number;
-  sessionTotalMaterialsRefined: number;
+  sessionTotalMiningRefined: number;
   sessionTotalMissionsAccepted: number;
   sessionTotalMissionsCompleted: number;
   sessionTotalMissionsFailed: number;

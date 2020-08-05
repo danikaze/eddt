@@ -29,6 +29,6 @@ export const MaterialCollected: EdEventProcessor<'MaterialCollected'> = {
 export const MiningRefined: EdEventProcessor<'MiningRefined'> = {
   event: 'MiningRefined',
   processor: (dataManager): void => {
-    dataManager.increase('sessionTotalMaterialsRefined');
+    dataManager.increase('sessionTotalMiningRefined');
   },
 };

@@ -88,7 +88,7 @@ nodeCleanup((exitCode, signal) => {
         new OnlyInMilestones('sessionTotalMaterialsCollected', [5, 10, 25, 50])
       ),
       new MiningRefinedInfoGenerator().use(
-        new OnlyInMilestones('sessionTotalMaterialsRefined', [5, 10, 25, 50])
+        new OnlyInMilestones('sessionTotalMiningRefined', [5, 10, 25, 50])
       ),
       new ProspectedAsteroidsInfoGenerator().use(
         new OnlyInMilestones('sessionTotalAsteroidsProspected', [5, 10, 25, 50])
