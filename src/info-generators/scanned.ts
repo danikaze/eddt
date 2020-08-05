@@ -1,16 +1,17 @@
 import { EdData } from '@src/ed/data-manager';
+import { t } from '@src/utils/i18n';
 import { InfoGenerator } from '.';
 
 type DataKeys = 'sessionTotalScanned';
 type Data = Pick<EdData, DataKeys>;
+export type TranslationData = Data;
 
 export class ScannedInfoGenerator extends InfoGenerator<DataKeys> {
   constructor() {
     super(['sessionTotalScanned']);
   }
 
-  protected generate({ sessionTotalScanned }: Data): string {
-    if (sessionTotalScanned === 1) return 'Primera vez que nos escanean hoy!';
-    return `Hoy nos han escaneado ${sessionTotalScanned} veces`;
+  protected generate(data: Data): string | string[] | undefined {
+    return t('scanned', data);
   }
 }

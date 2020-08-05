@@ -9,3 +9,4 @@ export const ED_FOLDER = join(
 );
 
 export const OUTPUT_FOLDER = join('D:', 'Videos', 'tokyoretrogames', 'elite');
+export const LOCALES_FOLDER = join(__dirname, 'locales');

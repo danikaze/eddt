@@ -34,6 +34,7 @@ import { DockingsDeniedInfoGenerator } from './info-generators/dockings-denied';
 import { OUTPUT_FOLDER } from './constants';
 import { BodiesApproachedInfoGenerator } from './info-generators/bodies-approached';
 import { dataManager } from './ed/data-manager';
+import { setLocale } from './utils/i18n';
 
 const OUTPUT_NAV = join(OUTPUT_FOLDER, 'nav.txt');
 const OUTPUT_EVENTS = join(OUTPUT_FOLDER, 'events.txt');
@@ -51,10 +52,13 @@ nodeCleanup((exitCode, signal) => {
     `============ [${PACKAGE_NAME}-${PACKAGE_VERSION}] ============\n`
   );
 
+  setLocale('es');
+
   try {
     await initEventManager();
     getEventManager().on('Shutdown', () => {
       console.table(dataManager.getAll());
+      process.kill(0);
     });
   } catch (e) {
     console.error(e, '=> Exiting');

@@ -1,8 +1,10 @@
 import { EdData } from '@src/ed/data-manager';
+import { t } from '@src/utils/i18n';
 import { InfoGenerator } from '.';
 
 type DataKeys = 'sessionTotalInterdictionsReceivedSubmitted';
 type Data = Pick<EdData, DataKeys>;
+export type TranslationData = Data;
 
 export class InterdictionsSubmittedInfoGenerator extends InfoGenerator<
   DataKeys
@@ -11,12 +13,7 @@ export class InterdictionsSubmittedInfoGenerator extends InfoGenerator<
     super(['sessionTotalInterdictionsReceivedSubmitted']);
   }
 
-  protected generate({
-    sessionTotalInterdictionsReceivedSubmitted,
-  }: Data): string {
-    if (sessionTotalInterdictionsReceivedSubmitted === 1) {
-      return `Primera interdicción del día a la que nos rendimos!`;
-    }
-    return `Nos hemos rendido a ${sessionTotalInterdictionsReceivedSubmitted} interdicciones hoy!`;
+  protected generate(data: Data): string | string[] | undefined {
+    return t('interdictionsSubmitted', data);
   }
 }

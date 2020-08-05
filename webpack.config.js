@@ -43,6 +43,11 @@ module.exports = (env) => {
       plugins: [new TsconfigPathsPlugin({ configFile: 'tsconfig.json' })],
     },
 
+    node: {
+      __dirname: false,
+      __filename: false,
+    },
+
     module: {
       rules: [
         {
