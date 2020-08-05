@@ -4,10 +4,11 @@
   "description": "Parse the Elite Dangerous journal file to extract useful data",
   "main": "app/index.js",
   "scripts": {
-    "start": "node app/main.js",
+    "start": "node app/ed-tools.js",
     "dev": "webpack --env=dev",
     "build": "webpack",
     "test": "npm run lint",
+    "test-locale": "node app/test-locale.js",
     "lint": "tslint -p tsconfig.json -c tslint.yaml",
     "prettier": "prettier --write '**/*.{ts,tsx}'"
   },
@@ -37,6 +38,7 @@
     "husky": "^4.2.5",
     "prettier": "^2.0.5",
     "ts-loader": "^8.0.1",
+    "ts-node": "^8.10.2",
     "tsconfig-paths": "^3.9.0",
     "tsconfig-paths-webpack-plugin": "^3.2.0",
     "tslint": "^6.1.2",

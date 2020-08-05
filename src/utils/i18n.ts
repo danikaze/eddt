@@ -79,3 +79,10 @@ export function t<K extends keyof TranslationData>(
   }
   return text.length === 1 ? text[0] : text;
 }
+
+export function isDefined<K extends keyof TranslationData>(
+  key: K,
+  locale?: string
+): boolean {
+  return i18n.getCatalog(locale || i18n.getLocale())[key] !== undefined;
+}

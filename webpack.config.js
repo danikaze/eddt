@@ -18,7 +18,10 @@ module.exports = (env) => {
     mode: IS_PRODUCTION ? 'production' : 'development',
     watch: !IS_PRODUCTION,
 
-    entry: absPath('src/index.ts'),
+    entry: {
+      [packageJson.name]: absPath('src/index.ts'),
+      'test-locale': absPath('scripts/test-locale/index.ts'),
+    },
 
     output: {
       filename: '[name].js',
