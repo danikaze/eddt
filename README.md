@@ -1,10 +1,10 @@
-# ed-tools
+# EDDT
 
-**_Elite Dangerous Tools_** is just a small app to detect and extract changes from your running session of the game by listening to changes in the game journal.
+**_Elite Dangerous Desktop Tools_** is just a small app to detect and extract changes from your running session of the game by listening to changes in the game journal.
 
 ## Installation
 
-Since this is just an early development version, [NodeJS](https://nodejs.org/) is required to run this tool, but [providing an executable is planned](https://github.com/danikaze/ed-tools/issues/12) (as well as [a UI](https://github.com/danikaze/ed-tools/issues/11)).
+Since this is just an early development version, [NodeJS](https://nodejs.org/) is required to run this tool, but [providing an executable is planned](https://github.com/danikaze/eddt/issues/12) (as well as [a UI](https://github.com/danikaze/eddt/issues/11)).
 
 For now, source code needs to be built after being downloaded
 

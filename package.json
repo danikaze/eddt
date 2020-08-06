@@ -1,10 +1,10 @@
 {
-  "name": "ed-tools",
+  "name": "eddt",
   "version": "0.5.0",
-  "description": "Parse the Elite Dangerous journal file to extract useful data",
+  "description": "Elite Dangerous Desktop Tools",
   "main": "app/index.js",
   "scripts": {
-    "start": "node app/ed-tools.js",
+    "start": "node app/eddt.js",
     "dev": "webpack --env=dev",
     "build": "webpack",
     "test": "npm run lint",
@@ -20,14 +20,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/danikaze/ed-tools.git"
+    "url": "git+https://github.com/danikaze/eddt.git"
   },
   "author": "danikaze <danikaze@gmail.com>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/danikaze/ed-tools/issues"
+    "url": "https://github.com/danikaze/eddt/issues"
   },
-  "homepage": "https://github.com/danikaze/ed-tools#readme",
+  "homepage": "https://github.com/danikaze/eddt#readme",
   "devDependencies": {
     "@types/i18n": "^0.8.7",
     "@types/node": "^14.0.26",
