@@ -3,7 +3,11 @@
 import { default as nodeCleanup } from 'node-cleanup';
 import { join } from 'path';
 
-import { initEventManager, getEventManager } from './ed/event-manager';
+import {
+  initEventManager,
+  getEventManager,
+  EventManagerOptions,
+} from './ed/event-manager';
 
 import { WriteFileOutputter } from './outputters/write-file';
 import { OutputRotator } from './outputters/middleware/rotator';
@@ -31,19 +35,17 @@ import { DockingsRequestedInfoGenerator } from './info-generators/dockings-reque
 import { DockingsGrantedInfoGenerator } from './info-generators/dockings-granted';
 import { DockingsDeniedInfoGenerator } from './info-generators/dockings-denied';
 
-import { OUTPUT_FOLDER } from './constants';
 import { BodiesApproachedInfoGenerator } from './info-generators/bodies-approached';
 import { dataManager } from './ed/data-manager';
 import { setLocale } from './utils/i18n';
+import { readSettings, Settings } from './utils/settings';
 
-const OUTPUT_NAV = join(OUTPUT_FOLDER, 'nav.txt');
-const OUTPUT_EVENTS = join(OUTPUT_FOLDER, 'events.txt');
 const spacer = { prefix: ' ', postfix: ' ' };
 
 nodeCleanup((exitCode, signal) => {
   nodeCleanup.uninstall();
   console.log(`\nExiting... (${exitCode}, ${signal})`);
-  Outputter.destroyAll().then(() => process.exit(0));
+  Outputter.destroyAll().then(() => process.exit(exitCode || undefined));
   return false;
 });
 
@@ -52,27 +54,53 @@ nodeCleanup((exitCode, signal) => {
     `============ [${PACKAGE_NAME}-${PACKAGE_VERSION}] ============\n`
   );
 
-  setLocale('es');
+  let settings: Required<Settings>;
+  try {
+    settings = readSettings();
+  } catch (e) {
+    console.error('Error reading settings file', e.message, '=> Exiting');
+    process.exit(1);
+  }
+
+  setLocale(settings.locale);
+
+  if (settings.displaySettings) {
+    console.table(settings);
+  }
 
   try {
-    await initEventManager();
+    await initEventManager(settings.eventManager);
     getEventManager().on('Shutdown', () => {
-      console.table(dataManager.getAll());
+      if (settings.displayFinalData) {
+        console.table(dataManager.getAll());
+      }
       process.kill(0);
     });
   } catch (e) {
     console.error(e, '=> Exiting');
-    return;
+    process.exit(1);
   }
 
   registerAllEvents();
 
-  new NavInfoGenerator().pipe(
-    new TextSpacer(spacer).pipe(new WriteFileOutputter(OUTPUT_NAV))
-  );
+  if (settings.navFilePath) {
+    new NavInfoGenerator().pipe(
+      new TextSpacer(spacer).pipe(
+        new WriteFileOutputter(settings.navFilePath, settings.navFileOptions)
+      )
+    );
+  }
 
+  if (!settings.eventsFilePath) return;
   new OutputRotator({ repeatTimes: 1 })
-    .pipe(new TextSpacer(spacer).pipe(new WriteFileOutputter(OUTPUT_EVENTS)))
+    .pipe(
+      new TextSpacer(spacer).pipe(
+        new WriteFileOutputter(
+          settings.eventsFilePath,
+          settings.eventsFileOptions
+        )
+      )
+    )
     .source([
       new HeatWarningsInfoGenerator(),
       new ScannedInfoGenerator(),

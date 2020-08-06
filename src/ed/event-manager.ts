@@ -1,7 +1,7 @@
+import { homedir } from 'os';
 import { EventEmitter } from 'eventemitter3';
 import { readFileSync } from 'fs';
 import { join, basename } from 'path';
-import { ED_FOLDER } from '@src/constants';
 import { getJournalPath } from '@src/utils/get-journal';
 import {
   EdNavRouteEvent,
@@ -31,16 +31,18 @@ import {
 import { ReadLineWatcher } from '@src/utils/read-line-watcher';
 import { dataManager } from './data-manager';
 
-export type LogLevel = 'usedEvents' | 'unusedEvents';
+export type LogEvent = 'used' | 'unused';
 
 export type EventManagerMiddleware = <E extends EventType>(
   event: EventData[E]
 ) => EventData[E] | undefined;
 
 export interface EventManagerOptions {
-  verbose: LogLevel[];
-  middleware: EventManagerMiddleware[];
-  ignoreBefore: number;
+  journalFolder: string;
+  verbose?: boolean;
+  logEvents?: LogEvent[];
+  middleware?: EventManagerMiddleware[];
+  ignoreBefore?: number;
 }
 
 export interface EventData {
@@ -88,8 +90,15 @@ export interface EdEventManager {
 }
 
 class EventManager extends EventEmitter<EventType> {
-  protected static readonly defaultOptions: EventManagerOptions = {
-    verbose: ['usedEvents'],
+  public static readonly defaultOptions: Required<EventManagerOptions> = {
+    journalFolder: join(
+      homedir(),
+      'Saved Games',
+      'Frontier Developments',
+      'Elite Dangerous'
+    ),
+    verbose: true,
+    logEvents: ['used'],
     middleware: [],
     ignoreBefore: 30000,
   };
@@ -104,25 +113,17 @@ class EventManager extends EventEmitter<EventType> {
     // 'Status',
   ];
 
-  protected readonly verbose: LogLevel[];
-  protected readonly middleware: EventManagerMiddleware[];
-  protected readonly ignoreBefore: number;
+  protected readonly options: Required<EventManagerOptions>;
   protected readonly logingEvents: EventType[] = [];
   protected readonly dateFormat: Intl.DateTimeFormat;
   protected readonly timeFormat: Intl.DateTimeFormat;
 
-  constructor(journalPath: string, options?: Partial<EventManagerOptions>) {
+  constructor(journalPath: string, options: Required<EventManagerOptions>) {
     super();
 
     this.journalListener = this.journalListener.bind(this);
 
-    const opt = {
-      ...EventManager.defaultOptions,
-      ...options,
-    } as EventManagerOptions;
-    this.verbose = opt.verbose;
-    this.middleware = opt.middleware;
-    this.ignoreBefore = opt.ignoreBefore;
+    this.options = options;
     this.dateFormat = new Intl.DateTimeFormat('ja', {
       month: '2-digit',
       day: '2-digit',
@@ -134,6 +135,10 @@ class EventManager extends EventEmitter<EventType> {
       minute: '2-digit',
       second: '2-digit',
     });
+
+    if (this.options.verbose) {
+      console.log('Using journal file', basename(journalPath));
+    }
 
     const watcher = new ReadLineWatcher(journalPath);
     watcher.addListener('line', this.journalListener);
@@ -176,19 +181,19 @@ class EventManager extends EventEmitter<EventType> {
   public emit<E extends EventType>(event: E, data: EventData[E]): boolean {
     this.log(data);
     dataManager.eventsEnabled =
-      Date.now() < data.timestamp.getTime() + this.ignoreBefore;
+      Date.now() < data.timestamp.getTime() + this.options.ignoreBefore;
     return super.emit(event, data);
   }
 
   public use(middleware: EventManagerMiddleware): this {
-    this.middleware.push(middleware);
+    this.options.middleware.push(middleware);
     return this;
   }
 
   protected journalListener(line: string) {
     let data = EventManager.parseEdEvent<EventType>(line);
 
-    data = this.middleware.reduce(
+    data = this.options.middleware.reduce(
       (event, middleware) => (event ? middleware(event) : event),
       data
     );
@@ -203,7 +208,7 @@ class EventManager extends EventEmitter<EventType> {
   }
 
   protected fileEvent<E extends FileEventType>(event: E): void {
-    const path = join(ED_FOLDER, `${event}.json`);
+    const path = join(this.options.journalFolder, `${event}.json`);
     const data = EventManager.parseEdEventFile<E>(path);
     if (data) {
       this.emit(event, data);
@@ -225,12 +230,12 @@ class EventManager extends EventEmitter<EventType> {
   }
 
   protected log(data: EdEvent<EventType>): void {
-    const { verbose } = this;
+    const { logEvents: verbose } = this.options;
 
     if (verbose.length === 0) return;
     const listeners = this.listeners(data.event as EventType);
-    if (listeners.length === 0 && !verbose.includes('unusedEvents')) return;
-    if (listeners.length > 0 && !verbose.includes('usedEvents')) return;
+    if (listeners.length === 0 && !verbose.includes('unused')) return;
+    if (listeners.length > 0 && !verbose.includes('used')) return;
 
     const timestamp = this.formatDate(data.timestamp);
     console.log(`[${timestamp}] ${data.event}`);
@@ -243,12 +248,18 @@ export async function initEventManager(
   options?: Partial<EventManagerOptions>
 ): Promise<void> {
   const TIMEOUT = 0;
-  const journalPath = await getJournalPath(TIMEOUT);
-
-  console.log('Using journal file', basename(journalPath));
+  const opt = {
+    ...EventManager.defaultOptions,
+    ...options,
+  };
+  const journalPath = await getJournalPath(
+    opt.journalFolder,
+    opt.verbose,
+    TIMEOUT
+  );
 
   if (!instance) {
-    instance = new EventManager(journalPath, options);
+    instance = new EventManager(journalPath, opt);
   }
 }
 

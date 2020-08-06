@@ -11,3 +11,6 @@ declare const COMMIT_HASH: string;
 declare const COMMIT_HASH_SHORT: string;
 /** Env constant set to `true` for the production build, `false` for development */
 declare const IS_PRODUCTION: boolean;
+
+// NodeJS require function (runtime require)
+declare const __non_webpack_require__: NodeRequireFunction;
