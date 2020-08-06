@@ -1,6 +1,6 @@
 {
   "name": "ed-tools",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Parse the Elite Dangerous journal file to extract useful data",
   "main": "app/index.js",
   "scripts": {
@@ -33,6 +33,7 @@
     "@types/node": "^14.0.26",
     "@types/node-cleanup": "^2.1.1",
     "@types/webpack": "^4.41.21",
+    "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^6.0.3",
     "git-revision-webpack-plugin": "^3.0.6",
     "husky": "^4.2.5",

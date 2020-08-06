@@ -4,6 +4,7 @@ const { DefinePlugin, NamedModulesPlugin } = require('webpack');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const GitRevisionPlugin = require('git-revision-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const packageJson = require('./package.json');
 const gitRevisionPlugin = new GitRevisionPlugin();
 
@@ -35,7 +36,7 @@ module.exports = (env) => {
       excludeAssets: [/hot(-update)?\.js(on)?/, /webpack-dev-server/],
     },
 
-    devtool: 'source-map',
+    devtool: IS_PRODUCTION ? undefined : 'source-map',
 
     optimization: {
       minimize: false,
@@ -62,7 +63,7 @@ module.exports = (env) => {
               options: {
                 compilerOptions: {
                   declaration: false,
-                  sourceMap: true,
+                  sourceMap: !IS_PRODUCTION,
                 },
               },
             },
@@ -73,6 +74,10 @@ module.exports = (env) => {
 
     plugins: [
       gitRevisionPlugin,
+      new CleanWebpackPlugin({
+        protectWebpackAssets: false,
+        cleanAfterEveryBuildPatterns: ['VERSION', 'COMMITHASH'],
+      }),
       new DefinePlugin({
         IS_PRODUCTION,
         PACKAGE_NAME: JSON.stringify(packageJson.name),
