@@ -1,0 +1,26 @@
+{
+  "locale": "en",
+
+  "displaySettings": true,
+  "displayFinalData": true,
+
+  "eventManager": {
+    "verbose": true,
+    "logEvents": ["used"],
+    "ignoreBefore": 30000
+  },
+
+  "navFilePath": "",
+  "navFileOptions": {
+    "verbose": true,
+    "clearOnStart": true,
+    "clearOnEnd": true
+  },
+
+  "eventsFilePath": "",
+  "eventsFileOptions": {
+    "verbose": true,
+    "clearOnStart": true,
+    "clearOnEnd": true
+  }
+}

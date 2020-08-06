@@ -45,7 +45,48 @@ It reads information provided by [Frontier](https://frontier.co.uk/) in the game
 It only provides game of the game universe, nothing personal.
 If you are curiours, you can check the content of the `Journal` files in the directory: `C:\Users\%userprofile%\Saved Games\Frontier Developments\Elite Dangerous`
 
+## Configuration
+
+Yes, some settings are required to make this app work! But from version 0.5.0 this is possible to be configured using [settings.json](static/settings.json) (or `settings.js` with `module.exports` would work too).
+
+This is the list of all settings available so far (settings without a default are required)
+
+### Root level
+
+| Setting           | Description                                                                                                                                                  |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| locale            | Language to use from an [available localization file](static/locales), as the file name without extension. Default: `en`                                     |
+| displaySettings   | If `true`, settings being used will be displayed when starting the app. Default: `false`                                                                     |
+| displayFinalData  | If `true`, all the available data from the events will be displayed when exiting the app. Default: `false`                                                   |
+| eventManager      | Settings related to the ED Event Manager ([EventManager options](#eventmanager-options))                                                                     |
+| navFilePath       | Path to the file where the navigation information will be written. If specified, the folder must exist but can left blank to not outputting this information |
+| navFileOptions    | Options related to the navigation information ([WriteFileOutputter options](#writefileoutputter-options))                                                    |
+| eventsFilePath    | Path to the file where the events information will be written. If specified, the folder must exist but can left blank to not outputting this information     |
+| eventsFileOptions | Options related to the events information ([WriteFileOutputter options](#writefileoutputter-options))                                                        |
+
+### EventManager options
+
+| Setting       | Description                                                                                                                                                                                                                                                |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| journalFolder | Folder where `.journal` files are. Default: `C:\Users\%userprofile%\Saved Games\Frontier Developments\Elite Dangerous`                                                                                                                                     |
+| verbose       | If `false`, misc. information won't be displayed. Default: `true`                                                                                                                                                                                          |
+| logEvents     | Array of `'used'` or `'unused'`. Shows when one event is detected. Default: `[]`                                                                                                                                                                           |
+| ignoreBefore  | Events generated more than the especified number (in milliseconds) won't generate any output. This avoid generating a big queue of events when opening the app in the middle of the game instead of opening it at the start. Default: `30000` (30 seconds) |
+
+### WriteFileOutputter options
+
+| Setting      | Description                                                                                           |
+| ------------ | ----------------------------------------------------------------------------------------------------- |
+| verbose      | If `true` it will log the content being outputted to the file every time it changes. Default: `false` |
+| clearOnStart | If `true`, the file will be emptied when the app is opened. Default: `true`                           |
+| clearOnEnd   | If `true`, the file will be emptied when the app is closed. Default: `true`                           |
+
 ## Change log
+
+### 0.5.0
+
+- Added localization for messages
+- Added settings file
 
 ### 0.4.0
 

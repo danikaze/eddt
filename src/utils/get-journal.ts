@@ -1,21 +1,26 @@
 import { readdirSync, readFileSync } from 'fs';
 import { join } from 'path';
-import { ED_FOLDER } from '@src/constants';
 import { FolderWatcher } from './folder-watcher';
 
 const JOURNAL_REGEX = /Journal\.\d+\.\d+\.log$/;
 
-export async function getJournalPath(timeout = 0): Promise<string> {
-  const lastJournalFullPath = getLastJournalPath();
+export async function getJournalPath(
+  folder: string,
+  verbose: boolean,
+  timeout = 0
+): Promise<string> {
+  const lastJournalFullPath = getLastJournalPath(folder);
 
   if (isJournalActive(lastJournalFullPath)) {
     return lastJournalFullPath;
   }
 
   return new Promise<string>((resolve, reject) => {
-    console.log('Waiting for a new journal to be created...');
+    if (verbose) {
+      console.log('Waiting for a new journal to be created...');
+    }
 
-    const watcher = new FolderWatcher(ED_FOLDER);
+    const watcher = new FolderWatcher(folder);
 
     watcher.on('fileAdded', (newFileFullPath: string) => {
       if (!JOURNAL_REGEX.test(newFileFullPath)) return;
@@ -33,11 +38,11 @@ export async function getJournalPath(timeout = 0): Promise<string> {
   });
 }
 
-function getLastJournalPath(): string {
-  const logs = readdirSync(ED_FOLDER)
+function getLastJournalPath(folder: string): string {
+  const logs = readdirSync(folder)
     .filter((file) => JOURNAL_REGEX.test(file))
     .sort();
-  return join(ED_FOLDER, logs[logs.length - 1]);
+  return join(folder, logs[logs.length - 1]);
 }
 
 function isJournalActive(fullPath: string): boolean {
