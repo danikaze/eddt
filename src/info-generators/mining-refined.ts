@@ -1,15 +1,17 @@
 import { EdData } from '@src/ed/data-manager';
+import { t } from '@src/utils/i18n';
 import { InfoGenerator } from '.';
 
-type DataKeys = 'sessionTotalMaterialsRefined';
+type DataKeys = 'sessionTotalMiningRefined';
 type Data = Pick<EdData, DataKeys>;
+export type TranslationData = Data;
 
 export class MiningRefinedInfoGenerator extends InfoGenerator<DataKeys> {
   constructor() {
-    super(['sessionTotalMaterialsRefined']);
+    super(['sessionTotalMiningRefined']);
   }
 
-  protected generate({ sessionTotalMaterialsRefined }: Data): string {
-    return `${sessionTotalMaterialsRefined} minerales refinados hoy`;
+  protected generate(data: Data): string | string[] | undefined {
+    return t('miningRefined', data);
   }
 }

@@ -1,6 +1,7 @@
 import { EdData } from '@src/ed/data-manager';
-import { InfoGenerator } from '.';
 import { formatCredits } from '@src/utils/format';
+import { t } from '@src/utils/i18n';
+import { InfoGenerator } from '.';
 
 type DataKeys =
   | 'lastBountyReward'
@@ -8,6 +9,10 @@ type DataKeys =
   | 'sessionTotalBounty'
   | 'sessionTotalPiratesKilled';
 type Data = Pick<EdData, DataKeys>;
+export interface TranslationData extends Data {
+  cr: string;
+  totalCr: string;
+}
 
 export class BountyInfoGenerator extends InfoGenerator<DataKeys> {
   constructor() {
@@ -19,21 +24,11 @@ export class BountyInfoGenerator extends InfoGenerator<DataKeys> {
     ]);
   }
 
-  protected generate({
-    lastBountyReward,
-    lastBountyShip,
-    sessionTotalBounty,
-    sessionTotalPiratesKilled,
-  }: Data): string | string[] {
-    const cr = formatCredits(lastBountyReward!);
-    const current = `BOOM! Pirata eliminado en su ${lastBountyShip} (${cr})`;
-
-    if (sessionTotalPiratesKilled === 1) return current;
-
-    const totalCr = formatCredits(sessionTotalBounty!);
-    return [
-      current,
-      `Eso hacen ${sessionTotalPiratesKilled} piratas por un total de ${totalCr} hoy`,
-    ];
+  protected generate(data: Data): string | string[] | undefined {
+    return t('bounty', {
+      ...data,
+      cr: formatCredits(data.lastBountyReward!),
+      totalCr: formatCredits(data.sessionTotalBounty!),
+    });
   }
 }
