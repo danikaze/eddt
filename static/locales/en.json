@@ -3,6 +3,8 @@
   "bodiesLeft": "{sessionTotalBodiesLeft, plural, one{First time leaving a planet} other{# bodies left}} today",
   "bounty1": "BOOM! That Pirate and his {lastBountyShip} were eliminated! ({cr})",
   "bounty2": "{sessionTotalPiratesKilled, plural, one{} other{That was the {sessionTotalPiratesKilled, selectordinal, one{1st pirate} two{2nd pirate} few{3rd pirate} other{#th pirate}} of today for a total of {totalCr}}}",
+  "factionKillBonds1": "Got a {cr} combat bond!",
+  "factionKillBonds2": "{sessionTotalFactionKillBonds, plural, one{} other{That was the {sessionTotalFactionKillBonds, selectordinal, one{1st} two{2nd} few{3rd} other{#th}} one with a total of {totalCr} today}}",
   "dockingsDenied1": "{sessionTotalDockingsDenied, plural, one{Docking permit denied ({lastDockingDeniedReason})} other{Another denied docking ({lastDockingDeniedReason})...}}",
   "dockingsDenied2": "{sessionTotalDockingsDenied, plural, one{} other{That was the {sessionTotalDockingsDenied, selectordinal, two{2nd} few{3rd} other{#th}} docking denied today}}",
   "dockingsGranted": "That was the {sessionTotalDockingsGranted, selectordinal, one{1st} two{2nd} few{3rd} other{#th}} docking request granted today",

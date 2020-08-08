@@ -27,6 +27,7 @@ import {
   EdDockingDeniedEvent,
   EdDockingGrantedEvent,
   EdDockingRequestedEvent,
+  EdFactionKillBondEvent,
 } from './events';
 import { ReadLineWatcher } from '@src/utils/read-line-watcher';
 import { dataManager } from './data-manager';
@@ -53,6 +54,7 @@ export interface EventData {
   ApproachBody: EdApproachBodyEvent;
   LeaveBody: EdLeaveBodyEvent;
   Bounty: EdBountyEvent;
+  FactionKillBond: EdFactionKillBondEvent;
   ShipTargeted: EdShipTargetedEvent;
   EscapeInterdiction: EdEscapeInterdictionEvent;
   Interdicted: EdInterdictedEvent;

@@ -232,3 +232,9 @@ export interface EdDockingRequestedEvent extends EdEvent<'DockingRequested'> {
   StationName: string;
   StationType: StationType;
 }
+
+export interface EdFactionKillBondEvent extends EdEvent<'FactionKillBond'> {
+  Reward: number;
+  AwardingFaction: string;
+  VictimFaction: string;
+}

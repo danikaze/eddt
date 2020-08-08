@@ -22,11 +22,14 @@ export type EdData = Partial<{
   lastJumpDistance: number;
   lastBountyReward: number;
   lastBountyShip: string;
+  lastFactionKillReward: number;
   lastDockingDeniedReason: DockingDeniedReason;
   // session cumulative values
   sessionTotalJumpDistance: number;
   sessionTotalBounty: number;
   sessionTotalPiratesKilled: number;
+  sessionTotalFactionKillBonds: number;
+  sessionTotalFactionKillBondRewards: number;
   sessionTotalInterdictionsReceived: number;
   sessionTotalInterdictionsReceivedEscaped: number;
   sessionTotalInterdictionsReceivedSubmitted: number;

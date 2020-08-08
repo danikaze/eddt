@@ -39,6 +39,7 @@ import { BodiesApproachedInfoGenerator } from './info-generators/bodies-approach
 import { dataManager } from './ed/data-manager';
 import { setLocale } from './utils/i18n';
 import { readSettings, Settings } from './utils/settings';
+import { FactionKillBondInfoGenerator } from './info-generators/faction-kill-bond';
 
 const spacer = { prefix: ' ', postfix: ' ' };
 
@@ -105,6 +106,7 @@ nodeCleanup((exitCode, signal) => {
       new HeatWarningsInfoGenerator(),
       new ScannedInfoGenerator(),
       new BountyInfoGenerator(),
+      new FactionKillBondInfoGenerator(),
       new JumpDistanceInfoGenerator().use(
         new OnlyInMilestones(
           'sessionTotalJumpDistance',
@@ -125,7 +127,7 @@ nodeCleanup((exitCode, signal) => {
         new OnlyInMilestones('sessionTotalDronesLaunched', [5, 10, 25, 50])
       ),
       new MissionsCompletedInfoGenerator().use(
-        new OnlyInMilestones('sessionTotalMissionsAccepted', [1, 5, 10])
+        new OnlyInMilestones('sessionTotalMissionsCompleted', [1, 3, 5, 10])
       ),
       new InterdictionsEscapedInfoGenerator(),
       new InterdictionsLostInfoGenerator(),
