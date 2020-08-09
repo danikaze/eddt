@@ -1,13 +1,12 @@
 // tslint:disable: no-magic-numbers
 
 import { default as nodeCleanup } from 'node-cleanup';
-import { join } from 'path';
 
-import {
-  initEventManager,
-  getEventManager,
-  EventManagerOptions,
-} from './ed/event-manager';
+import { initEventManager, getEventManager } from './ed/event-manager';
+import { registerAllEvents } from './event-processors/register-all-events';
+import { dataManager } from './ed/data-manager';
+import { setLocale } from './utils/i18n';
+import { readSettings, Settings } from './utils/settings';
 
 import { WriteFileOutputter } from './outputters/write-file';
 import { OutputRotator } from './outputters/middleware/rotator';
@@ -18,9 +17,6 @@ import { NavInfoGenerator } from './info-generators/nav';
 import { HeatWarningsInfoGenerator } from './info-generators/heat-warning';
 import { ScannedInfoGenerator } from './info-generators/scanned';
 import { BountyInfoGenerator } from './info-generators/bounty';
-
-import { registerAllEvents } from './event-processors/register-all-events';
-
 import { JumpDistanceInfoGenerator } from './info-generators/jump-distance';
 import { OnlyInMilestones } from './info-generators/middleware/milestone';
 import { MaterialsCollectedInfoGenerator } from './info-generators/material-collected';
@@ -34,12 +30,11 @@ import { MissionsCompletedInfoGenerator } from './info-generators/missions-compl
 import { DockingsRequestedInfoGenerator } from './info-generators/dockings-requested';
 import { DockingsGrantedInfoGenerator } from './info-generators/dockings-granted';
 import { DockingsDeniedInfoGenerator } from './info-generators/dockings-denied';
-
 import { BodiesApproachedInfoGenerator } from './info-generators/bodies-approached';
-import { dataManager } from './ed/data-manager';
-import { setLocale } from './utils/i18n';
-import { readSettings, Settings } from './utils/settings';
 import { FactionKillBondInfoGenerator } from './info-generators/faction-kill-bond';
+import { SoldExplorationDataInfoGenerator } from './info-generators/exploration-data-sold';
+import { ScanDetailedInfoGenerator } from './info-generators/scan-detailed';
+import { ScanCargoInfoGenerator } from './info-generators/scan-cargo';
 
 const spacer = { prefix: ' ', postfix: ' ' };
 
@@ -142,5 +137,8 @@ nodeCleanup((exitCode, signal) => {
       new BodiesApproachedInfoGenerator().use(
         new OnlyInMilestones('sessionTotalBodiesApproached', [1, 5, 10, 20])
       ),
+      new SoldExplorationDataInfoGenerator(),
+      new ScanDetailedInfoGenerator(),
+      new ScanCargoInfoGenerator(),
     ]);
 })();

@@ -33,6 +33,7 @@ import {
   InfluenceReward,
   ReputationReward,
   DockingDeniedReason,
+  LuminosityType,
 } from './definitions';
 
 export interface EdEvent<E extends string = string> {
@@ -237,4 +238,60 @@ export interface EdFactionKillBondEvent extends EdEvent<'FactionKillBond'> {
   Reward: number;
   AwardingFaction: string;
   VictimFaction: string;
+}
+
+export interface EdFSSDiscoveryScanEvent extends EdEvent<'FSSDiscoveryScan'> {
+  Progress: number;
+  BodyCount: number;
+  NonBodyCount: number;
+  SystemName: string;
+  SystemAddress: number;
+}
+
+export interface EdFSSSignalDiscoveredEvent
+  extends EdEvent<'FSSSignalDiscovered'> {
+  SystemAddress: number;
+  SignalName: string;
+  IsStation?: boolean;
+  SignalName_Localised?: boolean;
+}
+
+export interface EdScanEvent extends EdEvent<'Scan'> {
+  ScanType: ScanType;
+  BodyName: string;
+  BodyID: number;
+  StarSystem: string;
+  SystemAddress: number;
+  DistanceFromArrivalLS: number;
+  StarType: StarType;
+  Subclass: number;
+  StellarMass: number;
+  Radius: number;
+  AbsoluteMagnitude: number;
+  Age_MY: number;
+  SurfaceTemperature: number;
+  Luminosity: LuminosityType;
+  RotationPeriod: number;
+  AxialTilt: number;
+  WasDiscovered: true;
+  WasMapped: false;
+}
+
+export interface EdSellExplorationDataEvent
+  extends EdEvent<'SellExplorationData'> {
+  Systems: string[];
+  Discovered: string[];
+  BaseValue: number;
+  Bonus: number;
+}
+
+export interface EdMultiSellExplorationDataEvent
+  extends EdEvent<'MultiSellExplorationData'> {
+  Discovered: {
+    SystemName: string;
+    NumBodies: number;
+  }[];
+  BaseValue: number;
+  Bonus: number;
+  TotalEarnings: number;
 }

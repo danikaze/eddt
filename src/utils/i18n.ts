@@ -22,6 +22,9 @@ import { TranslationData as MissionsCompletedData } from '@src/info-generators/m
 import { TranslationData as MissionsFailedData } from '@src/info-generators/missions-failed';
 import { TranslationData as ProspectedAsteroidsData } from '@src/info-generators/prospected-asteroids';
 import { TranslationData as ScannedData } from '@src/info-generators/scanned';
+import { TranslationData as DetailedScanData } from '@src/info-generators/scan-detailed';
+import { TranslationData as CargoScanData } from '@src/info-generators/scan-cargo';
+import { TranslationData as SoldExplorationDataData } from '@src/info-generators/exploration-data-sold';
 
 export interface TranslationData {
   bodiesApproached: BodiesApproachedData;
@@ -45,6 +48,9 @@ export interface TranslationData {
   missionsFailed: MissionsFailedData;
   prospectedAsteroids: ProspectedAsteroidsData;
   scanned: ScannedData;
+  detailedScan: DetailedScanData;
+  cargoScan: CargoScanData;
+  soldExplorationData: SoldExplorationDataData;
 }
 
 i18n.configure({

@@ -28,6 +28,11 @@ import {
   EdDockingGrantedEvent,
   EdDockingRequestedEvent,
   EdFactionKillBondEvent,
+  EdFSSDiscoveryScanEvent,
+  EdFSSSignalDiscoveredEvent,
+  EdScanEvent,
+  EdSellExplorationDataEvent,
+  EdMultiSellExplorationDataEvent,
 } from './events';
 import { ReadLineWatcher } from '@src/utils/read-line-watcher';
 import { dataManager } from './data-manager';
@@ -71,6 +76,11 @@ export interface EventData {
   DockingDenied: EdDockingDeniedEvent;
   DockingGranted: EdDockingGrantedEvent;
   DockingRequested: EdDockingRequestedEvent;
+  FSSDiscoveryScan: EdFSSDiscoveryScanEvent;
+  FSSSignalDiscovered: EdFSSSignalDiscoveredEvent;
+  Scan: EdScanEvent;
+  SellExplorationData: EdSellExplorationDataEvent;
+  MultiSellExplorationData: EdMultiSellExplorationDataEvent;
   Shutdown: EdEvent<'Shutdown'>;
 }
 

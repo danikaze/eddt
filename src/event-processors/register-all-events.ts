@@ -1,5 +1,6 @@
 import { EventType } from '@src/ed/event-manager';
 import { addEdEventListener, EdEventProcessor } from '.';
+import * as exploration from './exploration';
 import * as docking from './docking';
 import * as mining from './mining';
 import * as misc from './misc';
@@ -12,6 +13,7 @@ type EventProcessorModule = {
 };
 
 export function registerAllEvents(): void {
+  registerModuleEvents(exploration as EventProcessorModule);
   registerModuleEvents(docking as EventProcessorModule);
   registerModuleEvents(mining as EventProcessorModule);
   registerModuleEvents(misc as EventProcessorModule);

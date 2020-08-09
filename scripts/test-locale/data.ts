@@ -249,4 +249,48 @@ export const testCases: TestCase[] = [
       sessionTotalScanned: 15,
     },
   } as TestCase<'scanned'>,
+  {
+    key: 'detailedScan',
+    data: {
+      sessionTotalDetailedScans: 1,
+    },
+  } as TestCase<'detailedScan'>,
+  {
+    key: 'detailedScan',
+    data: {
+      sessionTotalDetailedScans: 23,
+    },
+  } as TestCase<'detailedScan'>,
+  {
+    key: 'cargoScan',
+    data: {
+      sessionTotalCargoScans: 1,
+    },
+  } as TestCase<'cargoScan'>,
+  {
+    key: 'cargoScan',
+    data: {
+      sessionTotalCargoScans: 23,
+    },
+  } as TestCase<'cargoScan'>,
+  {
+    key: 'soldExplorationData',
+    data: {
+      sessionTotalSoldExplorationDataValue: 150000,
+      lastSoldExplorationDataValue: 150000,
+      sessionTotalSoldExplorationData: 1,
+      cr: '150,000 CR',
+      totalCr: '150,000 CR',
+    },
+  } as TestCase<'soldExplorationData'>,
+  {
+    key: 'soldExplorationData',
+    data: {
+      sessionTotalSoldExplorationDataValue: 12345678,
+      lastSoldExplorationDataValue: 654321,
+      sessionTotalSoldExplorationData: 5,
+      cr: '654,321 CR',
+      totalCr: '12,345,678 CR',
+    },
+  } as TestCase<'soldExplorationData'>,
 ];

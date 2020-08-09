@@ -313,7 +313,7 @@ export type AsteroidMaterialContent =
   | '$AsteroidMaterialContent_Medium;'
   | '$AsteroidMaterialContent_High;';
 
-export type MaterialCategory = 'Raw';
+export type MaterialCategory = 'Raw' | 'Encoded' | 'Manufactured';
 
 export type MaterialName = 'nickel' | 'sulphur' | 'carbon' | 'vanadium';
 
@@ -359,3 +359,16 @@ export type DockingDeniedReason =
   | 'NoSpace'
   | 'Offences'
   | 'RestrictedAccess';
+
+export type LuminosityType =
+  | 'III'
+  | 'IV'
+  | 'IVb'
+  | 'O'
+  | 'V'
+  | 'Va'
+  | 'Vab'
+  | 'Vb'
+  | 'VI'
+  | 'VII'
+  | 'Vz';

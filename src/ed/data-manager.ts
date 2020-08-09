@@ -24,6 +24,7 @@ export type EdData = Partial<{
   lastBountyShip: string;
   lastFactionKillReward: number;
   lastDockingDeniedReason: DockingDeniedReason;
+  lastSoldExplorationDataValue: number;
   // session cumulative values
   sessionTotalJumpDistance: number;
   sessionTotalBounty: number;
@@ -51,6 +52,13 @@ export type EdData = Partial<{
   sessionTotalDockingsDenied: number;
   sessionTotalBodiesApproached: number;
   sessionTotalBodiesLeft: number;
+  sessionTotalSoldExplorationData: number;
+  sessionTotalSoldExplorationDataValue: number;
+  sessionTotalScans: number;
+  sessionTotalAutoScanScans: number;
+  sessionTotalBasicScans: number;
+  sessionTotalCargoScans: number;
+  sessionTotalDetailedScans: number;
   // lifetime (from available logs) cumulative values
 }>;
 
