@@ -85,6 +85,11 @@ This is the list of all settings available so far (settings without a default ar
 
 ## Change log
 
+### 0.6.0
+
+- Added info generators: `LoadData`, `Scan`, `FactionKillBond`
+- Fixed: `DockingRequested`, `DockingGranted`, `DockingDenied` events not being loaded
+
 ### 0.5.0
 
 - Added localization for messages
