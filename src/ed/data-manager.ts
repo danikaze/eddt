@@ -1,5 +1,5 @@
 import EventEmitter from 'eventemitter3';
-import { CombatRank, DockingDeniedReason } from './definitions';
+import { CombatRank, DockingDeniedReason, GameModeType } from './definitions';
 
 /**
  * List of used and accessible data
@@ -7,6 +7,7 @@ import { CombatRank, DockingDeniedReason } from './definitions';
  */
 export type EdData = Partial<{
   // still persisting values
+  gameMode: GameModeType;
   currentBody: string;
   currentStation: string;
   currentSystem: string;

@@ -34,11 +34,28 @@ import {
   ReputationReward,
   DockingDeniedReason,
   LuminosityType,
+  GameModeType,
 } from './definitions';
 
 export interface EdEvent<E extends string = string> {
   timestamp: Date; // transformed to date when parsed
   event: E;
+}
+
+export interface EdLoadGameEvent extends EdEvent<'LoadGame'> {
+  FID: string;
+  Commander: string;
+  Horizons: boolean;
+  Ship: ShipType;
+  Ship_Localised: string;
+  ShipID: number;
+  ShipName: number;
+  ShipIdent: number;
+  FuelLevel: number;
+  FuelCapacity: number;
+  GameMode: GameModeType;
+  Credits: number;
+  Loan: number;
 }
 
 export interface EdNavRouteEvent extends EdEvent<'NavRoute'> {

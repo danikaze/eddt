@@ -33,6 +33,7 @@ import {
   EdScanEvent,
   EdSellExplorationDataEvent,
   EdMultiSellExplorationDataEvent,
+  EdLoadGameEvent,
 } from './events';
 import { ReadLineWatcher } from '@src/utils/read-line-watcher';
 import { dataManager } from './data-manager';
@@ -52,6 +53,7 @@ export interface EventManagerOptions {
 }
 
 export interface EventData {
+  LoadGame: EdLoadGameEvent;
   NavRoute: EdNavRouteEvent;
   FSDJump: EdFSDJumpEvent;
   Docked: EdDockedEvent;

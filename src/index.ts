@@ -35,6 +35,7 @@ import { FactionKillBondInfoGenerator } from './info-generators/faction-kill-bon
 import { SoldExplorationDataInfoGenerator } from './info-generators/exploration-data-sold';
 import { ScanDetailedInfoGenerator } from './info-generators/scan-detailed';
 import { ScanCargoInfoGenerator } from './info-generators/scan-cargo';
+import { GameModeInfoGenerator } from './info-generators/game-mode';
 
 const spacer = { prefix: ' ', postfix: ' ' };
 
@@ -83,6 +84,17 @@ nodeCleanup((exitCode, signal) => {
     new NavInfoGenerator().pipe(
       new TextSpacer(spacer).pipe(
         new WriteFileOutputter(settings.navFilePath, settings.navFileOptions)
+      )
+    );
+  }
+
+  if (settings.gameModeFilePath) {
+    new GameModeInfoGenerator().pipe(
+      new TextSpacer(spacer).pipe(
+        new WriteFileOutputter(
+          settings.gameModeFilePath,
+          settings.gameModeFileOptions
+        )
       )
     );
   }

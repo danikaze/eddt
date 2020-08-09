@@ -2,6 +2,8 @@
  * List of internal definitions used by ED events
  */
 
+export type GameModeType = 'Solo' | 'Group' | 'Open';
+
 export type StarPos = [number, number, number];
 export type AllegianceType =
   | 'Independent'
@@ -264,17 +266,6 @@ export interface BountyReward {
 
 export type ShipType =
   | 'adder'
-  | 'asp_scout'
-  | 'cobramkiii'
-  | 'cobramkiv'
-  | 'diamondback'
-  | 'empire_courier'
-  | 'empire_eagleferdelance'
-  | 'empire_trader'
-  | 'federation_gunship'
-  | 'python'
-  | 'viper_mkiv'
-  | 'viper'
   | 'anaconda'
   | 'asp_scout'
   | 'asp'
@@ -286,6 +277,7 @@ export type ShipType =
   | 'eagle'
   | 'empire_courier'
   | 'empire_eagle'
+  | 'empire_eagleferdelance'
   | 'empire_trader'
   | 'federation_dropship_mkii'
   | 'federation_dropship'

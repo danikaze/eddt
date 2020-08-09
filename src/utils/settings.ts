@@ -25,6 +25,12 @@ export interface Settings {
     clearOnStart?: boolean;
     clearOnEnd?: boolean;
   };
+  gameModeFilePath?: string;
+  gameModeFileOptions?: {
+    verbose?: boolean;
+    clearOnStart?: boolean;
+    clearOnEnd?: boolean;
+  };
 }
 
 export function readSettings(): Required<Settings> {
