@@ -33,11 +33,29 @@ import {
   InfluenceReward,
   ReputationReward,
   DockingDeniedReason,
+  LuminosityType,
+  GameModeType,
 } from './definitions';
 
 export interface EdEvent<E extends string = string> {
   timestamp: Date; // transformed to date when parsed
   event: E;
+}
+
+export interface EdLoadGameEvent extends EdEvent<'LoadGame'> {
+  FID: string;
+  Commander: string;
+  Horizons: boolean;
+  Ship: ShipType;
+  Ship_Localised: string;
+  ShipID: number;
+  ShipName: number;
+  ShipIdent: number;
+  FuelLevel: number;
+  FuelCapacity: number;
+  GameMode: GameModeType;
+  Credits: number;
+  Loan: number;
 }
 
 export interface EdNavRouteEvent extends EdEvent<'NavRoute'> {
@@ -231,4 +249,66 @@ export interface EdDockingRequestedEvent extends EdEvent<'DockingRequested'> {
   MarketID: number;
   StationName: string;
   StationType: StationType;
+}
+
+export interface EdFactionKillBondEvent extends EdEvent<'FactionKillBond'> {
+  Reward: number;
+  AwardingFaction: string;
+  VictimFaction: string;
+}
+
+export interface EdFSSDiscoveryScanEvent extends EdEvent<'FSSDiscoveryScan'> {
+  Progress: number;
+  BodyCount: number;
+  NonBodyCount: number;
+  SystemName: string;
+  SystemAddress: number;
+}
+
+export interface EdFSSSignalDiscoveredEvent
+  extends EdEvent<'FSSSignalDiscovered'> {
+  SystemAddress: number;
+  SignalName: string;
+  IsStation?: boolean;
+  SignalName_Localised?: boolean;
+}
+
+export interface EdScanEvent extends EdEvent<'Scan'> {
+  ScanType: ScanType;
+  BodyName: string;
+  BodyID: number;
+  StarSystem: string;
+  SystemAddress: number;
+  DistanceFromArrivalLS: number;
+  StarType: StarType;
+  Subclass: number;
+  StellarMass: number;
+  Radius: number;
+  AbsoluteMagnitude: number;
+  Age_MY: number;
+  SurfaceTemperature: number;
+  Luminosity: LuminosityType;
+  RotationPeriod: number;
+  AxialTilt: number;
+  WasDiscovered: true;
+  WasMapped: false;
+}
+
+export interface EdSellExplorationDataEvent
+  extends EdEvent<'SellExplorationData'> {
+  Systems: string[];
+  Discovered: string[];
+  BaseValue: number;
+  Bonus: number;
+}
+
+export interface EdMultiSellExplorationDataEvent
+  extends EdEvent<'MultiSellExplorationData'> {
+  Discovered: {
+    SystemName: string;
+    NumBodies: number;
+  }[];
+  BaseValue: number;
+  Bonus: number;
+  TotalEarnings: number;
 }

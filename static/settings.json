@@ -22,5 +22,12 @@
     "verbose": true,
     "clearOnStart": true,
     "clearOnEnd": true
+  },
+
+  "gameModeFilePath": "",
+  "gameModeFileOptions": {
+    "verbose": true,
+    "clearOnStart": true,
+    "clearOnEnd": true
   }
 }

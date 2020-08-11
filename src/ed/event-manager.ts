@@ -27,6 +27,13 @@ import {
   EdDockingDeniedEvent,
   EdDockingGrantedEvent,
   EdDockingRequestedEvent,
+  EdFactionKillBondEvent,
+  EdFSSDiscoveryScanEvent,
+  EdFSSSignalDiscoveredEvent,
+  EdScanEvent,
+  EdSellExplorationDataEvent,
+  EdMultiSellExplorationDataEvent,
+  EdLoadGameEvent,
 } from './events';
 import { ReadLineWatcher } from '@src/utils/read-line-watcher';
 import { dataManager } from './data-manager';
@@ -46,6 +53,7 @@ export interface EventManagerOptions {
 }
 
 export interface EventData {
+  LoadGame: EdLoadGameEvent;
   NavRoute: EdNavRouteEvent;
   FSDJump: EdFSDJumpEvent;
   Docked: EdDockedEvent;
@@ -53,6 +61,7 @@ export interface EventData {
   ApproachBody: EdApproachBodyEvent;
   LeaveBody: EdLeaveBodyEvent;
   Bounty: EdBountyEvent;
+  FactionKillBond: EdFactionKillBondEvent;
   ShipTargeted: EdShipTargetedEvent;
   EscapeInterdiction: EdEscapeInterdictionEvent;
   Interdicted: EdInterdictedEvent;
@@ -69,6 +78,11 @@ export interface EventData {
   DockingDenied: EdDockingDeniedEvent;
   DockingGranted: EdDockingGrantedEvent;
   DockingRequested: EdDockingRequestedEvent;
+  FSSDiscoveryScan: EdFSSDiscoveryScanEvent;
+  FSSSignalDiscovered: EdFSSSignalDiscoveredEvent;
+  Scan: EdScanEvent;
+  SellExplorationData: EdSellExplorationDataEvent;
+  MultiSellExplorationData: EdMultiSellExplorationDataEvent;
   Shutdown: EdEvent<'Shutdown'>;
 }
 

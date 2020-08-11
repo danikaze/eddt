@@ -53,16 +53,18 @@ This is the list of all settings available so far (settings without a default ar
 
 ### Root level
 
-| Setting           | Description                                                                                                                                                  |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| locale            | Language to use from an [available localization file](static/locales), as the file name without extension. Default: `en`                                     |
-| displaySettings   | If `true`, settings being used will be displayed when starting the app. Default: `false`                                                                     |
-| displayFinalData  | If `true`, all the available data from the events will be displayed when exiting the app. Default: `false`                                                   |
-| eventManager      | Settings related to the ED Event Manager ([EventManager options](#eventmanager-options))                                                                     |
-| navFilePath       | Path to the file where the navigation information will be written. If specified, the folder must exist but can left blank to not outputting this information |
-| navFileOptions    | Options related to the navigation information ([WriteFileOutputter options](#writefileoutputter-options))                                                    |
-| eventsFilePath    | Path to the file where the events information will be written. If specified, the folder must exist but can left blank to not outputting this information     |
-| eventsFileOptions | Options related to the events information ([WriteFileOutputter options](#writefileoutputter-options))                                                        |
+| Setting             | Description                                                                                                                                                  |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| locale              | Language to use from an [available localization file](static/locales), as the file name without extension. Default: `en`                                     |
+| displaySettings     | If `true`, settings being used will be displayed when starting the app. Default: `false`                                                                     |
+| displayFinalData    | If `true`, all the available data from the events will be displayed when exiting the app. Default: `false`                                                   |
+| eventManager        | Settings related to the ED Event Manager ([EventManager options](#eventmanager-options))                                                                     |
+| navFilePath         | Path to the file where the navigation information will be written. If specified, the folder must exist but can left blank to not outputting this information |
+| navFileOptions      | Options related to the navigation information ([WriteFileOutputter options](#writefileoutputter-options))                                                    |
+| eventsFilePath      | Path to the file where the events information will be written. If specified, the folder must exist but can left blank to not outputting this information     |
+| eventsFileOptions   | Options related to the events information ([WriteFileOutputter options](#writefileoutputter-options))                                                        |
+| gameModeFilePath    | Path to the file where the game mode will be written. If specified, the folder must exist but can left blank to not outputting this information              |
+| gameModeFileOptions | Options related to the game mode information ([WriteFileOutputter options](#writefileoutputter-options))                                                     |
 
 ### EventManager options
 
@@ -82,6 +84,11 @@ This is the list of all settings available so far (settings without a default ar
 | clearOnEnd   | If `true`, the file will be emptied when the app is closed. Default: `true`                           |
 
 ## Change log
+
+### 0.6.0
+
+- Added info generators: `LoadData`, `Scan`, `FactionKillBond`
+- Fixed: `DockingRequested`, `DockingGranted`, `DockingDenied` events not being loaded
 
 ### 0.5.0
 

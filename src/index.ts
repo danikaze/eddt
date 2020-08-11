@@ -1,13 +1,12 @@
 // tslint:disable: no-magic-numbers
 
 import { default as nodeCleanup } from 'node-cleanup';
-import { join } from 'path';
 
-import {
-  initEventManager,
-  getEventManager,
-  EventManagerOptions,
-} from './ed/event-manager';
+import { initEventManager, getEventManager } from './ed/event-manager';
+import { registerAllEvents } from './event-processors/register-all-events';
+import { dataManager } from './ed/data-manager';
+import { setLocale } from './utils/i18n';
+import { readSettings, Settings } from './utils/settings';
 
 import { WriteFileOutputter } from './outputters/write-file';
 import { OutputRotator } from './outputters/middleware/rotator';
@@ -18,9 +17,6 @@ import { NavInfoGenerator } from './info-generators/nav';
 import { HeatWarningsInfoGenerator } from './info-generators/heat-warning';
 import { ScannedInfoGenerator } from './info-generators/scanned';
 import { BountyInfoGenerator } from './info-generators/bounty';
-
-import { registerAllEvents } from './event-processors/register-all-events';
-
 import { JumpDistanceInfoGenerator } from './info-generators/jump-distance';
 import { OnlyInMilestones } from './info-generators/middleware/milestone';
 import { MaterialsCollectedInfoGenerator } from './info-generators/material-collected';
@@ -34,11 +30,12 @@ import { MissionsCompletedInfoGenerator } from './info-generators/missions-compl
 import { DockingsRequestedInfoGenerator } from './info-generators/dockings-requested';
 import { DockingsGrantedInfoGenerator } from './info-generators/dockings-granted';
 import { DockingsDeniedInfoGenerator } from './info-generators/dockings-denied';
-
 import { BodiesApproachedInfoGenerator } from './info-generators/bodies-approached';
-import { dataManager } from './ed/data-manager';
-import { setLocale } from './utils/i18n';
-import { readSettings, Settings } from './utils/settings';
+import { FactionKillBondInfoGenerator } from './info-generators/faction-kill-bond';
+import { SoldExplorationDataInfoGenerator } from './info-generators/exploration-data-sold';
+import { ScanDetailedInfoGenerator } from './info-generators/scan-detailed';
+import { ScanCargoInfoGenerator } from './info-generators/scan-cargo';
+import { GameModeInfoGenerator } from './info-generators/game-mode';
 
 const spacer = { prefix: ' ', postfix: ' ' };
 
@@ -91,6 +88,17 @@ nodeCleanup((exitCode, signal) => {
     );
   }
 
+  if (settings.gameModeFilePath) {
+    new GameModeInfoGenerator().pipe(
+      new TextSpacer(spacer).pipe(
+        new WriteFileOutputter(
+          settings.gameModeFilePath,
+          settings.gameModeFileOptions
+        )
+      )
+    );
+  }
+
   if (!settings.eventsFilePath) return;
   new OutputRotator({ repeatTimes: 1 })
     .pipe(
@@ -105,6 +113,7 @@ nodeCleanup((exitCode, signal) => {
       new HeatWarningsInfoGenerator(),
       new ScannedInfoGenerator(),
       new BountyInfoGenerator(),
+      new FactionKillBondInfoGenerator(),
       new JumpDistanceInfoGenerator().use(
         new OnlyInMilestones(
           'sessionTotalJumpDistance',
@@ -125,7 +134,7 @@ nodeCleanup((exitCode, signal) => {
         new OnlyInMilestones('sessionTotalDronesLaunched', [5, 10, 25, 50])
       ),
       new MissionsCompletedInfoGenerator().use(
-        new OnlyInMilestones('sessionTotalMissionsAccepted', [1, 5, 10])
+        new OnlyInMilestones('sessionTotalMissionsCompleted', [1, 3, 5, 10])
       ),
       new InterdictionsEscapedInfoGenerator(),
       new InterdictionsLostInfoGenerator(),
@@ -140,5 +149,8 @@ nodeCleanup((exitCode, signal) => {
       new BodiesApproachedInfoGenerator().use(
         new OnlyInMilestones('sessionTotalBodiesApproached', [1, 5, 10, 20])
       ),
+      new SoldExplorationDataInfoGenerator(),
+      new ScanDetailedInfoGenerator(),
+      new ScanCargoInfoGenerator(),
     ]);
 })();

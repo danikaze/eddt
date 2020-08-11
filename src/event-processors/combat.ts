@@ -48,3 +48,12 @@ export const Interdicted: EdEventProcessor<'Interdicted'> = {
     dataManager.increase(key);
   },
 };
+
+export const FactionKillBond: EdEventProcessor<'FactionKillBond'> = {
+  event: 'FactionKillBond',
+  processor: (dataManager, event): void => {
+    dataManager.increase('sessionTotalFactionKillBonds');
+    dataManager.increase('sessionTotalFactionKillBondRewards', event.Reward);
+    dataManager.set('lastFactionKillReward', event.Reward);
+  },
+};

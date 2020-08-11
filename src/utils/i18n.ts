@@ -4,6 +4,7 @@ import { LOCALES_FOLDER } from '@src/constants';
 import { TranslationData as BodiesApproachedData } from '@src/info-generators/bodies-approached';
 import { TranslationData as BodiesLeftData } from '@src/info-generators/bodies-left';
 import { TranslationData as BountyData } from '@src/info-generators/bounty';
+import { TranslationData as FactionKillBondsData } from '@src/info-generators/faction-kill-bond';
 import { TranslationData as DockingsDeniedData } from '@src/info-generators/dockings-denied';
 import { TranslationData as DockingsGrantedData } from '@src/info-generators/dockings-granted';
 import { TranslationData as DockingsRequestedData } from '@src/info-generators/dockings-requested';
@@ -21,11 +22,15 @@ import { TranslationData as MissionsCompletedData } from '@src/info-generators/m
 import { TranslationData as MissionsFailedData } from '@src/info-generators/missions-failed';
 import { TranslationData as ProspectedAsteroidsData } from '@src/info-generators/prospected-asteroids';
 import { TranslationData as ScannedData } from '@src/info-generators/scanned';
+import { TranslationData as DetailedScanData } from '@src/info-generators/scan-detailed';
+import { TranslationData as CargoScanData } from '@src/info-generators/scan-cargo';
+import { TranslationData as SoldExplorationDataData } from '@src/info-generators/exploration-data-sold';
 
 export interface TranslationData {
   bodiesApproached: BodiesApproachedData;
   bodiesLeft: BodiesLeftData;
   bounty: BountyData;
+  factionKillBonds: FactionKillBondsData;
   dockingsDenied: DockingsDeniedData;
   dockingsGranted: DockingsGrantedData;
   dockingsRequested: DockingsRequestedData;
@@ -43,6 +48,9 @@ export interface TranslationData {
   missionsFailed: MissionsFailedData;
   prospectedAsteroids: ProspectedAsteroidsData;
   scanned: ScannedData;
+  detailedScan: DetailedScanData;
+  cargoScan: CargoScanData;
+  soldExplorationData: SoldExplorationDataData;
 }
 
 i18n.configure({

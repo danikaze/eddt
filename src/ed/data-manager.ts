@@ -1,5 +1,5 @@
 import EventEmitter from 'eventemitter3';
-import { CombatRank, DockingDeniedReason } from './definitions';
+import { CombatRank, DockingDeniedReason, GameModeType } from './definitions';
 
 /**
  * List of used and accessible data
@@ -7,6 +7,7 @@ import { CombatRank, DockingDeniedReason } from './definitions';
  */
 export type EdData = Partial<{
   // still persisting values
+  gameMode: GameModeType;
   currentBody: string;
   currentStation: string;
   currentSystem: string;
@@ -22,11 +23,15 @@ export type EdData = Partial<{
   lastJumpDistance: number;
   lastBountyReward: number;
   lastBountyShip: string;
+  lastFactionKillReward: number;
   lastDockingDeniedReason: DockingDeniedReason;
+  lastSoldExplorationDataValue: number;
   // session cumulative values
   sessionTotalJumpDistance: number;
   sessionTotalBounty: number;
   sessionTotalPiratesKilled: number;
+  sessionTotalFactionKillBonds: number;
+  sessionTotalFactionKillBondRewards: number;
   sessionTotalInterdictionsReceived: number;
   sessionTotalInterdictionsReceivedEscaped: number;
   sessionTotalInterdictionsReceivedSubmitted: number;
@@ -48,6 +53,13 @@ export type EdData = Partial<{
   sessionTotalDockingsDenied: number;
   sessionTotalBodiesApproached: number;
   sessionTotalBodiesLeft: number;
+  sessionTotalSoldExplorationData: number;
+  sessionTotalSoldExplorationDataValue: number;
+  sessionTotalScans: number;
+  sessionTotalAutoScanScans: number;
+  sessionTotalBasicScans: number;
+  sessionTotalCargoScans: number;
+  sessionTotalDetailedScans: number;
   // lifetime (from available logs) cumulative values
 }>;
 

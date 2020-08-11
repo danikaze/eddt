@@ -1,6 +1,6 @@
 {
   "name": "eddt",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Elite Dangerous Desktop Tools",
   "main": "app/index.js",
   "scripts": {
