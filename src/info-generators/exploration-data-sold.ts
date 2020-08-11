@@ -1,32 +1,28 @@
 import { EdData } from '@src/ed/data-manager';
 import { t } from '@src/utils/i18n';
 import { InfoGenerator } from '.';
-import { formatCredits } from '@src/utils/format';
 
 type DataKeys =
   | 'sessionTotalSoldExplorationDataValue'
+  | 'sessionTotalSoldExplorationDataValueCr'
   | 'lastSoldExplorationDataValue'
+  | 'lastSoldExplorationDataValueCr'
   | 'sessionTotalSoldExplorationData';
 type Data = Pick<EdData, DataKeys>;
-export interface TranslationData extends Data {
-  cr: string;
-  totalCr: string;
-}
+export type TranslationData = Data;
 
 export class SoldExplorationDataInfoGenerator extends InfoGenerator<DataKeys> {
   constructor() {
     super([
       'sessionTotalSoldExplorationDataValue',
+      'sessionTotalSoldExplorationDataValueCr',
       'lastSoldExplorationDataValue',
+      'lastSoldExplorationDataValueCr',
       'sessionTotalSoldExplorationData',
     ]);
   }
 
   protected generate(data: Data): string | string[] | undefined {
-    return t('soldExplorationData', {
-      ...data,
-      cr: formatCredits(data.lastSoldExplorationDataValue!),
-      totalCr: formatCredits(data.sessionTotalSoldExplorationDataValue!),
-    });
+    return t('soldExplorationData', data);
   }
 }

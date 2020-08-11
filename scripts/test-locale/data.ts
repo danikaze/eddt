@@ -31,22 +31,22 @@ export const testCases: TestCase[] = [
     key: 'bounty',
     data: {
       lastBountyReward: 12345,
+      lastBountyRewardCr: formatCredits(12345),
       lastBountyShip: 'Imperial Eagle',
       sessionTotalBounty: 12345,
+      sessionTotalBountyCr: formatCredits(12345),
       sessionTotalPiratesKilled: 1,
-      cr: formatCredits(12345),
-      totalCr: formatCredits(12345),
     },
   } as TestCase<'bounty'>,
   {
     key: 'bounty',
     data: {
       lastBountyReward: 45678,
+      lastBountyRewardCr: formatCredits(45678),
       lastBountyShip: 'Krait MK-II',
       sessionTotalBounty: 12345678,
+      sessionTotalBountyCr: formatCredits(12345678),
       sessionTotalPiratesKilled: 8,
-      cr: formatCredits(45678),
-      totalCr: formatCredits(12345678),
     },
   } as TestCase<'bounty'>,
   {
@@ -138,7 +138,8 @@ export const testCases: TestCase[] = [
   {
     key: 'jumpDistance',
     data: {
-      sessionTotalJumpDistance: formatLy(150.123456789),
+      sessionTotalJumpDistance: 150.123456789,
+      sessionTotalJumpDistanceLy: formatLy(150.123456789),
     },
   } as TestCase<'jumpDistance'>,
   {
@@ -277,20 +278,20 @@ export const testCases: TestCase[] = [
     key: 'soldExplorationData',
     data: {
       sessionTotalSoldExplorationDataValue: 150000,
+      sessionTotalSoldExplorationDataValueCr: formatCredits(150000),
       lastSoldExplorationDataValue: 150000,
+      lastSoldExplorationDataValueCr: formatCredits(150000),
       sessionTotalSoldExplorationData: 1,
-      cr: '150,000 CR',
-      totalCr: '150,000 CR',
     },
   } as TestCase<'soldExplorationData'>,
   {
     key: 'soldExplorationData',
     data: {
       sessionTotalSoldExplorationDataValue: 12345678,
+      sessionTotalSoldExplorationDataValueCr: formatCredits(12345678),
       lastSoldExplorationDataValue: 654321,
+      lastSoldExplorationDataValueCr: formatCredits(654321),
       sessionTotalSoldExplorationData: 5,
-      cr: '654,321 CR',
-      totalCr: '12,345,678 CR',
     },
   } as TestCase<'soldExplorationData'>,
 ];
