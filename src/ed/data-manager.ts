@@ -1,5 +1,6 @@
 import EventEmitter from 'eventemitter3';
 import { CombatRank, DockingDeniedReason, GameModeType } from './definitions';
+import { formatCredits, formatLy } from '@src/utils/format';
 
 /**
  * List of used and accessible data
@@ -15,23 +16,31 @@ export type EdData = Partial<{
   routeFull: string[];
   routeJumpsLeft: number;
   targetBounty: number;
+  targetBountyCr: string;
   targetPilotName: string;
   targetPilotRank: CombatRank;
   targetShipShield: number;
   targetShipHull: number;
   // values from last event
   lastJumpDistance: number;
+  lastJumpDistanceLy: string;
   lastBountyReward: number;
+  lastBountyRewardCr: string;
   lastBountyShip: string;
   lastFactionKillReward: number;
+  lastFactionKillRewardCr: string;
   lastDockingDeniedReason: DockingDeniedReason;
   lastSoldExplorationDataValue: number;
+  lastSoldExplorationDataValueCr: string;
   // session cumulative values
   sessionTotalJumpDistance: number;
+  sessionTotalJumpDistanceLy: string;
   sessionTotalBounty: number;
+  sessionTotalBountyCr: string;
   sessionTotalPiratesKilled: number;
   sessionTotalFactionKillBonds: number;
   sessionTotalFactionKillBondRewards: number;
+  sessionTotalFactionKillBondRewardsCr: string;
   sessionTotalInterdictionsReceived: number;
   sessionTotalInterdictionsReceivedEscaped: number;
   sessionTotalInterdictionsReceivedSubmitted: number;
@@ -55,6 +64,7 @@ export type EdData = Partial<{
   sessionTotalBodiesLeft: number;
   sessionTotalSoldExplorationData: number;
   sessionTotalSoldExplorationDataValue: number;
+  sessionTotalSoldExplorationDataValueCr: string;
   sessionTotalScans: number;
   sessionTotalAutoScanScans: number;
   sessionTotalBasicScans: number;
@@ -84,6 +94,28 @@ export interface EdDataManager {
  * so it's shared across the modules
  */
 class DataManager extends EventEmitter<EdDataKey> implements EdDataManager {
+  /**
+   * keys here as `foobar` are the source data to automatically
+   * generate `foobarCr` formated as credits
+   */
+  protected static readonly crData = [
+    'targetBounty',
+    'lastBountyReward',
+    'lastFactionKillReward',
+    'lastSoldExplorationDataValue',
+    'sessionTotalBounty',
+    'sessionTotalFactionKillBondRewards',
+    'sessionTotalSoldExplorationDataValue',
+  ];
+  /**
+   * keys here as `foobar` are the source data to automatically
+   * generate `foobarLy` formated as light years
+   */
+  protected static readonly lyData = [
+    'lastJumpDistance',
+    'sessionTotalJumpDistance',
+  ];
+
   public eventsEnabled: boolean = false;
 
   protected readonly data: EdData = {};
@@ -101,6 +133,9 @@ class DataManager extends EventEmitter<EdDataKey> implements EdDataManager {
     if (this.eventsEnabled && this.events.indexOf(key) === -1) {
       this.events.push(key);
     }
+
+    if (typeof data !== 'number') return;
+    this.formatDataIfNeeded(key, data);
   }
 
   public increase<K extends EdDataNumericKey>(key: K, qty: number = 1): void {
@@ -132,7 +167,26 @@ class DataManager extends EventEmitter<EdDataKey> implements EdDataManager {
     }
   }
 
-  protected modify<K extends EdDataKey>(key: K, data: EdData[K]): void {}
+  protected formatDataIfNeeded(key: string, data: number): void {
+    let formatKey: EdDataKey | undefined;
+    let formatData: string | undefined;
+
+    if (DataManager.crData.includes(key)) {
+      formatKey = `${key}Cr` as EdDataKey;
+      formatData = formatCredits(data as number);
+    } else if (DataManager.lyData.includes(key)) {
+      formatKey = `${key}Ly` as EdDataKey;
+      formatData = formatLy(data as number);
+    }
+
+    if (formatKey === undefined) return;
+    // tslint:disable: no-any
+    (this.data as any)[formatKey] = formatData;
+
+    if (this.eventsEnabled && this.events.indexOf(formatKey) === -1) {
+      this.events.push(formatKey);
+    }
+  }
 }
 
 export const dataManager = new DataManager() as EdDataManager;

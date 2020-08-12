@@ -1,10 +1,10 @@
 {
   "bodiesApproached": "{sessionTotalBodiesApproached, plural, one{Primera entrada planetaria} other{Entrada planetaria número #}} del día",
   "bodiesLeft": "{sessionTotalBodiesLeft, selectordinal, =1{Primera} =2{Segunda} =3{Tercera} other{#a}} salida planetaria del día",
-  "bounty1": "BOOM! Pirata eliminado en su {lastBountyShip} ({cr})",
-  "bounty2": "{sessionTotalPiratesKilled, plural, one{} other{Eso {sessionTotalPiratesKilled, plural, one{hace 1 pirata} other{hacen # piratas}} por un total de {totalCr} hoy}}",
-  "factionKillBonds1": "Conseguido un bono de combate de {cr}!",
-  "factionKillBonds2": "{sessionTotalFactionKillBonds, plural, one{} other{Eso {sessionTotalFactionKillBonds, plural, one{hace 1 bono} other{hacen # bonos}} por un total de {totalCr} hoy}}",
+  "bounty1": "BOOM! Pirata eliminado en su {lastBountyShip} ({lastBountyRewardCr})",
+  "bounty2": "{sessionTotalPiratesKilled, plural, one{} other{Eso {sessionTotalPiratesKilled, plural, one{hace 1 pirata} other{hacen # piratas}} por un total de {sessionTotalBountyCr} hoy}}",
+  "factionKillBonds1": "Conseguido un bono de combate de {lastFactionKillRewardCr}!",
+  "factionKillBonds2": "{sessionTotalFactionKillBonds, plural, one{} other{Eso {sessionTotalFactionKillBonds, plural, one{hace 1 bono} other{hacen # bonos}} por un total de {sessionTotalFactionKillBondRewardsCr} hoy}}",
   "dockingsDenied1": "{sessionTotalDockingsDenied, plural, one{Permiso de acople denegado ({lastDockingDeniedReason})} other{Nos han denegado el permiso de acople ({lastDockingDeniedReason})...}}",
   "dockingsDenied2": "{sessionTotalDockingsDenied, plural, one{} other{Ya van {sessionTotalDockingsDenied} permisos denegados hoy}}",
   "dockingsGranted": "{sessionTotalDockingsGranted, plural, one{Primer permiso de acople aprobado hoy} other{Permiso de acople número {sessionTotalDockingsGranted} que nos aprueban hoy...}}",
@@ -26,5 +26,6 @@
   "detailedScan": "{sessionTotalDetailedScans, plural, one{Primer D-Scan del día} other{Llevamos # sistemas escaneados hoy}}",
   "cargoScan": "{sessionTotalCargoScans, plural, one{Primer escaneo de carga del día} other{Hemos escaneado la carga de # naves hoy}}",
   "soldExplorationData1": "{sessionTotalSoldExplorationData, plural, one{Primera vez que vendemos datos de navegación hoy} other{Hoy hemos vendidos datos de navegación # veces...}}",
-  "soldExplorationData2": "{sessionTotalSoldExplorationData, plural, one{} other{...y con ello hemos ganado {totalCr} a lo largo del día}}"
+  "soldExplorationData2": "{sessionTotalSoldExplorationData, plural, one{} other{...y con ello hemos ganado {sessionTotalSoldExplorationData} a lo largo del día}}",
+  "gameMode": "{gameMode}"
 }
