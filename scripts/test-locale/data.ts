@@ -292,4 +292,10 @@ export const testCases: TestCase[] = [
       sessionTotalSoldExplorationData: 5,
     },
   },
+  {
+    key: 'gameMode',
+    data: {
+      gameMode: 'Solo',
+    },
+  },
 ];

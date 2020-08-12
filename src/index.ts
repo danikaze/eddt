@@ -14,7 +14,7 @@ import { TextSpacer } from './outputters/middleware/text-spacer';
 import { Outputter } from './outputters';
 
 import { NavInfoGenerator } from './info-generators/nav';
-import { GameModeInfoGenerator } from './info-generators/game-mode';
+import { GameModeInfoGenerator } from './info-generators/generators/game-mode';
 import { HeatWarningsInfoGenerator } from './info-generators/generators/heat-warning';
 import { ScannedInfoGenerator } from './info-generators/generators/scanned';
 import { BountyInfoGenerator } from './info-generators/generators/bounty';

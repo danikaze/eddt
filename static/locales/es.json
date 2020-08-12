@@ -26,5 +26,6 @@
   "detailedScan": "{sessionTotalDetailedScans, plural, one{Primer D-Scan del día} other{Llevamos # sistemas escaneados hoy}}",
   "cargoScan": "{sessionTotalCargoScans, plural, one{Primer escaneo de carga del día} other{Hemos escaneado la carga de # naves hoy}}",
   "soldExplorationData1": "{sessionTotalSoldExplorationData, plural, one{Primera vez que vendemos datos de navegación hoy} other{Hoy hemos vendidos datos de navegación # veces...}}",
-  "soldExplorationData2": "{sessionTotalSoldExplorationData, plural, one{} other{...y con ello hemos ganado {sessionTotalSoldExplorationData} a lo largo del día}}"
+  "soldExplorationData2": "{sessionTotalSoldExplorationData, plural, one{} other{...y con ello hemos ganado {sessionTotalSoldExplorationData} a lo largo del día}}",
+  "gameMode": "{gameMode}"
 }
