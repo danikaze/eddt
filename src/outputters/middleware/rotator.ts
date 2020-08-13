@@ -1,3 +1,4 @@
+import { extendObjectsOnly } from '@src/utils/extend-objects-only';
 import { InfoGenerator } from '@src/info-generators';
 import { EdDataKey } from '@src/ed/data-manager';
 import { Outputter } from '..';
@@ -43,10 +44,11 @@ export class OutputRotator extends Outputter {
     this.showNext = this.showNext.bind(this);
     this.waitBeforeNext = this.waitBeforeNext.bind(this);
 
-    this.options = {
-      ...OutputRotator.defaultOptions,
-      ...options,
-    };
+    this.options = extendObjectsOnly(
+      {},
+      OutputRotator.defaultOptions,
+      options
+    ) as OutputRotatorOptions;
   }
 
   public source(sourceList: InfoGenerator<EdDataKey>[]): this {

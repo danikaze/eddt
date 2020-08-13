@@ -66,7 +66,7 @@ export abstract class InfoGenerator<E extends EdDataKey> {
     }
   }
 
-  protected async executePipe(info: string): Promise<void> {
+  protected executePipe(info: string): void {
     this.pipeList.forEach((outputter) => {
       outputter.put(info);
     });
