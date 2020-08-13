@@ -1,6 +1,4 @@
 import { extendObjectsOnly } from '@src/utils/extend-objects-only';
-import { InfoGenerator } from '@src/info-generators';
-import { EdDataKey } from '@src/ed/data-manager';
 import { Outputter } from '..';
 
 export interface OutputRotatorOptions {
@@ -49,11 +47,6 @@ export class OutputRotator extends Outputter {
       OutputRotator.defaultOptions,
       options
     ) as OutputRotatorOptions;
-  }
-
-  public source(sourceList: InfoGenerator<EdDataKey>[]): this {
-    sourceList.forEach((info) => info.pipe(this));
-    return this;
   }
 
   protected async process(info: string): Promise<false> {
