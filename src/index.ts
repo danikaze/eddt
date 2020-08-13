@@ -12,6 +12,7 @@ import { WriteFileOutputter } from './outputters/write-file';
 import { OutputRotator } from './outputters/middleware/rotator';
 import { TextSpacer } from './outputters/middleware/text-spacer';
 import { Outputter } from './outputters';
+import { flattenObject } from './utils/flatten-object';
 
 import { NavInfoGenerator } from './info-generators/nav';
 import { GameModeInfoGenerator } from './info-generators/generators/game-mode';
@@ -62,7 +63,7 @@ nodeCleanup((exitCode, signal) => {
   setLocale(settings.locale);
 
   if (settings.displaySettings) {
-    console.table(settings);
+    console.table(flattenObject(settings, ['outputs']));
   }
 
   try {
