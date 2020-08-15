@@ -1,3 +1,4 @@
+import { extendObjectsOnly } from '@src/utils/extend-objects-only';
 import { Outputter } from '..';
 
 export interface TextSpacerOptions {
@@ -18,10 +19,11 @@ export class TextSpacer extends Outputter {
   constructor(options?: Partial<TextSpacerOptions>) {
     super();
 
-    this.options = {
-      ...TextSpacer.defaultOptions,
-      ...options,
-    };
+    this.options = extendObjectsOnly(
+      {},
+      TextSpacer.defaultOptions,
+      options
+    ) as TextSpacerOptions;
   }
 
   protected async process(info: string): Promise<string> {

@@ -9,8 +9,12 @@
       "request": "launch",
       "name": "Launch Program",
       "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}/app/main.js",
-      "outFiles": ["${workspaceFolder}/app/*.js"]
+      "program": "${workspaceFolder}/app/eddt.js",
+      "outFiles": ["${workspaceFolder}/app/*.js"],
+      "cwd": "${workspaceFolder}/app",
+      "sourceMapPathOverrides": {
+        "webpack:/*": "${workspaceFolder}/*"
+      }
     }
   ]
 }

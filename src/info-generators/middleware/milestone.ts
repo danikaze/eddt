@@ -1,5 +1,6 @@
-import { InfoGeneratorMiddleware } from '.';
 import { EdData, EdDataNumericKey } from '@src/ed/data-manager';
+import { extendObjectsOnly } from '@src/utils/extend-objects-only';
+import { InfoGeneratorMiddleware } from '.';
 
 export interface OnlyInMilestonesOptions {
   extend: boolean;
@@ -28,7 +29,11 @@ export class OnlyInMilestones extends InfoGeneratorMiddleware<Data> {
 
     this.key = key;
     this.milestones = milestones;
-    this.options = { ...OnlyInMilestones.defaultOptions, ...options };
+    this.options = extendObjectsOnly(
+      {},
+      OnlyInMilestones.defaultOptions,
+      options
+    ) as OnlyInMilestonesOptions;
 
     this.next = milestones[0];
   }

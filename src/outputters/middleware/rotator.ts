@@ -1,5 +1,4 @@
-import { InfoGenerator } from '@src/info-generators';
-import { EdDataKey } from '@src/ed/data-manager';
+import { extendObjectsOnly } from '@src/utils/extend-objects-only';
 import { Outputter } from '..';
 
 export interface OutputRotatorOptions {
@@ -43,15 +42,11 @@ export class OutputRotator extends Outputter {
     this.showNext = this.showNext.bind(this);
     this.waitBeforeNext = this.waitBeforeNext.bind(this);
 
-    this.options = {
-      ...OutputRotator.defaultOptions,
-      ...options,
-    };
-  }
-
-  public source(sourceList: InfoGenerator<EdDataKey>[]): this {
-    sourceList.forEach((info) => info.pipe(this));
-    return this;
+    this.options = extendObjectsOnly(
+      {},
+      OutputRotator.defaultOptions,
+      options
+    ) as OutputRotatorOptions;
   }
 
   protected async process(info: string): Promise<false> {

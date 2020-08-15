@@ -4,11 +4,11 @@ import { TranslationData, t } from '@src/utils/i18n';
 
 export function getSimpleInfoGenerator<K extends EdDataKey = EdDataKey>(
   textKey: string,
-  dataKeys: K[]
+  dataKeys: K | K[]
 ) {
   return class SimpleInfoGenerator extends InfoGenerator<K> {
     constructor() {
-      super(dataKeys);
+      super(Array.isArray(dataKeys) ? dataKeys : [dataKeys]);
     }
 
     protected generate(data: EdData): string | string[] | undefined {

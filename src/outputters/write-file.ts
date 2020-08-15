@@ -1,5 +1,6 @@
 import { writeFileSync } from 'fs';
 import { basename } from 'path';
+import { extendObjectsOnly } from '@src/utils/extend-objects-only';
 import { Outputter } from '.';
 
 export interface WriteFileOutputterOptions {
@@ -22,10 +23,11 @@ export class WriteFileOutputter extends Outputter {
     super();
 
     this.path = path;
-    this.options = {
-      ...WriteFileOutputter.defaultOptions,
-      ...options,
-    };
+    this.options = extendObjectsOnly(
+      {},
+      WriteFileOutputter.defaultOptions,
+      options
+    ) as WriteFileOutputterOptions;
 
     if (!this.options.clearOnStart) return;
     try {
