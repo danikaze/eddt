@@ -11,6 +11,7 @@ export function readSettings(): Required<Settings> {
     locale: 'en',
     displayFinalData: false,
     displaySettings: false,
+    finalDataBlackList: [],
     outputs: [],
     ...fileValues,
     eventManager: {

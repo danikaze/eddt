@@ -38,7 +38,11 @@ nodeCleanup((exitCode, signal) => {
     await initEventManager(settings.eventManager);
     getEventManager().on('Shutdown', () => {
       if (settings.displayFinalData) {
-        console.table(dataManager.getAll());
+        const data = flattenObject(
+          dataManager.getAll(),
+          settings.finalDataBlackList
+        );
+        console.table(data);
       }
       process.kill(0);
     });

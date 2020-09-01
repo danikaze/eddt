@@ -3,6 +3,7 @@
 
   "displaySettings": true,
   "displayFinalData": true,
+  "finalDataBlackList": ["routeFull"],
 
   "eventManager": {
     "verbose": true,
