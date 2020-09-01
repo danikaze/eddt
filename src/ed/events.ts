@@ -132,7 +132,7 @@ export interface EdLeaveBodyEvent extends EdEvent<'LeaveBody'> {
 
 export interface EdBountyEvent extends EdEvent<'Bounty'> {
   Rewards: BountyReward[];
-  Target: ShipType;
+  Target: ShipType | 'Skimmer';
   Target_Localised: string;
   TotalReward: number;
   VictimFaction: string;

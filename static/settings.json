@@ -3,6 +3,7 @@
 
   "displaySettings": true,
   "displayFinalData": true,
+  "finalDataBlackList": ["routeFull"],
 
   "eventManager": {
     "verbose": true,
@@ -82,6 +83,11 @@
                 "sessionTotalBountyCr",
                 "sessionTotalPiratesKilled"
               ]
+            },
+            {
+              "type": "dataOutput",
+              "i18n": "skimmerKill",
+              "infoData": ["sessionTotalSkimmersKilled"]
             },
             {
               "type": "dataOutput",

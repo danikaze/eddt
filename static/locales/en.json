@@ -3,6 +3,7 @@
   "bodiesLeft": "{sessionTotalBodiesLeft, plural, one{First time leaving a planet} other{# bodies left}} today",
   "bounty1": "BOOM! That Pirate and his {lastBountyShip} were eliminated! ({lastBountyRewardCr})",
   "bounty2": "{sessionTotalPiratesKilled, plural, one{} other{That was the {sessionTotalPiratesKilled, selectordinal, one{1st pirate} two{2nd pirate} few{3rd pirate} other{#th pirate}} of today for a total of {sessionTotalBountyCr}}}",
+  "skimmerKill": "That was the {sessionTotalSkimmersKilled, selectordinal, one{first} two{2nd} few{3rd} other{#th}} skimmer destroyed today",
   "factionKillBonds1": "Got a {lastFactionKillRewardCr} combat bond!",
   "factionKillBonds2": "{sessionTotalFactionKillBonds, plural, one{} other{That was the {sessionTotalFactionKillBonds, selectordinal, one{1st} two{2nd} few{3rd} other{#th}} one with a total of {sessionTotalFactionKillBondRewardsCr} today}}",
   "dockingsDenied1": "{sessionTotalDockingsDenied, plural, one{Docking permit denied ({lastDockingDeniedReason})} other{Another denied docking ({lastDockingDeniedReason})...}}",
@@ -26,5 +27,6 @@
   "detailedScan": "{sessionTotalDetailedScans, plural, one{First D-Scan of today} other{We have scanned # systems today}}",
   "cargoScan": "{sessionTotalCargoScans, plural, one{First cargo scan of today} other{We have scanned # ships' cargo today}}",
   "soldExplorationData1": "{sessionTotalSoldExplorationData, plural, one{First time of the day selling navigation data} other{We've sold navigation data # times today...}}",
+  "soldExplorationData2": "{sessionTotalSoldExplorationData, plural, one{} other{...and that makes {sessionTotalSoldExplorationDataValueCr} for today!}}",
   "gameMode": "Mode: {gameMode}"
 }

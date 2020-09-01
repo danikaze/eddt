@@ -3,6 +3,7 @@
   "bodiesLeft": "{sessionTotalBodiesLeft, selectordinal, =1{Primera} =2{Segunda} =3{Tercera} other{#a}} salida planetaria del día",
   "bounty1": "BOOM! Pirata eliminado en su {lastBountyShip} ({lastBountyRewardCr})",
   "bounty2": "{sessionTotalPiratesKilled, plural, one{} other{Eso {sessionTotalPiratesKilled, plural, one{hace 1 pirata} other{hacen # piratas}} por un total de {sessionTotalBountyCr} hoy}}",
+  "skimmerKill": "{sessionTotalSkimmersKilled, plural, one{Primer dron que destruímos hoy} other{Dron número # del día que destruímos}}",
   "factionKillBonds1": "Conseguido un bono de combate de {lastFactionKillRewardCr}!",
   "factionKillBonds2": "{sessionTotalFactionKillBonds, plural, one{} other{Eso {sessionTotalFactionKillBonds, plural, one{hace 1 bono} other{hacen # bonos}} por un total de {sessionTotalFactionKillBondRewardsCr} hoy}}",
   "dockingsDenied1": "{sessionTotalDockingsDenied, plural, one{Permiso de acople denegado ({lastDockingDeniedReason})} other{Nos han denegado el permiso de acople ({lastDockingDeniedReason})...}}",
@@ -13,7 +14,7 @@
   "interdictionsEscaped": "Hemos escapado {sessionTotalInterdictionsReceivedEscaped, plural, one{de la primera interdicción del día} other{# interdicciones hoy!}}",
   "interdictionsLost": "{sessionTotalInterdictionsReceivedLost, plural, one{Primera interdicción que nos hacen hoy :(} other{Nos han interdiccionado {sessionTotalInterdictionsReceivedLost} veces :(}}",
   "interdictionsSubmitted": "{sessionTotalInterdictionsReceivedSubmitted, plural, one{Primera interdicción del día a la que nos rendimos!} other{Nos hemos rendido a {sessionTotalInterdictionsReceivedSubmitted} interdicciones hoy!}}",
-  "jumpDistance": "Hemos saltado más de {sessionTotalJumpDistance} en esta sesión de juego",
+  "jumpDistance": "Hemos saltado más de {sessionTotalJumpDistanceLy} en esta sesión de juego",
   "launchedDrones": "{sessionTotalDronesLaunched, plural, one{Primer dron que usamos hoy!} other{Ya son # drones utilizados hoy}}",
   "materialCollected": "{sessionTotalMaterialsCollected, plural, one{Primer material que recogemos hoy} other{# materiales recogidos en esta sesión de juego}}",
   "miningRefined": "{sessionTotalMiningRefined, plural, one{Primer mineral refinado del día} other{# minerales refinados hoy}}",
@@ -26,6 +27,6 @@
   "detailedScan": "{sessionTotalDetailedScans, plural, one{Primer D-Scan del día} other{Llevamos # sistemas escaneados hoy}}",
   "cargoScan": "{sessionTotalCargoScans, plural, one{Primer escaneo de carga del día} other{Hemos escaneado la carga de # naves hoy}}",
   "soldExplorationData1": "{sessionTotalSoldExplorationData, plural, one{Primera vez que vendemos datos de navegación hoy} other{Hoy hemos vendidos datos de navegación # veces...}}",
-  "soldExplorationData2": "{sessionTotalSoldExplorationData, plural, one{} other{...y con ello hemos ganado {sessionTotalSoldExplorationData} a lo largo del día}}",
+  "soldExplorationData2": "{sessionTotalSoldExplorationData, plural, one{} other{...y con ello hemos ganado {sessionTotalSoldExplorationDataValueCr} a lo largo del día}}",
   "gameMode": "{gameMode}"
 }

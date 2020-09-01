@@ -3,6 +3,11 @@ import { EdEventProcessor } from '.';
 export const Bounty: EdEventProcessor<'Bounty'> = {
   event: 'Bounty',
   processor: (dataManager, event): void => {
+    if (event.Target === 'Skimmer') {
+      dataManager.increase('sessionTotalSkimmersKilled');
+      return;
+    }
+
     dataManager.set('lastBountyReward', event.TotalReward);
     dataManager.set('lastBountyShip', event.Target_Localised);
     dataManager.increase('sessionTotalBounty', event.TotalReward);

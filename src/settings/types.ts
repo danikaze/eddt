@@ -4,6 +4,7 @@ export interface Settings {
   locale?: string;
   displaySettings?: boolean;
   displayFinalData?: boolean;
+  finalDataBlackList?: string[];
   eventManager: {
     journalFolder?: string;
     verbose?: boolean;

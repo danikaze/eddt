@@ -9,11 +9,11 @@ function addUnique<T>(arr: T[], elem: T): void {
   arr.push(elem);
 }
 
-const lang = process.argv[2];
+const [, , lang, ...whitelistedKeys] = process.argv;
 
 if (!lang) {
   console.error(
-    `Locale not defined. Run this command as:\n  npm run test-locale {LOCALE}`
+    `Locale not defined. Run this command as:\n  npm run test-locale {LOCALE} [{KEY_1} [{KEY_2}] ... [{KEY_N}]]`
   );
   process.exit(1);
 }
@@ -33,6 +33,8 @@ const undefinedOnKeys: string[] = [];
 const missingKeys: string[] = [];
 
 testCases.forEach(({ key, data }) => {
+  if (whitelistedKeys.length > 0 && !whitelistedKeys.includes(key)) return;
+
   try {
     if (
       !isDefined(key, lang) &&
