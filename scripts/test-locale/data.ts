@@ -48,6 +48,18 @@ export const testCases: TestCase[] = [
     },
   },
   {
+    key: 'skimmerKill',
+    data: {
+      sessionTotalSkimmersKilled: 1,
+    },
+  },
+  {
+    key: 'skimmerKill',
+    data: {
+      sessionTotalSkimmersKilled: 3,
+    },
+  },
+  {
     key: 'dockingsDenied',
     data: {
       sessionTotalDockingsDenied: 1,

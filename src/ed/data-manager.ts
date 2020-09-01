@@ -38,6 +38,7 @@ export type EdData = Partial<{
   sessionTotalBounty: number;
   sessionTotalBountyCr: string;
   sessionTotalPiratesKilled: number;
+  sessionTotalSkimmersKilled: number;
   sessionTotalFactionKillBonds: number;
   sessionTotalFactionKillBondRewards: number;
   sessionTotalFactionKillBondRewardsCr: string;

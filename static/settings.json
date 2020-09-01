@@ -86,6 +86,11 @@
             },
             {
               "type": "dataOutput",
+              "i18n": "skimmerKill",
+              "infoData": ["sessionTotalSkimmersKilled"]
+            },
+            {
+              "type": "dataOutput",
               "i18n": "factionKillBonds",
               "infoData": [
                 "sessionTotalFactionKillBonds",

@@ -3,6 +3,7 @@
   "bodiesLeft": "{sessionTotalBodiesLeft, selectordinal, =1{Primera} =2{Segunda} =3{Tercera} other{#a}} salida planetaria del día",
   "bounty1": "BOOM! Pirata eliminado en su {lastBountyShip} ({lastBountyRewardCr})",
   "bounty2": "{sessionTotalPiratesKilled, plural, one{} other{Eso {sessionTotalPiratesKilled, plural, one{hace 1 pirata} other{hacen # piratas}} por un total de {sessionTotalBountyCr} hoy}}",
+  "skimmerKill": "{sessionTotalSkimmersKilled, plural, one{Primer dron que destruímos hoy} other{Dron número # del día que destruímos}}",
   "factionKillBonds1": "Conseguido un bono de combate de {lastFactionKillRewardCr}!",
   "factionKillBonds2": "{sessionTotalFactionKillBonds, plural, one{} other{Eso {sessionTotalFactionKillBonds, plural, one{hace 1 bono} other{hacen # bonos}} por un total de {sessionTotalFactionKillBondRewardsCr} hoy}}",
   "dockingsDenied1": "{sessionTotalDockingsDenied, plural, one{Permiso de acople denegado ({lastDockingDeniedReason})} other{Nos han denegado el permiso de acople ({lastDockingDeniedReason})...}}",
