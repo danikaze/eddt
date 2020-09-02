@@ -31,7 +31,25 @@
     },
     {
       "type": "writeFile",
-      "path": "./mode.txt",
+      "path": "./distance.txt",
+      "clearOnStart": true,
+      "clearOnEnd": true,
+      "verbose": true,
+      "onInput": {
+        "type": "textSpacer",
+        "prefix": " ",
+        "postfix": " "
+      },
+      "sources": [
+        {
+          "type": "distance",
+          "target": [55.71875, 17.59375, 27.15625],
+          "name": "Jameson Memorial"
+        }
+      ]
+    },
+    {
+      "type": "writeFile",
       "clearOnStart": true,
       "clearOnEnd": true,
       "verbose": true,

@@ -310,4 +310,24 @@ export const testCases: TestCase[] = [
       gameMode: 'Solo',
     },
   },
+  {
+    key: 'distance',
+    data: {
+      distance: 22000.98,
+      roundedDistance: 22000,
+      distanceLy: '22,000.98 Ly',
+      roundedDistanceLy: '22000.00 Ly',
+      name: 'Jameson Memorial',
+    },
+  },
+  {
+    key: 'distance',
+    data: {
+      distance: 0,
+      roundedDistance: 0,
+      distanceLy: '0.00 Ly',
+      roundedDistanceLy: '0.00 Ly',
+      name: 'Colonia',
+    },
+  },
 ];

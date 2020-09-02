@@ -1,5 +1,10 @@
 import EventEmitter from 'eventemitter3';
-import { CombatRank, DockingDeniedReason, GameModeType } from './definitions';
+import {
+  CombatRank,
+  DockingDeniedReason,
+  GameModeType,
+  StarPos,
+} from './definitions';
 import { formatCredits, formatLy } from '@src/utils/format';
 
 /**
@@ -12,6 +17,7 @@ export type EdData = Partial<{
   currentBody: string;
   currentStation: string;
   currentSystem: string;
+  currentCoords: StarPos;
   routeTargetSystem: string;
   routeFull: string[];
   routeJumpsLeft: number;
