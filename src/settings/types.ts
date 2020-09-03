@@ -1,4 +1,5 @@
 import { LogEvent } from '@src/ed/event-manager';
+import { StarPos } from '@src/ed/definitions';
 
 export interface Settings {
   locale?: string;
@@ -18,7 +19,10 @@ export type OutputterSetting =
   | OutputterWriteFileSetting
   | OutputterRotatorFileSetting
   | OutputterTextSpacerSetting;
-export type InfoSetting = DataOutputInfoSetting | NavInfoSetting;
+export type InfoSetting =
+  | DataOutputInfoSetting
+  | NavInfoSetting
+  | DistanceInfoSetting;
 export type InfoMiddlewareSetting = InfoMiddlewareMilestoneSetting;
 
 type OutputterTypes = OutputterSetting['type'];
@@ -61,6 +65,11 @@ export interface DataOutputInfoSetting extends BaseInfoSetting<'dataOutput'> {
 }
 
 export type NavInfoSetting = BaseInfoSetting<'nav'>;
+
+export interface DistanceInfoSetting extends BaseInfoSetting<'distance'> {
+  target: StarPos;
+  name: string;
+}
 
 interface BaseInfoMiddlewareSetting<T extends string> {
   type: T;

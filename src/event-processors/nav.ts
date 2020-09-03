@@ -17,6 +17,7 @@ export const FSDJump: EdEventProcessor<'FSDJump'> = {
     const currentSystem = event.StarSystem;
     dataManager.set('currentSystem', currentSystem);
     dataManager.set('lastJumpDistance', event.JumpDist);
+    dataManager.set('currentCoords', event.StarPos);
     dataManager.increase('sessionTotalJumpDistance', event.JumpDist);
     dataManager.delete('currentBody');
 

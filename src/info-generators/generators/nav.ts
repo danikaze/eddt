@@ -1,5 +1,5 @@
 import { EdData } from '@src/ed/data-manager';
-import { InfoGenerator } from '.';
+import { InfoGenerator } from '..';
 
 type DataKeys =
   | 'currentBody'
