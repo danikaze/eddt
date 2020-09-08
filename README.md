@@ -85,6 +85,10 @@ This is the list of all settings available so far (settings without a default ar
 
 ## Change log
 
+### 0.7.0
+
+- Provide an executable
+
 ### 0.6.0
 
 - Added info generators: `LoadData`, `Scan`, `FactionKillBond`

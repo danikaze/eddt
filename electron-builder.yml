@@ -1,0 +1,12 @@
+appId: com.danikaze.eddt
+productName: EDDT
+copyright: Copyright © 2020 danikaze
+directories:
+  output: dist
+  buildResources: resources
+files:
+  - from: .
+    filter:
+      - package.json
+      - app
+publish: null
