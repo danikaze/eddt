@@ -4,38 +4,30 @@
 
 ## Installation
 
-Since this is just an early development version, [NodeJS](https://nodejs.org/) is required to run this tool, but [providing an executable is planned](https://github.com/danikaze/eddt/issues/12) (as well as [a UI](https://github.com/danikaze/eddt/issues/11)).
+[Download](https://github.com/danikaze/eddt/releases/latest) the installer and execute it. It will automatically install the application in the `%USERPROFILE%\AppData\Local\Programs\eddt` folder and create a Desktop shortcut.
 
-For now, source code needs to be built after being downloaded
+It can be uninstalled as a regular Windows application, from the `Add or remove programs` menu.
 
-```
-npm run build
-```
-
-And then it can be run like this anytime:
-
-```
-npm run start
-```
+**Alternative:** Download the unpacked version, unzip it and execute it from your preferred location without installing it.
 
 ## Architecture
 
 All the processing is split in several phases.
 
-There's a singleton [EventManager](src/ed/event-manager.ts) and a singleton [DataManager](src/ed/data-manager.ts).
+There's a singleton [EventManager](main/ed/event-manager.ts) and a singleton [DataManager](main/ed/data-manager.ts).
 
-- The `EventManager` is listening to the Elite Dangerous Journal file and triggers [events](src/ed/interfaces.ts) when they happen.
-- The `DataManager` listens to those events through the [EventProcessors](src/event-processors) and update the _data library_, which is accessible from other parts of the code as well. When any data is updated, an event is triggered so actions can be taken.
-- The next step is done by the [InfoGenerators](src/info-generators), which create texts that can be used some way (usually piped to a [file writer](src/outputters/write-file.ts) instance)
-- The last step is done by the [Outputters](src/outputters), which accept strings (provided by the `InfoGenerators`) and do something with them, so they are usable by external programs (such as [OBS](https://obsproject.com/)).
+- The `EventManager` is listening to the Elite Dangerous Journal file and triggers [events](main/ed/events.ts) when they happen.
+- The `DataManager` listens to those events through the [EventProcessors](main/event-processors) and update the _data library_, which is accessible from other parts of the code as well. When any data is updated, an event is triggered so actions can be taken.
+- The next step is done by the [InfoGenerators](main/info-generators), which create texts that can be used some way (usually piped to a [file writer](main/outputters/write-file.ts) instance)
+- The last step is done by the [Outputters](main/outputters), which accept strings (provided by the `InfoGenerators`) and do something with them, so they are usable by external programs (such as [OBS](https://obsproject.com/) with a _Text Source_ reading the contents from file).
 
 ### Notes
 
 `DataManager` listen to game Events (triggered by `EventManager`), and since those Events could affect more than one data at the same time, the events triggered by the `DataManager` are done after all the updates are finished, providing as well the timestamp, so the `InfoGenerators` don't run several times for the same update.
 
-Some `Outputters` could act as a _middle-ware_ for `Outputters` as well. (i.e. the [Rotator](src/outputters/rotator.ts) accepts several `InfoGenerators` and manages the info outputting it into only one file via another piped `Outputter`)
+Some `Outputters` could act as a _middle-ware_ for `Outputters` as well. (i.e. the [Rotator](main/outputters/rotator.ts) accepts several `InfoGenerators` and manages the info outputting it into only one file via another piped `Outputter`)
 
-There are [middlewares](src/info-generators/middleware) for the `InfoGenerators` as well. They take the incoming data and can cancel the generation (by returning `undefined` or returning a modified version of the data itself)
+There are [middlewares](main/info-generators/middleware) for the `InfoGenerators` as well. They take the incoming data and can cancel the generation (by returning `undefined` or returning a modified version of the data itself)
 
 ## Is it safe?
 
@@ -47,7 +39,7 @@ If you are curiours, you can check the content of the `Journal` files in the dir
 
 ## Configuration
 
-Yes, some settings are required to make this app work! But from version 0.5.0 this is possible to be configured using [settings.json](static/settings.json) (or `settings.js` with `module.exports` would work too).
+Yes, some settings are required to make this app work! But from version 0.5.0 this is possible to be configured using [settings.json](main/static/settings.json) (or `settings.js` with `module.exports` would work too). This file will be available in the `data` directory inside the application **after** its first execution.
 
 This is the list of all settings available so far (settings without a default are required)
 
@@ -87,7 +79,9 @@ This is the list of all settings available so far (settings without a default ar
 
 ### 0.7.0
 
-- Provide an executable
+- Provide an executable for easy execution
+- Added info generator: `Distance`
+- Differenciate when killing skimmers from pirates, allowing to use different texts for it
 
 ### 0.6.0
 
