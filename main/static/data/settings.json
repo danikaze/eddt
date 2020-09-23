@@ -1,0 +1,283 @@
+{
+  "locale": "en",
+
+  "displaySettings": true,
+  "displayFinalData": true,
+  "finalDataBlackList": ["routeFull"],
+
+  "eventManager": {
+    "verbose": true,
+    "logEvents": ["used"],
+    "ignoreBefore": 30000
+  },
+
+  "outputs": [
+    {
+      "type": "writeFile",
+      "path": "./output/nav.txt",
+      "clearOnStart": true,
+      "clearOnEnd": true,
+      "verbose": true,
+      "onInput": {
+        "type": "textSpacer",
+        "prefix": " ",
+        "postfix": " "
+      },
+      "sources": [
+        {
+          "type": "nav"
+        }
+      ]
+    },
+    {
+      "type": "writeFile",
+      "path": "./output/distance.txt",
+      "clearOnStart": true,
+      "clearOnEnd": true,
+      "verbose": true,
+      "onInput": {
+        "type": "textSpacer",
+        "prefix": " ",
+        "postfix": " "
+      },
+      "sources": [
+        {
+          "type": "distance",
+          "target": [55.71875, 17.59375, 27.15625],
+          "name": "Jameson Memorial"
+        }
+      ]
+    },
+    {
+      "type": "writeFile",
+      "path": "./output/mode.txt",
+      "clearOnStart": true,
+      "clearOnEnd": true,
+      "verbose": true,
+      "onInput": {
+        "type": "textSpacer",
+        "prefix": " ",
+        "postfix": " "
+      },
+      "sources": [
+        {
+          "type": "dataOutput",
+          "i18n": "gameMode",
+          "infoData": ["gameMode"]
+        }
+      ]
+    },
+    {
+      "type": "writeFile",
+      "path": "./output/events.txt",
+      "clearOnStart": true,
+      "clearOnEnd": true,
+      "verbose": true,
+      "onInput": {
+        "type": "textSpacer",
+        "prefix": " ",
+        "postfix": " ",
+        "onInput": {
+          "type": "rotator",
+          "repeatTimes": 1,
+          "sources": [
+            {
+              "type": "dataOutput",
+              "i18n": "heatWarning",
+              "infoData": ["sessionTotalHeatWarnings"]
+            },
+            {
+              "type": "dataOutput",
+              "i18n": "scanned",
+              "infoData": ["sessionTotalScanned"]
+            },
+            {
+              "type": "dataOutput",
+              "i18n": "bounty",
+              "infoData": [
+                "lastBountyReward",
+                "lastBountyRewardCr",
+                "lastBountyShip",
+                "sessionTotalBounty",
+                "sessionTotalBountyCr",
+                "sessionTotalPiratesKilled"
+              ]
+            },
+            {
+              "type": "dataOutput",
+              "i18n": "skimmerKill",
+              "infoData": ["sessionTotalSkimmersKilled"]
+            },
+            {
+              "type": "dataOutput",
+              "i18n": "factionKillBonds",
+              "infoData": [
+                "sessionTotalFactionKillBonds",
+                "sessionTotalFactionKillBondRewards",
+                "sessionTotalFactionKillBondRewardsCr",
+                "lastFactionKillReward",
+                "lastFactionKillRewardCr"
+              ]
+            },
+            {
+              "type": "dataOutput",
+              "i18n": "jumpDistance",
+              "infoData": [
+                "sessionTotalJumpDistance",
+                "sessionTotalJumpDistanceLy"
+              ],
+              "onInput": [
+                {
+                  "type": "milestones",
+                  "data": "sessionTotalJumpDistance",
+                  "values": [100, 250, 500, 1000, 2500, 5000],
+                  "cap": true
+                }
+              ]
+            },
+            {
+              "type": "dataOutput",
+              "i18n": "materialCollected",
+              "infoData": ["sessionTotalMaterialsCollected"],
+              "onInput": [
+                {
+                  "type": "milestones",
+                  "data": "sessionTotalMaterialsCollected",
+                  "values": [5, 10, 25, 50]
+                }
+              ]
+            },
+            {
+              "type": "dataOutput",
+              "i18n": "miningRefined",
+              "infoData": ["sessionTotalMiningRefined"],
+              "onInput": [
+                {
+                  "type": "milestones",
+                  "data": "sessionTotalMiningRefined",
+                  "values": [5, 10, 25, 50]
+                }
+              ]
+            },
+            {
+              "type": "dataOutput",
+              "i18n": "prospectedAsteroids",
+              "infoData": ["sessionTotalAsteroidsProspected"],
+              "onInput": [
+                {
+                  "type": "milestones",
+                  "data": "sessionTotalAsteroidsProspected",
+                  "values": [5, 10, 25, 50]
+                }
+              ]
+            },
+            {
+              "type": "dataOutput",
+              "i18n": "launchedDrones",
+              "infoData": ["sessionTotalDronesLaunched"],
+              "onInput": [
+                {
+                  "type": "milestones",
+                  "data": "sessionTotalDronesLaunched",
+                  "values": [5, 10, 25, 50]
+                }
+              ]
+            },
+            {
+              "type": "dataOutput",
+              "i18n": "missionsCompleted",
+              "infoData": ["sessionTotalMissionsCompleted"],
+              "onInput": [
+                {
+                  "type": "milestones",
+                  "data": "sessionTotalMissionsCompleted",
+                  "values": [1, 3, 5, 10]
+                }
+              ]
+            },
+            {
+              "type": "dataOutput",
+              "i18n": "interdictionsEscaped",
+              "infoData": ["sessionTotalInterdictionsReceivedEscaped"]
+            },
+            {
+              "type": "dataOutput",
+              "i18n": "interdictionsLost",
+              "infoData": ["sessionTotalInterdictionsReceivedLost"]
+            },
+            {
+              "type": "dataOutput",
+              "i18n": "interdictionsSubmitted",
+              "infoData": ["sessionTotalInterdictionsReceivedSubmitted"]
+            },
+            {
+              "type": "dataOutput",
+              "i18n": "dockingsRequested",
+              "infoData": ["sessionTotalDockingsRequested"],
+              "onInput": [
+                {
+                  "type": "milestones",
+                  "data": "sessionTotalDockingsRequested",
+                  "values": [1, 5, 10, 20]
+                }
+              ]
+            },
+            {
+              "type": "dataOutput",
+              "i18n": "dockingsGranted",
+              "infoData": ["sessionTotalDockingsGranted"],
+              "onInput": [
+                {
+                  "type": "milestones",
+                  "data": "sessionTotalDockingsGranted",
+                  "values": [1, 5, 10, 20]
+                }
+              ]
+            },
+            {
+              "type": "dataOutput",
+              "i18n": "dockingsDenied",
+              "infoData": [
+                "sessionTotalDockingsDenied",
+                "lastDockingDeniedReason"
+              ]
+            },
+            {
+              "type": "dataOutput",
+              "i18n": "dockingsGranted",
+              "infoData": ["sessionTotalDockingsGranted"],
+              "onInput": [
+                {
+                  "type": "milestones",
+                  "data": "sessionTotalDockingsGranted",
+                  "values": [1, 5, 10, 20]
+                }
+              ]
+            },
+            {
+              "type": "dataOutput",
+              "i18n": "soldExplorationData",
+              "infoData": [
+                "sessionTotalSoldExplorationDataValue",
+                "sessionTotalSoldExplorationDataValueCr",
+                "lastSoldExplorationDataValue",
+                "lastSoldExplorationDataValueCr",
+                "sessionTotalSoldExplorationData"
+              ]
+            },
+            {
+              "type": "dataOutput",
+              "i18n": "detailedScan",
+              "infoData": ["sessionTotalDetailedScans"]
+            },
+            {
+              "type": "dataOutput",
+              "i18n": "cargoScan",
+              "infoData": ["sessionTotalCargoScans"]
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

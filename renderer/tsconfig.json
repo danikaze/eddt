@@ -1,0 +1,26 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@components": ["components"],
+      "@components/*": ["components/*"],
+      "@common-utils": ["../common-utils"],
+      "@common-utils/*": ["../common-utils/*"],
+      "@renderer": ["renderer"],
+      "@renderer/*": ["renderer/*"],
+      "@utils": ["utils"],
+      "@utils/*": ["utils/*"]
+    }
+  },
+  "include": [
+    "../build-time-constants/global.d.ts",
+    "../build-time-constants/renderer.d.ts",
+    "../build-time-constants/renderer-client.d.ts",
+    "../build-time-constants/renderer-server.d.ts",
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": ["node_modules", "app", "dist"]
+}

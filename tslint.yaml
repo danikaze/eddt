@@ -123,7 +123,7 @@ rules:
 
   # https://palantir.github.io/tslint/rules/no-console/
   no-console:
-    - false
+    - true
 
   # https://palantir.github.io/tslint/rules/curly/
   # Make exception for one liners, airbnb and google do the same. very usefull for 'if (something) return;'
@@ -394,7 +394,7 @@ rules:
   jsx-no-multiline-js: true
 
   # https://github.com/palantir/tslint-react
-  # to many false positives for example for children, in container components
+  # to many flase positives for example for children, in container components
   # jsx-key: true
 
   # https://github.com/palantir/tslint-react
@@ -420,4 +420,8 @@ rules:
     - true
     - dev
     # Our custom aliases/absolute-pathes
-    - - '@src'
+    - - '@components'
+      - '@common-utils'
+      - '@main'
+      - '@renderer'
+      - '@utils'

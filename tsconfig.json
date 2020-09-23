@@ -1,31 +1,17 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "module": "esnext",
-    "moduleResolution": "node",
-    "jsx": "preserve",
     "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
+    "allowJs": false,
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
     "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
     "resolveJsonModule": true,
-    "baseUrl": ".",
-    "paths": {
-      "@src": ["src"],
-      "@src/*": ["src/*"]
-    },
-    "plugins": [
-      {
-        "name": "typescript-tslint-plugin",
-        "alwaysShowRuleFailuresAsWarnings": false,
-        "ignoreDefinitionFiles": true,
-        "suppressWhileTypeErrorsPresent": false,
-        "mockTypeScriptVersion": false,
-        "configFile": "tslint.yaml"
-      }
-    ]
-  },
-  "include": ["src/**/*.ts", "scripts/**/*.ts"]
+    "isolatedModules": true,
+    "jsx": "preserve"
+  }
 }
